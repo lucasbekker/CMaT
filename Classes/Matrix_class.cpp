@@ -1,7 +1,7 @@
 // Matrix base class.
 class Matrix {
     public:
-        // Data.
+        // Data
         int size;
         int values;
 };
@@ -36,32 +36,34 @@ class Full: public Matrix {
         void mm (  ) {
             // This method calculates the matrix-matrix product.
             std::cout << "Empty at the moment..." << std::endl;
-            std::cout << "Matrix.mm" << std::endl;
+            std::cout << "Full.mm" << std::endl;
         }
 
         void mv (  ) {
             // This method calculates the matrix-vector product.
             std::cout << "Empty at the moment..." << std::endl;
-            std::cout << "Matrix.mv" << std::endl;
+            std::cout << "Full.mv" << std::endl;
         }
 
         void add (  ) {
-            // This method adds (element wise) two matrices.
+            // This method adds (element wise) two matrix.
             std::cout << "Empty at the moment..." << std::endl;
-            std::cout << "Matrix.add" << std::endl;
+            std::cout << "Full.add" << std::endl;
         }
 
         void trans (  ) {
             // This method transposes the matrix.
             std::cout << "Empty at the moment..." << std::endl;
-            std::cout << "Matrix.trans" << std::endl;
+            std::cout << "Full.trans" << std::endl;
         }
 };
 
 // Sparse derived class.
 class Sparse: public Matrix {
     public:
-        // Data.
+        // Data
         int nnz;
-        int base; 
+        int base;
+        int i;
+        int j;
 };

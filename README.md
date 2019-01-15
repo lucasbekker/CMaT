@@ -45,6 +45,7 @@ The amount of methods available to each class is going to be limited, in order t
 #### Vector
 
 * **dot**:   Vector dot product.
+* **add**: 	 Vector addition.
 * **trans**: Vector transpose.
 
 # Design
@@ -106,11 +107,11 @@ The amount of methods available to each class is going to be limited, in order t
 
 * **(D) nnz**:    Number of non-zero elements.
 * **(D) base**:   Zero or One based indexing.
+* **(D) i**:      Thrust *array*.
+* **(D) j**:      Thrust *array*.
 
 #### COO <-- (Sparse)
 
-* **(D) i**:      Thrust *array* of size nnz.
-* **(D) j**:      Thrust *array* of size nnz.
 * **(M) mm**: 	  Matrix Matrix multiplication.
 * **(M) mv**: 	  Matrix Vector multiplication.
 * **(M) add**:    Matrix addition.
@@ -118,8 +119,6 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### CSC <-- (Sparse)
 
-* **(D) i**:      Thrust *array* of size nnz.
-* **(D) jp**:     Thrust *array* of size (n+1).
 * **(M) mm**: 	  Matrix Matrix multiplication.
 * **(M) mv**: 	  Matrix Vector multiplication.
 * **(M) add**:    Matrix addition.
@@ -127,10 +126,7 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### CSR <-- (Sparse)
 
-* **(D) ip**:     Thrust *array* of size (m+1).
-* **(D) j**:      Thrust *array* of size nnz.
 * **(M) mm**: 	  Matrix Matrix multiplication.
 * **(M) mv**: 	  Matrix Vector multiplication.
 * **(M) add**:    Matrix addition.
 * **(M) trans**:  Matrix transpose.
-
