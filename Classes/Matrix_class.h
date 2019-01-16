@@ -10,12 +10,9 @@ class Matrix {
 class Vector: public Matrix {
     public:
         // Methods
-        int dot ( int test ) {
+        void dot (  ) {
             // This method calculates the vector dot product.
-            
-            return test;
-            
-            //std::cout << "Empty at the moment..." << std::endl;
+            std::cout << "Empty at the moment..." << std::endl;
             std::cout << "Vector.dot" << std::endl;
         }
 

@@ -1,3 +1,6 @@
+#include "thrust/host_vector.h"
+#include "thrust/device_vector.h"
+
 // CPU backend base class.
 class CPU {
     public:
@@ -8,22 +11,28 @@ class CPU {
             std::cout << "CPU.conv" << std::endl;
         }
 
-        void ialloc (  ) {
+        thrust::host_vector<int> ialloc ( int length ) {
             // This method allocates memory on the host for type int.
-            std::cout << "Empty at the moment..." << std::endl;
-            std::cout << "CPU.ialloc" << std::endl;
+            
+            thrust::host_vector<int> h_vec( length );
+
+            return h_vec;
         }
 
-        void falloc (  ) {
+        thrust::host_vector<float> falloc ( int length ) {
             // This method allocates memory on the host for type float.
-            std::cout << "Empty at the moment..." << std::endl;
-            std::cout << "CPU.falloc" << std::endl;
+            
+            thrust::host_vector<float> h_vec( length );
+
+            return h_vec;
         }
 
-        void dalloc (  ) {
+        thrust::host_vector<double> dalloc ( int length ) {
             // This method allocates memory on the host for type double.
-            std::cout << "Empty at the moment..." << std::endl;
-            std::cout << "CPU.dalloc" << std::endl;
+            
+            thrust::host_vector<double> h_vec( length );
+
+            return h_vec;
         }
 
         void dt (  ) {
@@ -67,22 +76,28 @@ class GPU {
             std::cout << "GPU.conv" << std::endl;
         }
 
-        void ialloc (  ) {
-            // This method allocates memory on the host for type int.
-            std::cout << "Empty at the moment..." << std::endl;
-            std::cout << "GPU.ialloc" << std::endl;
+        thrust::device_vector<int> ialloc ( int length ) {
+            // This method allocates memory on the device for type int.
+            
+            thrust::device_vector<int> d_vec( length );
+
+            return d_vec;
         }
 
-        void falloc (  ) {
-            // This method allocates memory on the host for type float.
-            std::cout << "Empty at the moment..." << std::endl;
-            std::cout << "GPU.falloc" << std::endl;
+        thrust::device_vector<float> falloc ( int length ) {
+            // This method allocates memory on the device for type float.
+            
+            thrust::device_vector<float> d_vec( length );
+
+            return d_vec;
         }
 
-        void dalloc (  ) {
-            // This method allocates memory on the host for type double.
-            std::cout << "Empty at the moment..." << std::endl;
-            std::cout << "GPU.dalloc" << std::endl;
+        thrust::device_vector<double> dalloc ( int length ) {
+            // This method allocates memory on the device for type double.
+            
+            thrust::device_vector<double> d_vec( length );
+
+            return d_vec;
         }
 
         void dt (  ) {

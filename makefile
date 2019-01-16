@@ -1,5 +1,5 @@
-CC=g++
-CFLAGS=-O3 -march=native
+CC=nvcc
+CFLAGS=-O3
 
-test: test.cpp
+test: test.cu
 	$(CC) $? $(CFLAGS) -o $@
