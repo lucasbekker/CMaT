@@ -1,3 +1,5 @@
+#include <iostream>
+
 // Matrix base class.
 class Matrix {
     public:
@@ -10,9 +12,12 @@ class Matrix {
 class Vector: public Matrix {
     public:
         // Methods
-        void dot (  ) {
+        int dot ( int test ) {
             // This method calculates the vector dot product.
-            std::cout << "Empty at the moment..." << std::endl;
+            
+            return test;
+            
+            //std::cout << "Empty at the moment..." << std::endl;
             std::cout << "Vector.dot" << std::endl;
         }
 

@@ -10,7 +10,7 @@ class Matrix {
 class Vector: public Matrix {
     public:
         // Methods
-        void dot (  ) {}
+        int dot ( int test ) {}
 
         void add (  ) {}
 

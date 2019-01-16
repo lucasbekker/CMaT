@@ -32,7 +32,7 @@ class GPU {
         void falloc (  ) {}
 
         void dalloc (  ) {}
-        
+
         void dt (  ) {}
 
         void spgemm (  ) {}

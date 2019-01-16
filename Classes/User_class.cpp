@@ -1,3 +1,7 @@
+#include "Include/Backend_class.h"
+#include "Include/Matrix_class.h"
+#include "Include/Sparse_class.h"
+
 // User accecible derived class.
 
 // CPU backend classes.

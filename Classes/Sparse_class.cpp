@@ -1,3 +1,6 @@
+#include <iostream>
+#include "Include/Matrix_class.h"
+
 // COO derived class.
 class COO: public Sparse {
     public:

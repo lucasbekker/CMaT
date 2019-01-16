@@ -1,3 +1,5 @@
+#include <iostream>
+
 // CPU backend base class.
 class CPU {
     public:
