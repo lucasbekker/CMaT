@@ -67,7 +67,9 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### CPU
 
-* **(M) alloc**:  Thrust allocate memory on the **host**.
+* **(M) ialloc**: Thrust allocate memory on the **host** for type int.
+* **(M) falloc**: Thrust allocate memory on the **host** for type float.
+* **(M) dalloc**: Thrust allocate memory on the **host** for type double.
 * **(M) dt**:	  MKL vector dot product.
 * **(M) spgemm**: MKL sparse gemm operation.
 * **(M) spgemv**: MKL sparse gemv operation.
@@ -77,7 +79,9 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### GPU
 
-* **(M) alloc**:  Thrust allocate memory on the **device**.
+* **(M) ialloc**: Thrust allocate memory on the **device** for type int.
+* **(M) falloc**: Thrust allocate memory on the **device** for type float.
+* **(M) dalloc**: Thrust allocate memory on the **device** for type double.
 * **(M) dt**:	  cuBLAS vector dot product.
 * **(M) spgemm**: cuSPARSE sparse gemm operation.
 * **(M) spgemv**: cuSPARSE sparse gemv operation.
