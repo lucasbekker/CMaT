@@ -1,8 +1,8 @@
 #include <iostream>
-#include <Backend_class.cpp>
-#include <Matrix_class.cpp>
-#include <Sparse_class.cpp>
-#include <User_class.cpp>
+#include "Include/Backend_class.h"
+#include "Include/Matrix_class.h"
+#include "Include/Sparse_class.h"
+#include "Include/User_class.h"
 
 int main() {
     
