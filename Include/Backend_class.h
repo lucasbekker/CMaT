@@ -4,7 +4,11 @@ class CPU {
         // Methods
         void conv (  ) {}
 
-        void alloc (  ) {}
+        void ialloc (  ) {}
+
+        void falloc (  ) {}
+
+        void dalloc (  ) {}
 
         void dt (  ) {}
 
@@ -23,8 +27,12 @@ class GPU {
         // Methods
         void conv (  ) {}
 
-        void alloc (  ) {}
+        void ialloc (  ) {}
 
+        void falloc (  ) {}
+
+        void dalloc (  ) {}
+        
         void dt (  ) {}
 
         void spgemm (  ) {}

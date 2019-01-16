@@ -8,10 +8,22 @@ class CPU {
             std::cout << "CPU.conv" << std::endl;
         }
 
-        void alloc (  ) {
-            // This method allocates memory on the host.
+        void ialloc (  ) {
+            // This method allocates memory on the host for type int.
             std::cout << "Empty at the moment..." << std::endl;
-            std::cout << "CPU.alloc" << std::endl;
+            std::cout << "CPU.ialloc" << std::endl;
+        }
+
+        void falloc (  ) {
+            // This method allocates memory on the host for type float.
+            std::cout << "Empty at the moment..." << std::endl;
+            std::cout << "CPU.falloc" << std::endl;
+        }
+
+        void dalloc (  ) {
+            // This method allocates memory on the host for type double.
+            std::cout << "Empty at the moment..." << std::endl;
+            std::cout << "CPU.dalloc" << std::endl;
         }
 
         void dt (  ) {
@@ -55,10 +67,22 @@ class GPU {
             std::cout << "GPU.conv" << std::endl;
         }
 
-        void alloc (  ) {
-            // This method allocates memory on the device.
+        void ialloc (  ) {
+            // This method allocates memory on the host for type int.
             std::cout << "Empty at the moment..." << std::endl;
-            std::cout << "GPU.alloc" << std::endl;
+            std::cout << "GPU.ialloc" << std::endl;
+        }
+
+        void falloc (  ) {
+            // This method allocates memory on the host for type float.
+            std::cout << "Empty at the moment..." << std::endl;
+            std::cout << "GPU.falloc" << std::endl;
+        }
+
+        void dalloc (  ) {
+            // This method allocates memory on the host for type double.
+            std::cout << "Empty at the moment..." << std::endl;
+            std::cout << "GPU.dalloc" << std::endl;
         }
 
         void dt (  ) {
