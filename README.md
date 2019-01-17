@@ -41,12 +41,14 @@ The amount of methods available to each class is going to be limited, in order t
 * **mv**: 	 Matrix Vector multiplication.
 * **add**: 	 Matrix addition.
 * **trans**: Matrix transpose.
+* **conv**:  Convert backend.
 
 #### Vector
 
 * **dot**:   Vector dot product.
 * **add**: 	 Vector addition.
 * **trans**: Vector transpose.
+* **conv**:  Convert backend.
 
 # Design
 
@@ -75,7 +77,6 @@ The amount of methods available to each class is going to be limited, in order t
 * **(M) spgemv**: MKL sparse gemv operation.
 * **(M) fgemm**:  MKL full gemm operation.
 * **(M) fgemv**:  MKL full gemv operation.
-* **(M) conv**:   Convert to GPU.
 
 #### GPU
 
@@ -87,18 +88,19 @@ The amount of methods available to each class is going to be limited, in order t
 * **(M) spgemv**: cuSPARSE sparse gemv operation.
 * **(M) fgemm**:  cuBLAS full gemm operation.
 * **(M) fgemv**:  cuBLAS full gemv operation.
-* **(M) conv**:   Convert to CPU.
 
 #### Matrix
 
 * **(D) size**:   Thrust *array* [ int m, int n ].
 * **(D) values**: Thrust *array*.
+* **(D) type**:   Character indicating the type of values.
 
 #### Vector <-- (Matrix)
 
 * **(M) dot**:    Vector dot product.
 * **(M) add**:    Vector addition.
 * **(M) trans**:  Vector transpose.
+* **(M) conv**:   Convert backend.
 
 #### Full <-- (Matrix)
 
@@ -106,6 +108,7 @@ The amount of methods available to each class is going to be limited, in order t
 * **(M) mv**: 	  Matrix Vector multiplication.
 * **(M) add**:    Matrix addition.
 * **(M) trans**:  Matrix transpose.
+* **(M) conv**:   Convert backend.
 
 #### Sparse <-- (Matrix)
 
@@ -120,6 +123,7 @@ The amount of methods available to each class is going to be limited, in order t
 * **(M) mv**: 	  Matrix Vector multiplication.
 * **(M) add**:    Matrix addition.
 * **(M) trans**:  Matrix transpose.
+* **(M) conv**:   Convert backend.
 
 #### CSC <-- (Sparse)
 
@@ -127,6 +131,7 @@ The amount of methods available to each class is going to be limited, in order t
 * **(M) mv**: 	  Matrix Vector multiplication.
 * **(M) add**:    Matrix addition.
 * **(M) trans**:  Matrix transpose.
+* **(M) conv**:   Convert backend.
 
 #### CSR <-- (Sparse)
 
@@ -134,3 +139,4 @@ The amount of methods available to each class is going to be limited, in order t
 * **(M) mv**: 	  Matrix Vector multiplication.
 * **(M) add**:    Matrix addition.
 * **(M) trans**:  Matrix transpose.
+* **(M) conv**:   Convert backend.

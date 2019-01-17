@@ -2,6 +2,12 @@
 class COO: public Sparse {
     public:
         // Methods
+        void conv (  ) {
+            // This method converts the backend.
+            std::cout << "Empty at the moment..." << std::endl;
+            std::cout << "COO.conv" << std::endl;
+        }
+
         void mm (  ) {
             // This method calculates the matrix-matrix product.
             std::cout << "Empty at the moment..." << std::endl;
@@ -31,6 +37,12 @@ class COO: public Sparse {
 class CSC: public Sparse {
     public:
         // Methods
+        void conv (  ) {
+            // This method converts the backend.
+            std::cout << "Empty at the moment..." << std::endl;
+            std::cout << "CSC.conv" << std::endl;
+        }
+
         void mm (  ) {
             // This method calculates the matrix-matrix product.
             std::cout << "Empty at the moment..." << std::endl;
@@ -60,6 +72,12 @@ class CSC: public Sparse {
 class CSR: public Sparse {
     public:
         // Methods
+        void conv (  ) {
+            // This method converts the backend.
+            std::cout << "Empty at the moment..." << std::endl;
+            std::cout << "CSR.conv" << std::endl;
+        }
+
         void mm (  ) {
             // This method calculates the matrix-matrix product.
             std::cout << "Empty at the moment..." << std::endl;

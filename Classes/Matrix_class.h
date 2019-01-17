@@ -2,14 +2,21 @@
 class Matrix {
     public:
         // Data
-        int size;
+        int size[2];
         int values;
+        char type;
 };
 
 // Vector derived class.
 class Vector: public Matrix {
     public:
         // Methods
+        void conv (  ) {
+            // This method converts the backend.
+            std::cout << "Empty at the moment..." << std::endl;
+            std::cout << "Vector.conv" << std::endl;
+        }
+
         void dot (  ) {
             // This method calculates the vector dot product.
             std::cout << "Empty at the moment..." << std::endl;
@@ -33,6 +40,12 @@ class Vector: public Matrix {
 class Full: public Matrix {
     public:
         // Methods
+        void conv (  ) {
+            // This method converts the backend.
+            std::cout << "Empty at the moment..." << std::endl;
+            std::cout << "Full.conv" << std::endl;
+        }
+
         void mm (  ) {
             // This method calculates the matrix-matrix product.
             std::cout << "Empty at the moment..." << std::endl;
