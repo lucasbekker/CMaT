@@ -60,6 +60,9 @@ class CPU {
 // GPU backend base class.
 class GPU {
     public:
+        // Data
+        int DeviceID;
+
         // Methods
         thrust::device_vector<int> ialloc ( int length ) {
             // This method allocates memory on the device for type int.

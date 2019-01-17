@@ -80,14 +80,15 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### GPU
 
-* **(M) ialloc**: Thrust allocate memory on the **device** for type int.
-* **(M) falloc**: Thrust allocate memory on the **device** for type float.
-* **(M) dalloc**: Thrust allocate memory on the **device** for type double.
-* **(M) dt**:	  cuBLAS vector dot product.
-* **(M) spgemm**: cuSPARSE sparse gemm operation.
-* **(M) spgemv**: cuSPARSE sparse gemv operation.
-* **(M) fgemm**:  cuBLAS full gemm operation.
-* **(M) fgemv**:  cuBLAS full gemv operation.
+* **(D) DeviceID**: Device ID of the GPU.
+* **(M) ialloc**:   Thrust allocate memory on the **device** for type int.
+* **(M) falloc**:   Thrust allocate memory on the **device** for type float.
+* **(M) dalloc**:   Thrust allocate memory on the **device** for type double.
+* **(M) dt**:	    cuBLAS vector dot product.
+* **(M) spgemm**:   cuSPARSE sparse gemm operation.
+* **(M) spgemv**:   cuSPARSE sparse gemv operation.
+* **(M) fgemm**:    cuBLAS full gemm operation.
+* **(M) fgemv**:    cuBLAS full gemv operation.
 
 #### Matrix
 
