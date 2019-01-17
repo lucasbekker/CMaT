@@ -91,7 +91,7 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### Matrix
 
-* **(D) size**:   Thrust *array* [ int m, int n ].
+* **(D) size**:   Int array containing size information [ m, n ].
 * **(D) values**: Thrust *array*.
 * **(D) type**:   Character indicating the type of values.
 
