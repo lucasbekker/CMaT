@@ -37,6 +37,7 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### Matrix
 
+* **sc**:    Matrix scalar multiplication.
 * **mm**: 	 Matrix Matrix multiplication.
 * **mv**: 	 Matrix Vector multiplication.
 * **add**: 	 Matrix addition.
@@ -45,6 +46,7 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### Vector
 
+* **sc**:    Vector scalar multiplication.
 * **dot**:   Vector dot product.
 * **add**: 	 Vector addition.
 * **trans**: Vector transpose.
@@ -98,6 +100,7 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### Vector <-- (Matrix)
 
+* **(M) sc**:     Vector scalar multiplication.
 * **(M) dot**:    Vector dot product.
 * **(M) add**:    Vector addition.
 * **(M) trans**:  Vector transpose.
@@ -105,6 +108,7 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### Full <-- (Matrix)
 
+* **(M) sc**:     Matrix scalar multiplication.
 * **(M) mm**: 	  Matrix Matrix multiplication.
 * **(M) mv**: 	  Matrix Vector multiplication.
 * **(M) add**:    Matrix addition.
@@ -120,6 +124,7 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### COO <-- (Sparse)
 
+* **(M) sc**:     Matrix scalar multiplication.
 * **(M) mm**: 	  Matrix Matrix multiplication.
 * **(M) mv**: 	  Matrix Vector multiplication.
 * **(M) add**:    Matrix addition.
@@ -128,6 +133,7 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### CSC <-- (Sparse)
 
+* **(M) sc**:     Matrix scalar multiplication.
 * **(M) mm**: 	  Matrix Matrix multiplication.
 * **(M) mv**: 	  Matrix Vector multiplication.
 * **(M) add**:    Matrix addition.
@@ -136,6 +142,7 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### CSR <-- (Sparse)
 
+* **(M) sc**:     Matrix scalar multiplication.
 * **(M) mm**: 	  Matrix Matrix multiplication.
 * **(M) mv**: 	  Matrix Vector multiplication.
 * **(M) add**:    Matrix addition.

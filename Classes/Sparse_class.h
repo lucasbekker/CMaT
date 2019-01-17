@@ -8,6 +8,12 @@ class COO: public Sparse {
             std::cout << "COO.conv" << std::endl;
         }
 
+        void sc (  ) {
+            // This method calculates the matrix scalar product.
+            std::cout << "Empty at the moment..." << std::endl;
+            std::cout << "COO.sc" << std::endl;
+        }
+
         void mm (  ) {
             // This method calculates the matrix-matrix product.
             std::cout << "Empty at the moment..." << std::endl;
@@ -43,6 +49,12 @@ class CSC: public Sparse {
             std::cout << "CSC.conv" << std::endl;
         }
 
+        void sc (  ) {
+            // This method calculates the matrix scalar product.
+            std::cout << "Empty at the moment..." << std::endl;
+            std::cout << "CSC.sc" << std::endl;
+        }
+
         void mm (  ) {
             // This method calculates the matrix-matrix product.
             std::cout << "Empty at the moment..." << std::endl;
@@ -76,6 +88,12 @@ class CSR: public Sparse {
             // This method converts the backend.
             std::cout << "Empty at the moment..." << std::endl;
             std::cout << "CSR.conv" << std::endl;
+        }
+
+        void sc (  ) {
+            // This method calculates the matrix scalar product.
+            std::cout << "Empty at the moment..." << std::endl;
+            std::cout << "CSR.sc" << std::endl;
         }
 
         void mm (  ) {

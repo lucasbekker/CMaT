@@ -17,6 +17,12 @@ class Vector: public Matrix {
             std::cout << "Vector.conv" << std::endl;
         }
 
+        void sc (  ) {
+            // This method calculates the vector scalar product.
+            std::cout << "Empty at the moment..." << std::endl;
+            std::cout << "Vector.sc" << std::endl;
+        }
+
         void dot (  ) {
             // This method calculates the vector dot product.
             std::cout << "Empty at the moment..." << std::endl;
@@ -44,6 +50,12 @@ class Full: public Matrix {
             // This method converts the backend.
             std::cout << "Empty at the moment..." << std::endl;
             std::cout << "Full.conv" << std::endl;
+        }
+
+        void sc (  ) {
+            // This method calculates the matrix scalar product.
+            std::cout << "Empty at the moment..." << std::endl;
+            std::cout << "Full.sc" << std::endl;
         }
 
         void mm (  ) {
