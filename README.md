@@ -43,6 +43,7 @@ The amount of methods available to each class is going to be limited, in order t
 * **add**: 	 Matrix addition.
 * **trans**: Matrix transpose.
 * **conv**:  Convert backend.
+* **clone**: Make a clone.
 
 #### Vector
 
@@ -51,6 +52,7 @@ The amount of methods available to each class is going to be limited, in order t
 * **add**: 	 Vector addition.
 * **trans**: Vector transpose.
 * **conv**:  Convert backend.
+* **clone**: Make a clone.
 
 # Design
 

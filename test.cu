@@ -6,13 +6,21 @@
 
 int main() {
     
-    CPU_Vector A;
+    CPU_CSC A;
+    CPU_CSC B;
 
-    thrust::host_vector<int> test = A.ialloc(10);
+    A.size[0] = 1;
+    A.size[1] = 1;
+    A.type = 'f';
+    A.nnz = 1;
+    A.base = 1;
+    A.i = 1;
+    A.j = 1;
+    A.values = 1;
 
-    test[0] = 1;
+    B = A.clone();
 
-    std::cout << "element 1: " << test[0] << std::endl;
+    std::cout << B.i << std::endl;
 
     return 0;
 }
