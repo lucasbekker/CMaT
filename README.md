@@ -106,7 +106,6 @@ The amount of methods available to each class is going to be limited, in order t
 * **(M) dot**:    Vector dot product.
 * **(M) add**:    Vector addition.
 * **(M) trans**:  Vector transpose.
-* **(M) conv**:   Convert backend.
 
 #### Full <-- (Matrix)
 
@@ -115,7 +114,6 @@ The amount of methods available to each class is going to be limited, in order t
 * **(M) mv**: 	  Matrix Vector multiplication.
 * **(M) add**:    Matrix addition.
 * **(M) trans**:  Matrix transpose.
-* **(M) conv**:   Convert backend.
 
 #### Sparse <-- (Matrix)
 
@@ -131,7 +129,6 @@ The amount of methods available to each class is going to be limited, in order t
 * **(M) mv**: 	  Matrix Vector multiplication.
 * **(M) add**:    Matrix addition.
 * **(M) trans**:  Matrix transpose.
-* **(M) conv**:   Convert backend.
 
 #### CSC <-- (Sparse)
 
@@ -140,7 +137,6 @@ The amount of methods available to each class is going to be limited, in order t
 * **(M) mv**: 	  Matrix Vector multiplication.
 * **(M) add**:    Matrix addition.
 * **(M) trans**:  Matrix transpose.
-* **(M) conv**:   Convert backend.
 
 #### CSR <-- (Sparse)
 
@@ -149,4 +145,4 @@ The amount of methods available to each class is going to be limited, in order t
 * **(M) mv**: 	  Matrix Vector multiplication.
 * **(M) add**:    Matrix addition.
 * **(M) trans**:  Matrix transpose.
-* **(M) conv**:   Convert backend.
+
