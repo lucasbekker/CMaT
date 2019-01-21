@@ -1,4 +1,4 @@
-# CMat
+# CMat - Redesign branch
 ## Cuda, Mkl and Thrust based C++ matrix library
 
 This repository contains C++ class definitions for data types commonly encountered in Linear Algebra problems, namely: **Vector** and **Matrix**.
