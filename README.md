@@ -46,7 +46,8 @@ The amount of methods available to each class is going to be limited, in order t
 * **scp**:   Scalar multiplication.
 * **mm**: 	 Matrix Matrix multiplication.
 * **mv**: 	 Matrix Vector multiplication.
-* **add**: 	 Matrix addition.
+* **add**: 	 Scalar addition.
+* **madd**:  Matrix addition.
 * **trans**: Transpose.
 * **clone**: Make a clone.
 * **conv**:  Convert the backend type
@@ -55,7 +56,8 @@ The amount of methods available to each class is going to be limited, in order t
 
 * **scp**:   Scalar multiplication.
 * **dot**:   Vector dot product.
-* **add**: 	 Vector addition.
+* **add**:   Scalar addition.
+* **madd**:	 Vector addition.
 * **trans**: Transpose.
 * **clone**: Make a clone.
 * **conv**:  Convert the backend type
@@ -85,12 +87,14 @@ The amount of methods available to each class is going to be limited, in order t
 * **spdgemv**:	Sparse double matrix vector product. (MKL)
 * **spfgemm**:	Sparse float matrix matrix product. (MKL)
 * **spdgemm**:	Sparse double matrix matrix product. (MKL)
+* **spfadd**:   Sparse float matrix addition. (MKL)
+* **spdadd**:   Sparse double matrix addition. (MKL)
 * **fdot**:		Float vector dot product. (Thrust)
 * **ddot**:		Double vector dot product. (Thrust)
 * **fscp**:		Float scalar multiplication. (Thrust)
 * **dscp**:		Double scalar multiplication. (Thrust)
-* **fadd**:		Float addition. (Thrust)
-* **dadd**:		Double addition. (Thrust)
+* **fadd**:		Float scalar addition. (Thrust)
+* **dadd**:		Double scalar addition. (Thrust)
 
 #### GPU_Methods
 
@@ -102,6 +106,8 @@ The amount of methods available to each class is going to be limited, in order t
 * **spdgemv**:	Sparse double matrix vector product. (cuSPARSE)
 * **spfgemm**:	Sparse float matrix matrix product. (cuSPARSE)
 * **spdgemm**:	Sparse double matrix matrix product. (cuSPARSE)
+* **spfadd**:   Sparse float matrix addition. (cuSPARSE)
+* **spdadd**:   Sparse double matrix addition. (cuSPARSE)
 * **fdot**:		Float vector dot product. (Thrust)
 * **ddot**:		Double vector dot product. (Thrust)
 * **fscp**:		Float scalar multiplication. (Thrust)
@@ -117,6 +123,7 @@ The amount of methods available to each class is going to be limited, in order t
 * **(D) Size**:		Array containing [ n, m, n*m ]
 * **(D) isVector**: Zero if it is not a Vector and One if it is a Vector.
 * **add**:			Links to CPU_methods.dadd().
+* **madd**:			Links to CPU_methods.dadd().
 * **trans**:		Transposes the Matrix or Vector.
 * **scp**:			Links to CPU_methods.dscp().
 * **dot**:			Links to CPU_methods.ddot().
@@ -131,6 +138,7 @@ The amount of methods available to each class is going to be limited, in order t
 * **(D) Size**:		Array containing [ n, m, n*m ]
 * **(D) isVector**: Zero if it is not a Vector and One if it is a Vector.
 * **add**:			Links to CPU_methods.fadd().
+* **madd**:			Links to CPU_methods.fadd().
 * **trans**:		Transposes the Matrix or Vector.
 * **scp**:			Links to CPU_methods.fscp().
 * **dot**:			Links to CPU_methods.fdot().
@@ -145,6 +153,7 @@ The amount of methods available to each class is going to be limited, in order t
 * **(D) Size**:		Array containing [ n, m, n*m ]
 * **(D) isVector**: Zero if it is not a Vector and One if it is a Vector.
 * **add**:			Links to GPU_methods.dadd().
+* **madd**:			Links to GPU_methods.dadd().
 * **trans**:		Transposes the Matrix or Vector.
 * **scp**:			Links to GPU_methods.dscp().
 * **dot**:			Links to GPU_methods.ddot().
@@ -159,6 +168,7 @@ The amount of methods available to each class is going to be limited, in order t
 * **(D) Size**:		Array containing [ n, m, n*m ]
 * **(D) isVector**: Zero if it is not a Vector and One if it is a Vector.
 * **add**:			Links to GPU_methods.fadd().
+* **madd**:			Links to GPU_methods.fadd().
 * **trans**:		Transposes the Matrix or Vector.
 * **scp**:			Links to GPU_methods.fscp().
 * **dot**:			Links to GPU_methods.fdot().
@@ -174,6 +184,7 @@ The amount of methods available to each class is going to be limited, in order t
 * **(D) I**:		Host vector of length Size[m] storing pointer list type int.
 * **(D) J**:		Host vector of length Size[3] storing type int.
 * **add**:			Links to CPU_methods.dadd().
+* **madd**:			Links to CPU_methods.spdadd().
 * **trans**:		Transposes the Matrix.
 * **scp**:			Links to CPU_methods.dscp().
 * **mv**:			Links to CPU_methods.spdgemv().
@@ -188,6 +199,7 @@ The amount of methods available to each class is going to be limited, in order t
 * **(D) I**:		Host vector of length Size[m] storing pointer list type int.
 * **(D) J**:		Host vector of length Size[3] storing type int.
 * **add**:			Links to CPU_methods.fadd().
+* **madd**:			Links to CPU_methods.spfadd().
 * **trans**:		Transposes the Matrix.
 * **scp**:			Links to CPU_methods.fscp().
 * **mv**:			Links to CPU_methods.spfgemv().
@@ -202,6 +214,7 @@ The amount of methods available to each class is going to be limited, in order t
 * **(D) I**:		Device vector of length Size[m] storing pointer list type int.
 * **(D) J**:		Device vector of length Size[3] storing type int.
 * **add**:			Links to GPU_methods.dadd().
+* **madd**:			Links to GPU_methods.spdadd().
 * **trans**:		Transposes the Matrix.
 * **scp**:			Links to GPU_methods.dscp().
 * **mv**:			Links to GPU_methods.spdgemv().
@@ -216,6 +229,7 @@ The amount of methods available to each class is going to be limited, in order t
 * **(D) I**:		Device vector of length Size[m] storing pointer list type int.
 * **(D) J**:		Device vector of length Size[3] storing type int.
 * **add**:			Links to GPU_methods.fadd().
+* **madd**:			Links to GPU_methods.spdadd().
 * **trans**:		Transposes the Matrix.
 * **scp**:			Links to GPU_methods.fscp().
 * **mv**:			Links to GPU_methods.spfgemv().
