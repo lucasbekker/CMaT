@@ -1,5 +1,8 @@
 #include<iostream>
 
+#include <thrust/host_vector.h>
+#include <thrust/device_vector.h>
+
 class CPU_methods {
     public:        
         // Full float matrix vector product. (MKL)
@@ -105,9 +108,9 @@ class GPU_methods {
 class CPU_Full: public CPU_Methods {
     public:
         // Data
-        double Values;  // Host vector of length Size[3] storing type double.
-        int Size[3];    // Array containing [ n, m, n*m ]
-        int isVector;   // Zero if it is not a Vector and One if it is a Vector.
+        thrust::host_vector<double> Values;    // Host vector of length Size[3] storing type double. (MISSING SIZE)
+        int Size[3];                           // Array containing [ n, m, n*m ]
+        int isVector;                          // Zero if it is not a Vector and One if it is a Vector.
 
         // Methods
         // Links to CPU_methods.dadd().
@@ -141,9 +144,9 @@ class CPU_Full: public CPU_Methods {
 class CPU_Full_f: public CPU_Methods {
     public:
         // Data
-        float Values;   // Host vector of length Size[3] storing type float.
-        int Size[3];    // Array containing [ n, m, n*m ]
-        int isVector;   // Zero if it is not a Vector and One if it is a Vector.
+        thrust::host_vector<float> Values;   // Host vector of length Size[3] storing type float. (MISSING SIZE)
+        int Size[3];                         // Array containing [ n, m, n*m ]
+        int isVector;                        // Zero if it is not a Vector and One if it is a Vector.
 
         // Methods
         // Links to CPU_methods.fadd().
@@ -177,9 +180,9 @@ class CPU_Full_f: public CPU_Methods {
 class GPU_Full: public GPU_Methods {
     public:
         // Data
-        double Values;  // Device vector of length Size[3] storing type double.
-        int Size[3];    // Array containing [ n, m, n*m ]
-        int isVector;   // Zero if it is not a Vector and One if it is a Vector.
+        thrust::device_vector<double> Values;  // Device vector of length Size[3] storing type double. (MISSING SIZE)
+        int Size[3];                           // Array containing [ n, m, n*m ]
+        int isVector;                          // Zero if it is not a Vector and One if it is a Vector.
 
         // Methods
         // Links to GPU_methods.dadd().
@@ -213,9 +216,9 @@ class GPU_Full: public GPU_Methods {
 class GPU_Full_f: public GPU_Methods {
     public:
         // Data
-        float Values;   // Device vector of length Size[3] storing type float.
-        int Size[3];    // Array containing [ n, m, n*m ]
-        int isVector;   // Zero if it is not a Vector and One if it is a Vector.
+        thrust::device_vector<float> Values;   // Device vector of length Size[3] storing type float. (MISSING SIZE)
+        int Size[3];                           // Array containing [ n, m, n*m ]
+        int isVector;                          // Zero if it is not a Vector and One if it is a Vector.
 
         // Methods
         // Links to GPU_methods.fadd().
@@ -249,10 +252,10 @@ class GPU_Full_f: public GPU_Methods {
 class CPU_Sparse: public CPU_Methods {
     public:
         // Data
-        double Values;  // Host vector of length Size[3] storing type double.
-        int Size[3];    // Array containing [ n, m, nnz ]
-        int I;          // Host vector of length Size[m] storing pointer list type int.
-        int J;          // Host vector of length Size[m] storing type int.
+        thrust::host_vector<double> Values;  // Host vector of length Size[3] storing type double. (MISSING SIZE)
+        int Size[3];                         // Array containing [ n, m, nnz ]
+        thrust::host_vector<int> I;          // Host vector of length Size[m] storing pointer list type int. (MISSING SIZE)
+        thrust::host_vector<int> J;          // Host vector of length Size[3] storing type int. (MISSING SIZE)
 
         // Methods
         // Links to CPU_methods.dadd().
@@ -283,10 +286,10 @@ class CPU_Sparse: public CPU_Methods {
 class CPU_Sparse_f: public CPU_Methods {
     public:
         // Data
-        float Values;   // Host vector of length Size[3] storing type float.
-        int Size[3];    // Array containing [ n, m, nnz ]
-        int I;          // Host vector of length Size[m] storing pointer list type int.
-        int J;          // Host vector of length Size[m] storing type int.
+        thrust::host_vector<float> Values;   // Host vector of length Size[3] storing type float. (MISSING SIZE)
+        int Size[3];                         // Array containing [ n, m, nnz ]
+        thrust::host_vector<int> I;          // Host vector of length Size[m] storing pointer list type int. (MISSING SIZE)
+        thrust::host_vector<int> J;          // Host vector of length Size[3] storing type int. (MISSING SIZE)
 
         // Methods
         // Links to CPU_methods.fadd().
@@ -317,10 +320,10 @@ class CPU_Sparse_f: public CPU_Methods {
 class GPU_Sparse: public GPU_Methods {
     public:
         // Data
-        double Values;  // Device vector of length Size[3] storing type double.
-        int Size[3];    // Array containing [ n, m, nnz ]
-        int I;          // Device vector of length Size[m] storing pointer list type int.
-        int J;          // Device vector of length Size[m] storing type int.
+        thrust::device_vector<double> Values;  // Device vector of length Size[3] storing type double. (MISSING SIZE)
+        int Size[3];                           // Array containing [ n, m, nnz ]
+        thrust::device_vector<int> I;          // Device vector of length Size[m] storing pointer list type int. (MISSING SIZE)
+        thrust::device_vector<int> J;          // Device vector of length Size[3] storing type int. (MISSING SIZE)
 
         // Methods
         // Links to GPU_methods.dadd().
@@ -351,10 +354,10 @@ class GPU_Sparse: public GPU_Methods {
 class GPU_Sparse_f: public GPU_Methods {
     public:
         // Data
-        double Values;  // Device vector of length Size[3] storing type float.
-        int Size[3];    // Array containing [ n, m, nnz ]
-        int I;          // Device vector of length Size[m] storing pointer list type int.
-        int J;          // Device vector of length Size[m] storing type int.
+        thrust::device_vector<float> Values;  // Device vector of length Size[3] storing type float. (MISSING SIZE)
+        int Size[3];                          // Array containing [ n, m, nnz ]
+        thrust::device_vector<int> I;         // Device vector of length Size[m] storing pointer list type int. (MISSING SIZE)
+        thrust::device_vector<int> J;         // Device vector of length Size[3] storing type int. (MISSING SIZE)
 
         // Methods
         // Links to GPU_methods.fadd().
