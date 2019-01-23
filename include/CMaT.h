@@ -5,17 +5,17 @@
 
 class CPU_methods {
     public:        
-        // Full float matrix vector product. (MKL)
-        void ffgemv (  ) { std::cout << "empty" << std::endl; }
+        // Dense float matrix vector product. (MKL)
+        void dfgemv (  ) { std::cout << "empty" << std::endl; }
 
-        // Full double matrix vector product. (MKL)
-        void fdgemv (  ) { std::cout << "empty" << std::endl; }
+        // Dense double matrix vector product. (MKL)
+        void ddgemv (  ) { std::cout << "empty" << std::endl; }
 
-        // Full float matrix matrix product. (MKL)
-        void ffgemm (  ) { std::cout << "empty" << std::endl; }
+        // Dense float matrix matrix product. (MKL)
+        void dfgemm (  ) { std::cout << "empty" << std::endl; }
 
-        // Full double matrix matrix product. (MKL)
-        void fdgemm (  ) { std::cout << "empty" << std::endl; }
+        // Dense double matrix matrix product. (MKL)
+        void ddgemm (  ) { std::cout << "empty" << std::endl; }
 
         // Sparse float matrix vector product. (MKL)
         void spfgemv (  ) { std::cout << "empty" << std::endl; }
@@ -56,17 +56,17 @@ class CPU_methods {
 
 class GPU_methods {
     public:
-        // Full float matrix vector product. (cuBLAS)
-        void ffgemv (  ) { std::cout << "empty" << std::endl; }
+        // Dense float matrix vector product. (cuBLAS)
+        void dfgemv (  ) { std::cout << "empty" << std::endl; }
 
-        // Full double matrix vector product. (cuBLAS)
-        void fdgemv (  ) { std::cout << "empty" << std::endl; }
+        // Dense double matrix vector product. (cuBLAS)
+        void ddgemv (  ) { std::cout << "empty" << std::endl; }
 
-        // Full float matrix matrix product. (cuBLAS)
-        void ffgemm (  ) { std::cout << "empty" << std::endl; }
+        // Dense float matrix matrix product. (cuBLAS)
+        void dfgemm (  ) { std::cout << "empty" << std::endl; }
 
-        // Full double matrix matrix product. (cuBLAS)
-        void fdgemm (  ) { std::cout << "empty" << std::endl; }
+        // Dense double matrix matrix product. (cuBLAS)
+        void ddgemm (  ) { std::cout << "empty" << std::endl; }
 
         // Sparse float matrix vector product. (cuSPARSE)
         void spfgemv (  ) { std::cout << "empty" << std::endl; }
@@ -105,7 +105,7 @@ class GPU_methods {
         void spdadd (  ) { std::cout << "empty" << std::endl; }
 };
 
-class CPU_Full: public CPU_Methods {
+class CPU_Dense: public CPU_Methods {
     public:
         // Data
         thrust::host_vector<double> Values;    // Host vector of length Size[3] storing type double. (MISSING SIZE)
@@ -128,10 +128,10 @@ class CPU_Full: public CPU_Methods {
         // Links to CPU_methods.ddot().
         void dot (  ) { std::cout << "empty" << std::endl; }
 
-        // Links to CPU_methods.fdgemv().
+        // Links to CPU_methods.ddgemv().
         void mv (  ) { std::cout << "empty" << std::endl; }
 
-        // Links to CPU_methods.fdgemm().
+        // Links to CPU_methods.ddgemm().
         void mm (  ) { std::cout << "empty" << std::endl; }
 
         // Make a clone.
@@ -141,7 +141,7 @@ class CPU_Full: public CPU_Methods {
         void conv (  ) { std::cout << "empty" << std::endl; }
 };
 
-class CPU_Full_f: public CPU_Methods {
+class CPU_Dense_f: public CPU_Methods {
     public:
         // Data
         thrust::host_vector<float> Values;   // Host vector of length Size[3] storing type float. (MISSING SIZE)
@@ -164,10 +164,10 @@ class CPU_Full_f: public CPU_Methods {
         // Links to CPU_methods.fdot().
         void dot (  ) { std::cout << "empty" << std::endl; }
 
-        // Links to CPU_methods.ffgemv().
+        // Links to CPU_methods.dfgemv().
         void mv (  ) { std::cout << "empty" << std::endl; }
 
-        // Links to CPU_methods.ffgemm().
+        // Links to CPU_methods.dfgemm().
         void mm (  ) { std::cout << "empty" << std::endl; }
 
         // Make a clone.
@@ -177,7 +177,7 @@ class CPU_Full_f: public CPU_Methods {
         void conv (  ) { std::cout << "empty" << std::endl; }
 };
 
-class GPU_Full: public GPU_Methods {
+class GPU_Dense: public GPU_Methods {
     public:
         // Data
         thrust::device_vector<double> Values;  // Device vector of length Size[3] storing type double. (MISSING SIZE)
@@ -200,10 +200,10 @@ class GPU_Full: public GPU_Methods {
         // Links to GPU_methods.ddot().
         void dot (  ) { std::cout << "empty" << std::endl; }
 
-        // Links to GPU_methods.fdgemv().
+        // Links to GPU_methods.ddgemv().
         void mv (  ) { std::cout << "empty" << std::endl; }
 
-        // Links to GPU_methods.fdgemm().
+        // Links to GPU_methods.ddgemm().
         void mm (  ) { std::cout << "empty" << std::endl; }
 
         // Make a clone.
@@ -213,7 +213,7 @@ class GPU_Full: public GPU_Methods {
         void conv (  ) { std::cout << "empty" << std::endl; }
 };
 
-class GPU_Full_f: public GPU_Methods {
+class GPU_Dense_f: public GPU_Methods {
     public:
         // Data
         thrust::device_vector<float> Values;   // Device vector of length Size[3] storing type float. (MISSING SIZE)
@@ -236,10 +236,10 @@ class GPU_Full_f: public GPU_Methods {
         // Links to GPU_methods.fdot().
         void dot (  ) { std::cout << "empty" << std::endl; }
 
-        // Links to GPU_methods.ffgemv().
+        // Links to GPU_methods.dfgemv().
         void mv (  ) { std::cout << "empty" << std::endl; }
 
-        // Links to GPU_methods.ffgemm().
+        // Links to GPU_methods.dfgemm().
         void mm (  ) { std::cout << "empty" << std::endl; }
 
         // Make a clone.

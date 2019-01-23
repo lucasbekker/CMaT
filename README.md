@@ -66,12 +66,12 @@ The amount of methods available to each class is going to be limited, in order t
 
 ## User interfaceable classes:
 
-* **CPU_Full**:		CPU backend full matrix or vector of type **double**.
-* **CPU_Full_f**:	CPU backend full matrix or vector of type **float**.
+* **CPU_Dense**:	CPU backend dense matrix or vector of type **double**.
+* **CPU_Dense_f**:	CPU backend dense matrix or vector of type **float**.
 * **CPU_Sparse**:	CPU backend sparse CSR matrix of type **double**.
 * **CPU_Sparse_f**: CPU backend sparse CSR matrix of type **float**.
-* **GPU_Full**:		GPU backend full matrix or vector of type **double**.
-* **GPU_Full_f**:	GPU backend full matrix or vector of type **float**.
+* **GPU_Dense**:	GPU backend dense matrix or vector of type **double**.
+* **GPU_Dense_f**:	GPU backend dense matrix or vector of type **float**.
 * **GPU_Sparse**:	GPU backend sparse CSR matrix of type **double**.
 * **GPU_Sparse_f**: GPU backend sparse CSR matrix of type **float**.
 
@@ -79,10 +79,10 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### CPU_Methods
 
-* **ffgemv**:	Full float matrix vector product. (MKL)
-* **fdgemv**:	Full double matrix vector product. (MKL)
-* **ffgemm**:	Full float matrix matrix product. (MKL)
-* **fdgemm**:	Full double matrix matrix product. (MKL)
+* **dfgemv**:	Dense float matrix vector product. (MKL)
+* **ddgemv**:	Dense double matrix vector product. (MKL)
+* **dfgemm**:	Dense float matrix matrix product. (MKL)
+* **ddgemm**:	Dense double matrix matrix product. (MKL)
 * **spfgemv**:	Sparse float matrix vector product. (MKL)
 * **spdgemv**:	Sparse double matrix vector product. (MKL)
 * **spfgemm**:	Sparse float matrix matrix product. (MKL)
@@ -98,10 +98,10 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### GPU_Methods
 
-* **ffgemv**:	Full float matrix vector product. (cuBLAS)
-* **fdgemv**:	Full double matrix vector product. (cuBLAS)
-* **ffgemm**:	Full float matrix matrix product. (cuBLAS)
-* **fdgemm**:	Full double matrix matrix product. (cuBLAS)
+* **dfgemv**:	Dense float matrix vector product. (cuBLAS)
+* **ddgemv**:	Dense double matrix vector product. (cuBLAS)
+* **dfgemm**:	Dense float matrix matrix product. (cuBLAS)
+* **ddgemm**:	Dense double matrix matrix product. (cuBLAS)
 * **spfgemv**:	Sparse float matrix vector product. (cuSPARSE)
 * **spdgemv**:	Sparse double matrix vector product. (cuSPARSE)
 * **spfgemm**:	Sparse float matrix matrix product. (cuSPARSE)
@@ -117,7 +117,7 @@ The amount of methods available to each class is going to be limited, in order t
 
 ## Class description
 
-#### CPU_Full
+#### CPU_Dense
 
 * **(D) Values**:	Host vector of length Size[3] storing type double.
 * **(D) Size**:		Array containing [ n, m, n*m ]
@@ -127,12 +127,12 @@ The amount of methods available to each class is going to be limited, in order t
 * **trans**:		Transposes the Matrix or Vector.
 * **scp**:			Links to CPU_methods.dscp().
 * **dot**:			Links to CPU_methods.ddot().
-* **mv**:			Links to CPU_methods.fdgemv().
-* **mm**:			Links to CPU_methods.fdgemm().
+* **mv**:			Links to CPU_methods.ddgemv().
+* **mm**:			Links to CPU_methods.ddgemm().
 * **clone**: 		Make a clone.
 * **conv**:  		Convert the backend type
 
-#### CPU_Full_f
+#### CPU_Dense_f
 
 * **(D) Values**:	Host vector of length Size[3] storing type float.
 * **(D) Size**:		Array containing [ n, m, n*m ]
@@ -142,12 +142,12 @@ The amount of methods available to each class is going to be limited, in order t
 * **trans**:		Transposes the Matrix or Vector.
 * **scp**:			Links to CPU_methods.fscp().
 * **dot**:			Links to CPU_methods.fdot().
-* **mv**:			Links to CPU_methods.ffgemv().
-* **mm**:			Links to CPU_methods.ffgemm().
+* **mv**:			Links to CPU_methods.dfgemv().
+* **mm**:			Links to CPU_methods.dfgemm().
 * **clone**: 		Make a clone.
 * **conv**:  		Convert the backend type
 
-#### GPU_Full
+#### GPU_Dense
 
 * **(D) Values**:	Device vector of length Size[3] storing type double.
 * **(D) Size**:		Array containing [ n, m, n*m ]
@@ -157,12 +157,12 @@ The amount of methods available to each class is going to be limited, in order t
 * **trans**:		Transposes the Matrix or Vector.
 * **scp**:			Links to GPU_methods.dscp().
 * **dot**:			Links to GPU_methods.ddot().
-* **mv**:			Links to GPU_methods.fdgemv().
-* **mm**:			Links to GPU_methods.fdgemm().
+* **mv**:			Links to GPU_methods.ddgemv().
+* **mm**:			Links to GPU_methods.ddgemm().
 * **clone**: 		Make a clone.
 * **conv**:  		Convert the backend type
 
-#### GPU_Full_f
+#### GPU_Dense_f
 
 * **(D) Values**:	Device vector of length Size[3] storing type float.
 * **(D) Size**:		Array containing [ n, m, n*m ]
@@ -172,8 +172,8 @@ The amount of methods available to each class is going to be limited, in order t
 * **trans**:		Transposes the Matrix or Vector.
 * **scp**:			Links to GPU_methods.fscp().
 * **dot**:			Links to GPU_methods.fdot().
-* **mv**:			Links to GPU_methods.ffgemv().
-* **mm**:			Links to GPU_methods.ffgemm().
+* **mv**:			Links to GPU_methods.dfgemv().
+* **mm**:			Links to GPU_methods.dfgemm().
 * **clone**: 		Make a clone.
 * **conv**:  		Convert the backend type
 
