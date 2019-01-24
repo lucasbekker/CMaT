@@ -105,10 +105,10 @@ class GPU_methods {
         void spdadd (  ) { std::cout << "empty" << std::endl; }
 };
 
-class CPU_Dense: public CPU_Methods {
+class CPU_Dense: public CPU_methods {
     public:
         // Data
-        thrust::host_vector<double> Values;    // Host vector of length Size[3] storing type double. (MISSING SIZE)
+        thrust::host_vector<double> Values;    // Host vector of length Size[2] storing type double.
         int Size[3];                           // Array containing [ n, m, n*m ]
         int isVector;                          // Zero if it is not a Vector and One if it is a Vector.
 
@@ -139,12 +139,33 @@ class CPU_Dense: public CPU_Methods {
 
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
+
+        // Constructor
+        CPU_Dense ( int m, int n ) {
+            
+            // Fill Size array.
+            Size[0] = m;
+            Size[1] = n;
+            Size[2] = m*n;
+
+            // Allocate sufficient memory.
+            Values.resize(Size[2]);
+
+            // Check if it is a Vector.
+            if ( Size[1] == 1 ) {
+                isVector = 1;
+            }
+            else {
+                isVector = 0;
+            }
+
+        }
 };
 
-class CPU_Dense_f: public CPU_Methods {
+class CPU_Dense_f: public CPU_methods {
     public:
         // Data
-        thrust::host_vector<float> Values;   // Host vector of length Size[3] storing type float. (MISSING SIZE)
+        thrust::host_vector<float> Values;   // Host vector of length Size[2] storing type float.
         int Size[3];                         // Array containing [ n, m, n*m ]
         int isVector;                        // Zero if it is not a Vector and One if it is a Vector.
 
@@ -175,12 +196,33 @@ class CPU_Dense_f: public CPU_Methods {
 
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
+
+        // Constructor
+        CPU_Dense_f ( int m, int n ) {
+            
+            // Fill Size array.
+            Size[0] = m;
+            Size[1] = n;
+            Size[2] = m*n;
+
+            // Allocate sufficient memory.
+            Values.resize(Size[2]);
+
+            // Check if it is a Vector.
+            if ( Size[1] == 1 ) {
+                isVector = 1;
+            }
+            else {
+                isVector = 0;
+            }
+
+        }
 };
 
-class GPU_Dense: public GPU_Methods {
+class GPU_Dense: public GPU_methods {
     public:
         // Data
-        thrust::device_vector<double> Values;  // Device vector of length Size[3] storing type double. (MISSING SIZE)
+        thrust::device_vector<double> Values;  // Device vector of length Size[2] storing type double.
         int Size[3];                           // Array containing [ n, m, n*m ]
         int isVector;                          // Zero if it is not a Vector and One if it is a Vector.
 
@@ -211,12 +253,33 @@ class GPU_Dense: public GPU_Methods {
 
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
+
+        // Constructor
+        GPU_Dense ( int m, int n ) {
+            
+            // Fill Size array.
+            Size[0] = m;
+            Size[1] = n;
+            Size[2] = m*n;
+
+            // Allocate sufficient memory.
+            Values.resize(Size[2]);
+
+            // Check if it is a Vector.
+            if ( Size[1] == 1 ) {
+                isVector = 1;
+            }
+            else {
+                isVector = 0;
+            }
+
+        }
 };
 
-class GPU_Dense_f: public GPU_Methods {
+class GPU_Dense_f: public GPU_methods {
     public:
         // Data
-        thrust::device_vector<float> Values;   // Device vector of length Size[3] storing type float. (MISSING SIZE)
+        thrust::device_vector<float> Values;   // Device vector of length Size[2] storing type float.
         int Size[3];                           // Array containing [ n, m, n*m ]
         int isVector;                          // Zero if it is not a Vector and One if it is a Vector.
 
@@ -247,15 +310,36 @@ class GPU_Dense_f: public GPU_Methods {
 
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
+
+        // Constructor
+        GPU_Dense_f ( int m, int n ) {
+            
+            // Fill Size array.
+            Size[0] = m;
+            Size[1] = n;
+            Size[2] = m*n;
+
+            // Allocate sufficient memory.
+            Values.resize(Size[2]);
+
+            // Check if it is a Vector.
+            if ( Size[1] == 1 ) {
+                isVector = 1;
+            }
+            else {
+                isVector = 0;
+            }
+
+        }
 };
 
-class CPU_Sparse: public CPU_Methods {
+class CPU_Sparse: public CPU_methods {
     public:
         // Data
-        thrust::host_vector<double> Values;  // Host vector of length Size[3] storing type double. (MISSING SIZE)
+        thrust::host_vector<double> Values;  // Host vector of length Size[2] storing type double.
         int Size[3];                         // Array containing [ n, m, nnz ]
-        thrust::host_vector<int> I;          // Host vector of length Size[m] storing pointer list type int. (MISSING SIZE)
-        thrust::host_vector<int> J;          // Host vector of length Size[3] storing type int. (MISSING SIZE)
+        thrust::host_vector<int> I;          // Host vector of length Size[1] storing pointer list type int.
+        thrust::host_vector<int> J;          // Host vector of length Size[2] storing type int.
 
         // Methods
         // Links to CPU_methods.dadd().
@@ -281,15 +365,30 @@ class CPU_Sparse: public CPU_Methods {
 
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
+
+        // Constructor
+        CPU_Sparse ( int m, int n, int nnz ) {
+            
+            // Fill Size array.
+            Size[0] = m;
+            Size[1] = n;
+            Size[2] = nnz;
+
+            // Allocate sufficient memory.
+            Values.resize(Size[2]);
+            I.resize(Size[1]);
+            J.resize(Size[2]);
+
+        }
 };
 
-class CPU_Sparse_f: public CPU_Methods {
+class CPU_Sparse_f: public CPU_methods {
     public:
         // Data
-        thrust::host_vector<float> Values;   // Host vector of length Size[3] storing type float. (MISSING SIZE)
+        thrust::host_vector<float> Values;   // Host vector of length Size[2] storing type float.
         int Size[3];                         // Array containing [ n, m, nnz ]
-        thrust::host_vector<int> I;          // Host vector of length Size[m] storing pointer list type int. (MISSING SIZE)
-        thrust::host_vector<int> J;          // Host vector of length Size[3] storing type int. (MISSING SIZE)
+        thrust::host_vector<int> I;          // Host vector of length Size[1] storing pointer list type int.
+        thrust::host_vector<int> J;          // Host vector of length Size[2] storing type int.
 
         // Methods
         // Links to CPU_methods.fadd().
@@ -315,15 +414,30 @@ class CPU_Sparse_f: public CPU_Methods {
 
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
+
+        // Constructor
+        CPU_Sparse_f ( int m, int n, int nnz ) {
+            
+            // Fill Size array.
+            Size[0] = m;
+            Size[1] = n;
+            Size[2] = nnz;
+
+            // Allocate sufficient memory.
+            Values.resize(Size[2]);
+            I.resize(Size[1]);
+            J.resize(Size[2]);
+
+        }
 };
 
-class GPU_Sparse: public GPU_Methods {
+class GPU_Sparse: public GPU_methods {
     public:
         // Data
-        thrust::device_vector<double> Values;  // Device vector of length Size[3] storing type double. (MISSING SIZE)
+        thrust::device_vector<double> Values;  // Device vector of length Size[2] storing type double.
         int Size[3];                           // Array containing [ n, m, nnz ]
-        thrust::device_vector<int> I;          // Device vector of length Size[m] storing pointer list type int. (MISSING SIZE)
-        thrust::device_vector<int> J;          // Device vector of length Size[3] storing type int. (MISSING SIZE)
+        thrust::device_vector<int> I;          // Device vector of length Size[1] storing pointer list type int.
+        thrust::device_vector<int> J;          // Device vector of length Size[2] storing type int.
 
         // Methods
         // Links to GPU_methods.dadd().
@@ -349,15 +463,30 @@ class GPU_Sparse: public GPU_Methods {
 
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
+
+        // Constructor
+        GPU_Sparse ( int m, int n, int nnz ) {
+            
+            // Fill Size array.
+            Size[0] = m;
+            Size[1] = n;
+            Size[2] = nnz;
+
+            // Allocate sufficient memory.
+            Values.resize(Size[2]);
+            I.resize(Size[1]);
+            J.resize(Size[2]);
+
+        }
 };
 
-class GPU_Sparse_f: public GPU_Methods {
+class GPU_Sparse_f: public GPU_methods {
     public:
         // Data
-        thrust::device_vector<float> Values;  // Device vector of length Size[3] storing type float. (MISSING SIZE)
+        thrust::device_vector<float> Values;  // Device vector of length Size[2] storing type float.
         int Size[3];                          // Array containing [ n, m, nnz ]
-        thrust::device_vector<int> I;         // Device vector of length Size[m] storing pointer list type int. (MISSING SIZE)
-        thrust::device_vector<int> J;         // Device vector of length Size[3] storing type int. (MISSING SIZE)
+        thrust::device_vector<int> I;         // Device vector of length Size[1] storing pointer list type int.
+        thrust::device_vector<int> J;         // Device vector of length Size[2] storing type int.
 
         // Methods
         // Links to GPU_methods.fadd().
@@ -383,4 +512,19 @@ class GPU_Sparse_f: public GPU_Methods {
 
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
+
+        // Constructor
+        GPU_Sparse_f ( int m, int n, int nnz ) {
+            
+            // Fill Size array.
+            Size[0] = m;
+            Size[1] = n;
+            Size[2] = nnz;
+
+            // Allocate sufficient memory.
+            Values.resize(Size[2]);
+            I.resize(Size[1]);
+            J.resize(Size[2]);
+
+        }
 };

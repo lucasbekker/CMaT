@@ -119,7 +119,7 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### CPU_Dense
 
-* **(D) Values**:	Host vector of length Size[3] storing type double.
+* **(D) Values**:	Host vector of length Size[2] storing type double.
 * **(D) Size**:		Array containing [ n, m, n*m ]
 * **(D) isVector**: Zero if it is not a Vector and One if it is a Vector.
 * **add**:			Links to CPU_methods.dadd().
@@ -134,7 +134,7 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### CPU_Dense_f
 
-* **(D) Values**:	Host vector of length Size[3] storing type float.
+* **(D) Values**:	Host vector of length Size[2] storing type float.
 * **(D) Size**:		Array containing [ n, m, n*m ]
 * **(D) isVector**: Zero if it is not a Vector and One if it is a Vector.
 * **add**:			Links to CPU_methods.fadd().
@@ -149,7 +149,7 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### GPU_Dense
 
-* **(D) Values**:	Device vector of length Size[3] storing type double.
+* **(D) Values**:	Device vector of length Size[2] storing type double.
 * **(D) Size**:		Array containing [ n, m, n*m ]
 * **(D) isVector**: Zero if it is not a Vector and One if it is a Vector.
 * **add**:			Links to GPU_methods.dadd().
@@ -164,7 +164,7 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### GPU_Dense_f
 
-* **(D) Values**:	Device vector of length Size[3] storing type float.
+* **(D) Values**:	Device vector of length Size[2] storing type float.
 * **(D) Size**:		Array containing [ n, m, n*m ]
 * **(D) isVector**: Zero if it is not a Vector and One if it is a Vector.
 * **add**:			Links to GPU_methods.fadd().
@@ -179,10 +179,10 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### CPU_Sparse
 
-* **(D) Values**:	Host vector of length Size[3] storing type double.
+* **(D) Values**:	Host vector of length Size[2] storing type double.
 * **(D) Size**:		Array containing [ n, m, nnz ]
-* **(D) I**:		Host vector of length Size[m] storing pointer list type int.
-* **(D) J**:		Host vector of length Size[3] storing type int.
+* **(D) I**:		Host vector of length Size[1] storing pointer list type int.
+* **(D) J**:		Host vector of length Size[2] storing type int.
 * **add**:			Links to CPU_methods.dadd().
 * **madd**:			Links to CPU_methods.spdadd().
 * **trans**:		Transposes the Matrix.
@@ -194,10 +194,10 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### CPU_Sparse_f
 
-* **(D) Values**:	Host vector of length Size[3] storing type float.
+* **(D) Values**:	Host vector of length Size[2] storing type float.
 * **(D) Size**:		Array containing [ n, m, nnz ]
-* **(D) I**:		Host vector of length Size[m] storing pointer list type int.
-* **(D) J**:		Host vector of length Size[3] storing type int.
+* **(D) I**:		Host vector of length Size[1] storing pointer list type int.
+* **(D) J**:		Host vector of length Size[2] storing type int.
 * **add**:			Links to CPU_methods.fadd().
 * **madd**:			Links to CPU_methods.spfadd().
 * **trans**:		Transposes the Matrix.
@@ -209,10 +209,10 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### GPU_Sparse
 
-* **(D) Values**:	Device vector of length Size[3] storing type double.
+* **(D) Values**:	Device vector of length Size[2] storing type double.
 * **(D) Size**:		Array containing [ n, m, nnz ]
-* **(D) I**:		Device vector of length Size[m] storing pointer list type int.
-* **(D) J**:		Device vector of length Size[3] storing type int.
+* **(D) I**:		Device vector of length Size[1] storing pointer list type int.
+* **(D) J**:		Device vector of length Size[2] storing type int.
 * **add**:			Links to GPU_methods.dadd().
 * **madd**:			Links to GPU_methods.spdadd().
 * **trans**:		Transposes the Matrix.
@@ -224,10 +224,10 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### GPU_Sparse_f
 
-* **(D) Values**:	Device vector of length Size[3] storing type float.
+* **(D) Values**:	Device vector of length Size[2] storing type float.
 * **(D) Size**:		Array containing [ n, m, nnz ]
-* **(D) I**:		Device vector of length Size[m] storing pointer list type int.
-* **(D) J**:		Device vector of length Size[3] storing type int.
+* **(D) I**:		Device vector of length Size[1] storing pointer list type int.
+* **(D) J**:		Device vector of length Size[2] storing type int.
 * **add**:			Links to GPU_methods.fadd().
 * **madd**:			Links to GPU_methods.spdadd().
 * **trans**:		Transposes the Matrix.

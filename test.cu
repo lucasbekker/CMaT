@@ -1,18 +1,8 @@
-#include<iostream>
-
-#include <thrust/host_vector.h>
-#include <thrust/device_vector.h>
-
-class matrix {
-    public:
-        thrust::host_vector<int> Values;
-};
+#include "include/CMaT.h"
 
 int main (  ) {
 
-    matrix A;
-
-    A.Values.resize(4);
+    CPU_Dense A(4,1);
 
     A.Values[0]=1;
     A.Values[1]=2;
@@ -21,6 +11,8 @@ int main (  ) {
 
     std::cout << A.Values[3] << std::endl;
     std::cout << A.Values[5] << std::endl;
-
+    std::cout << A.Size[0] << std::endl;
+    std::cout << A.isVector << std::endl;
+    
     return 0;
 }
