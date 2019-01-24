@@ -13,6 +13,10 @@ int main (  ) {
     std::cout << A.Values[5] << std::endl;
     std::cout << A.Size[0] << std::endl;
     std::cout << A.isVector << std::endl;
+
+    CPU_Dense B(4,1,0);
+
+    std::cout << B.isVector << std::endl;
     
     return 0;
 }

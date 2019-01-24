@@ -160,6 +160,27 @@ class CPU_Dense: public CPU_methods {
             }
 
         }
+
+        // Overloaded constructor for manual isVector manipulation.
+        CPU_Dense ( int m, int n, int isv ) {
+            
+            // Fill Size array.
+            Size[0] = m;
+            Size[1] = n;
+            Size[2] = m*n;
+
+            // Allocate sufficient memory.
+            Values.resize(Size[2]);
+
+            // Check if it is a Vector.
+            if ( isv == 0 ) {
+                isVector = 0;
+            }
+            else {
+                isVector = 1;
+            }
+
+        }
 };
 
 class CPU_Dense_f: public CPU_methods {
@@ -214,6 +235,27 @@ class CPU_Dense_f: public CPU_methods {
             }
             else {
                 isVector = 0;
+            }
+
+        }
+
+        // Overloaded constructor for manual isVector manipulation.
+        CPU_Dense_f ( int m, int n, int isv ) {
+            
+            // Fill Size array.
+            Size[0] = m;
+            Size[1] = n;
+            Size[2] = m*n;
+
+            // Allocate sufficient memory.
+            Values.resize(Size[2]);
+
+            // Check if it is a Vector.
+            if ( isv == 0 ) {
+                isVector = 0;
+            }
+            else {
+                isVector = 1;
             }
 
         }
@@ -274,6 +316,27 @@ class GPU_Dense: public GPU_methods {
             }
 
         }
+
+        // Overloaded constructor for manual isVector manipulation.
+        GPU_Dense ( int m, int n, int isv ) {
+            
+            // Fill Size array.
+            Size[0] = m;
+            Size[1] = n;
+            Size[2] = m*n;
+
+            // Allocate sufficient memory.
+            Values.resize(Size[2]);
+
+            // Check if it is a Vector.
+            if ( isv == 0 ) {
+                isVector = 0;
+            }
+            else {
+                isVector = 1;
+            }
+
+        }
 };
 
 class GPU_Dense_f: public GPU_methods {
@@ -328,6 +391,27 @@ class GPU_Dense_f: public GPU_methods {
             }
             else {
                 isVector = 0;
+            }
+
+        }
+
+        // Overloaded constructor for manual isVector manipulation.
+        GPU_Dense_f ( int m, int n, int isv ) {
+            
+            // Fill Size array.
+            Size[0] = m;
+            Size[1] = n;
+            Size[2] = m*n;
+
+            // Allocate sufficient memory.
+            Values.resize(Size[2]);
+
+            // Check if it is a Vector.
+            if ( isv == 0 ) {
+                isVector = 0;
+            }
+            else {
+                isVector = 1;
             }
 
         }
