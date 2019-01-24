@@ -181,7 +181,7 @@ The amount of methods available to each class is going to be limited, in order t
 
 * **(D) Values**:	Host vector of length Size[2] storing type double.
 * **(D) Size**:		Array containing [ n, m, nnz ]
-* **(D) I**:		Host vector of length Size[1] storing pointer list type int.
+* **(D) I**:		Host vector of length Size[1] + 1 storing pointer list type int.
 * **(D) J**:		Host vector of length Size[2] storing type int.
 * **add**:			Links to CPU_methods.dadd().
 * **madd**:			Links to CPU_methods.spdadd().
@@ -196,7 +196,7 @@ The amount of methods available to each class is going to be limited, in order t
 
 * **(D) Values**:	Host vector of length Size[2] storing type float.
 * **(D) Size**:		Array containing [ n, m, nnz ]
-* **(D) I**:		Host vector of length Size[1] storing pointer list type int.
+* **(D) I**:		Host vector of length Size[1] + 1 storing pointer list type int.
 * **(D) J**:		Host vector of length Size[2] storing type int.
 * **add**:			Links to CPU_methods.fadd().
 * **madd**:			Links to CPU_methods.spfadd().
@@ -211,7 +211,7 @@ The amount of methods available to each class is going to be limited, in order t
 
 * **(D) Values**:	Device vector of length Size[2] storing type double.
 * **(D) Size**:		Array containing [ n, m, nnz ]
-* **(D) I**:		Device vector of length Size[1] storing pointer list type int.
+* **(D) I**:		Device vector of length Size[1] + 1 storing pointer list type int.
 * **(D) J**:		Device vector of length Size[2] storing type int.
 * **add**:			Links to GPU_methods.dadd().
 * **madd**:			Links to GPU_methods.spdadd().
@@ -226,7 +226,7 @@ The amount of methods available to each class is going to be limited, in order t
 
 * **(D) Values**:	Device vector of length Size[2] storing type float.
 * **(D) Size**:		Array containing [ n, m, nnz ]
-* **(D) I**:		Device vector of length Size[1] storing pointer list type int.
+* **(D) I**:		Device vector of length Size[1] + 1 storing pointer list type int.
 * **(D) J**:		Device vector of length Size[2] storing type int.
 * **add**:			Links to GPU_methods.fadd().
 * **madd**:			Links to GPU_methods.spdadd().

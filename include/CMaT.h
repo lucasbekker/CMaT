@@ -338,7 +338,7 @@ class CPU_Sparse: public CPU_methods {
         // Data
         thrust::host_vector<double> Values;  // Host vector of length Size[2] storing type double.
         int Size[3];                         // Array containing [ n, m, nnz ]
-        thrust::host_vector<int> I;          // Host vector of length Size[1] storing pointer list type int.
+        thrust::host_vector<int> I;          // Host vector of length Size[1] + 1 storing pointer list type int.
         thrust::host_vector<int> J;          // Host vector of length Size[2] storing type int.
 
         // Methods
@@ -376,7 +376,7 @@ class CPU_Sparse: public CPU_methods {
 
             // Allocate sufficient memory.
             Values.resize(Size[2]);
-            I.resize(Size[1]);
+            I.resize(Size[1] + 1);
             J.resize(Size[2]);
 
         }
@@ -387,7 +387,7 @@ class CPU_Sparse_f: public CPU_methods {
         // Data
         thrust::host_vector<float> Values;   // Host vector of length Size[2] storing type float.
         int Size[3];                         // Array containing [ n, m, nnz ]
-        thrust::host_vector<int> I;          // Host vector of length Size[1] storing pointer list type int.
+        thrust::host_vector<int> I;          // Host vector of length Size[1] + 1 storing pointer list type int.
         thrust::host_vector<int> J;          // Host vector of length Size[2] storing type int.
 
         // Methods
@@ -425,7 +425,7 @@ class CPU_Sparse_f: public CPU_methods {
 
             // Allocate sufficient memory.
             Values.resize(Size[2]);
-            I.resize(Size[1]);
+            I.resize(Size[1] + 1);
             J.resize(Size[2]);
 
         }
@@ -436,7 +436,7 @@ class GPU_Sparse: public GPU_methods {
         // Data
         thrust::device_vector<double> Values;  // Device vector of length Size[2] storing type double.
         int Size[3];                           // Array containing [ n, m, nnz ]
-        thrust::device_vector<int> I;          // Device vector of length Size[1] storing pointer list type int.
+        thrust::device_vector<int> I;          // Device vector of length Size[1] + 1 storing pointer list type int.
         thrust::device_vector<int> J;          // Device vector of length Size[2] storing type int.
 
         // Methods
@@ -474,7 +474,7 @@ class GPU_Sparse: public GPU_methods {
 
             // Allocate sufficient memory.
             Values.resize(Size[2]);
-            I.resize(Size[1]);
+            I.resize(Size[1] + 1);
             J.resize(Size[2]);
 
         }
@@ -485,7 +485,7 @@ class GPU_Sparse_f: public GPU_methods {
         // Data
         thrust::device_vector<float> Values;  // Device vector of length Size[2] storing type float.
         int Size[3];                          // Array containing [ n, m, nnz ]
-        thrust::device_vector<int> I;         // Device vector of length Size[1] storing pointer list type int.
+        thrust::device_vector<int> I;         // Device vector of length Size[1] + 1 storing pointer list type int.
         thrust::device_vector<int> J;         // Device vector of length Size[2] storing type int.
 
         // Methods
@@ -523,7 +523,7 @@ class GPU_Sparse_f: public GPU_methods {
 
             // Allocate sufficient memory.
             Values.resize(Size[2]);
-            I.resize(Size[1]);
+            I.resize(Size[1] + 1);
             J.resize(Size[2]);
 
         }
