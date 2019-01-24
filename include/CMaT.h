@@ -1,12 +1,23 @@
-#include<iostream>
+#include <iostream>
 
 #include <thrust/host_vector.h>
 #include <thrust/device_vector.h>
 
+#include "mkl.h"
+
 class CPU_methods {
     public:        
         // Dense float matrix vector product. (MKL)
-        void dfgemv (  ) { std::cout << "empty" << std::endl; }
+        thrust::host_vector<double> dfgemv ( int m, int n ) {
+                        
+            // MKL function.
+            // y := alpha*A*x + beta*y
+            // alpha and beta are scalars.
+            // x and y are vectors.
+            // A is an m-by-n matrix.
+            //cblas_dgemv ( CblasRowMajor, CblasNoTrans, m, n, alpha, const double *a, const int lda, *x, const int incx, beta, *y, const int incy);
+
+        }
 
         // Dense double matrix vector product. (MKL)
         void ddgemv (  ) { std::cout << "empty" << std::endl; }

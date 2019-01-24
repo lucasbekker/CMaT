@@ -1,7 +1,7 @@
 #include "include/CMaT.h"
 
 int main (  ) {
-
+    
     CPU_Dense A(4,1);
 
     A.Values[0]=1;
