@@ -9,16 +9,16 @@ class CPU_methods {
     public:        
         // Dense float matrix vector product. (MKL)
         thrust::host_vector<float> dfgemv ( const int m, const int n, 
-                                             const thrust::host_vector<float> * Av, 
-                                             const thrust::host_vector<float> * xv ) {
+                                            thrust::host_vector<float> Av, 
+                                            thrust::host_vector<float> xv ) {
 
             // Initiate result vector.
-            thrust::host_vector<float> yv(xv.size());
+            thrust::host_vector<float> yv(m);
 
             // Generate raw pointers.
-            float * A = thrust::raw_pointer_cast(&Av.data());
-            float * x = thrust::raw_pointer_cast(&xv.data());
-            float * y = thrust::raw_pointer_cast(&yv.data());
+            float * A = thrust::raw_pointer_cast(&Av[0]);
+            float * x = thrust::raw_pointer_cast(&xv[0]);
+            float * y = thrust::raw_pointer_cast(&yv[0]);
 
             // Set scalar values.
             float alpha = 1.0;
@@ -30,24 +30,24 @@ class CPU_methods {
             // y := alpha*A*x + beta*y.
             // x and y are vectors.
             // A is an m-by-n matrix.
-            cblas_dgemv ( CblasRowMajor, CblasNoTrans, m, n, alpha, &A, m, &x, 1, beta, &y, 1);
+            cblas_sgemv ( CblasRowMajor, CblasNoTrans, m, n, alpha, A, m, x, 1, beta, y, 1);
 
             return yv;
 
         }
 
         // Dense double matrix vector product. (MKL)
-        thrust::host_vector<double> dfgemv ( const int m, const int n, 
-                                             const thrust::host_vector<double> * Av, 
-                                             const thrust::host_vector<double> * xv ) {
+        thrust::host_vector<double> ddgemv ( const int m, const int n, 
+                                             thrust::host_vector<double> Av, 
+                                             thrust::host_vector<double> xv ) {
 
             // Initiate result vector.
-            thrust::host_vector<double> yv(xv.size());
+            thrust::host_vector<double> yv(m);
 
             // Generate raw pointers.
-            double * A = thrust::raw_pointer_cast(&Av.data());
-            double * x = thrust::raw_pointer_cast(&xv.data());
-            double * y = thrust::raw_pointer_cast(&yv.data());
+            double * A = thrust::raw_pointer_cast(&Av[0]);
+            double * x = thrust::raw_pointer_cast(&xv[0]);
+            double * y = thrust::raw_pointer_cast(&yv[0]);
 
             // Set scalar values.
             double alpha = 1.0;
@@ -59,7 +59,7 @@ class CPU_methods {
             // y := alpha*A*x + beta*y.
             // x and y are vectors.
             // A is an m-by-n matrix.
-            cblas_dgemv ( CblasRowMajor, CblasNoTrans, m, n, alpha, &A, m, &x, 1, beta, &y, 1);
+            cblas_dgemv ( CblasRowMajor, CblasNoTrans, m, n, alpha, A, m, x, 1, beta, y, 1);
 
             return yv;
 
