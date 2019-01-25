@@ -30,7 +30,7 @@ class CPU_methods {
             // y := alpha*A*x + beta*y.
             // x and y are vectors.
             // A is an m-by-n matrix.
-            cblas_sgemv ( CblasRowMajor, CblasNoTrans, m, n, alpha, A, m, x, 1, beta, y, 1);
+            cblas_sgemv ( CblasColMajor, CblasNoTrans, m, n, alpha, A, m, x, 1, beta, y, 1);
 
             return yv;
 
@@ -59,7 +59,7 @@ class CPU_methods {
             // y := alpha*A*x + beta*y.
             // x and y are vectors.
             // A is an m-by-n matrix.
-            cblas_dgemv ( CblasRowMajor, CblasNoTrans, m, n, alpha, A, m, x, 1, beta, y, 1);
+            cblas_dgemv ( CblasColMajor, CblasNoTrans, m, n, alpha, A, m, x, 1, beta, y, 1);
 
             return yv;
 
