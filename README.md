@@ -1,15 +1,21 @@
-# CMat
+# CMat - Redesign branch
 ## Cuda, Mkl and Thrust based C++ matrix library
 
 This repository contains C++ class definitions for data types commonly encountered in Linear Algebra problems, namely: **Vector** and **Matrix**.
 
 ## Sparse
 
-One of the main design goals of this project is to facilitate sparse matrices:
+One of the main design goals of this project is to facilitate sparse matrices. Support for the following sparse matrix layout types has been considered:
 
 * [COO, coordinate list](https://en.wikipedia.org/wiki/Sparse_matrix#Coordinate_list_(COO))
 * [CSC, compressed sparse column](https://en.wikipedia.org/wiki/Sparse_matrix#Compressed_sparse_column_(CSC_or_CCS))
 * [CSR, compressed sparse row](https://en.wikipedia.org/wiki/Sparse_matrix#Compressed_sparse_row_(CSR,_CRS_or_Yale_format))
+
+The choice was made to only support the CRS layout for a number of reasons:
+
+* CSC is equivalent to transposed CSR.
+* CSR has the best support in cuSPARSE.
+* CSR is the default layout in Scipy.
 
 Sparse vectors are not supported.
 
@@ -19,9 +25,9 @@ The second main design goal is to facilitate calculations on both the CPU ([MKL]
 
 ## Thrust
 
-The [Thrust](https://docs.nvidia.com/cuda/thrust/index.html) template library is used for memory allocation on either **host** or **device** memory.
+The [Thrust](https://docs.nvidia.com/cuda/thrust/index.html) template library is used for memory allocation on either **host** or **device** memory. Blas level 1 and element-wise operations are also implemented using Thrust.
 
-Thrust also exposes a lot of other useful functionality that can be employed by numerical algorithms. The [API documentation](http://thrust.github.io/doc/modules.html) is very helpful.
+Thrust exposes a lot of other useful functionality that can be employed by numerical algorithms. The [API documentation](http://thrust.github.io/doc/modules.html) is very helpful.
 
 ### Dependencies
 
@@ -37,112 +43,196 @@ The amount of methods available to each class is going to be limited, in order t
 
 #### Matrix
 
-* **sc**:    Matrix scalar multiplication.
+* **scp**:   Scalar multiplication.
 * **mm**: 	 Matrix Matrix multiplication.
 * **mv**: 	 Matrix Vector multiplication.
-* **add**: 	 Matrix addition.
-* **trans**: Matrix transpose.
-* **conv**:  Convert backend.
+* **add**: 	 Scalar addition.
+* **madd**:  Matrix addition.
+* **trans**: Transpose.
 * **clone**: Make a clone.
+* **conv**:  Convert the backend type
 
 #### Vector
 
-* **sc**:    Vector scalar multiplication.
+* **scp**:   Scalar multiplication.
 * **dot**:   Vector dot product.
-* **add**: 	 Vector addition.
-* **trans**: Vector transpose.
-* **conv**:  Convert backend.
+* **add**:   Scalar addition.
+* **madd**:	 Vector addition.
+* **trans**: Transpose.
 * **clone**: Make a clone.
+* **conv**:  Convert the backend type
 
 # Design
 
-## User accessible classes:
+## User interfaceable classes:
 
-* **GPU_Vector**:      Composition of GPU and Vector.
-* **CPU_Vector**:      Composition of CPU and Vector.
-* **GPU_Full_matrix**: Composition of GPU and Full.
-* **CPU_Full_matrix**: Composition of CPU and Full.
-* **GPU_COO**:		   Composition of GPU and COO.
-* **CPU_COO**:		   Composition of CPU and COO.
-* **GPU_CSC**:		   Composition of GPU and CSC.
-* **CPU_CSC**:		   Composition of CPU and CSC.
-* **GPU_CSR**:		   Composition of GPU and CSR.
-* **CPU_CSR**:		   Composition of CPU and CSR.
+* **CPU_Dense**:	CPU backend dense matrix or vector of type **double**.
+* **CPU_Dense_f**:	CPU backend dense matrix or vector of type **float**.
+* **CPU_Sparse**:	CPU backend sparse CSR matrix of type **double**.
+* **CPU_Sparse_f**: CPU backend sparse CSR matrix of type **float**.
+* **GPU_Dense**:	GPU backend dense matrix or vector of type **double**.
+* **GPU_Dense_f**:	GPU backend dense matrix or vector of type **float**.
+* **GPU_Sparse**:	GPU backend sparse CSR matrix of type **double**.
+* **GPU_Sparse_f**: GPU backend sparse CSR matrix of type **float**.
 
-## Base classes:
+## Backend classes:
 
-#### CPU
+#### CPU_Methods
 
-* **(M) ialloc**: Thrust allocate memory on the **host** for type int.
-* **(M) falloc**: Thrust allocate memory on the **host** for type float.
-* **(M) dalloc**: Thrust allocate memory on the **host** for type double.
-* **(M) dt**:	  MKL vector dot product.
-* **(M) spgemm**: MKL sparse gemm operation.
-* **(M) spgemv**: MKL sparse gemv operation.
-* **(M) fgemm**:  MKL full gemm operation.
-* **(M) fgemv**:  MKL full gemv operation.
+* **dfgemv**:	Dense float matrix vector product. (MKL)
+* **ddgemv**:	Dense double matrix vector product. (MKL)
+* **dfgemm**:	Dense float matrix matrix product. (MKL)
+* **ddgemm**:	Dense double matrix matrix product. (MKL)
+* **spfgemv**:	Sparse float matrix vector product. (MKL)
+* **spdgemv**:	Sparse double matrix vector product. (MKL)
+* **spfgemm**:	Sparse float matrix matrix product. (MKL)
+* **spdgemm**:	Sparse double matrix matrix product. (MKL)
+* **spfadd**:   Sparse float matrix addition. (MKL)
+* **spdadd**:   Sparse double matrix addition. (MKL)
+* **fdot**:		Float vector dot product. (Thrust)
+* **ddot**:		Double vector dot product. (Thrust)
+* **fscp**:		Float scalar multiplication. (Thrust)
+* **dscp**:		Double scalar multiplication. (Thrust)
+* **fadd**:		Float scalar addition. (Thrust)
+* **dadd**:		Double scalar addition. (Thrust)
 
-#### GPU
+#### GPU_Methods
 
-* **(D) DeviceID**: Device ID of the GPU.
-* **(M) ialloc**:   Thrust allocate memory on the **device** for type int.
-* **(M) falloc**:   Thrust allocate memory on the **device** for type float.
-* **(M) dalloc**:   Thrust allocate memory on the **device** for type double.
-* **(M) dt**:	    cuBLAS vector dot product.
-* **(M) spgemm**:   cuSPARSE sparse gemm operation.
-* **(M) spgemv**:   cuSPARSE sparse gemv operation.
-* **(M) fgemm**:    cuBLAS full gemm operation.
-* **(M) fgemv**:    cuBLAS full gemv operation.
+* **dfgemv**:	Dense float matrix vector product. (cuBLAS)
+* **ddgemv**:	Dense double matrix vector product. (cuBLAS)
+* **dfgemm**:	Dense float matrix matrix product. (cuBLAS)
+* **ddgemm**:	Dense double matrix matrix product. (cuBLAS)
+* **spfgemv**:	Sparse float matrix vector product. (cuSPARSE)
+* **spdgemv**:	Sparse double matrix vector product. (cuSPARSE)
+* **spfgemm**:	Sparse float matrix matrix product. (cuSPARSE)
+* **spdgemm**:	Sparse double matrix matrix product. (cuSPARSE)
+* **spfadd**:   Sparse float matrix addition. (cuSPARSE)
+* **spdadd**:   Sparse double matrix addition. (cuSPARSE)
+* **fdot**:		Float vector dot product. (Thrust)
+* **ddot**:		Double vector dot product. (Thrust)
+* **fscp**:		Float scalar multiplication. (Thrust)
+* **dscp**:		Double scalar multiplication. (Thrust)
+* **fadd**:		Float addition. (Thrust)
+* **dadd**:		Double addition. (Thrust)
 
-#### Matrix
+## Class description
 
-* **(D) size**:   Int array containing size information [ m, n ].
-* **(D) values**: Thrust *array*.
-* **(D) type**:   Character indicating the type of values.
+#### CPU_Dense
 
-#### Vector <-- (Matrix)
+* **(D) Values**:	Host vector of length Size[2] storing type double.
+* **(D) Size**:		Array containing [ n, m, n*m ]
+* **(D) isVector**: Zero if it is not a Vector and One if it is a Vector.
+* **add**:			Links to CPU_methods.dadd().
+* **madd**:			Links to CPU_methods.dadd().
+* **trans**:		Transposes the Matrix or Vector.
+* **scp**:			Links to CPU_methods.dscp().
+* **dot**:			Links to CPU_methods.ddot().
+* **mv**:			Links to CPU_methods.ddgemv().
+* **mm**:			Links to CPU_methods.ddgemm().
+* **clone**: 		Make a clone.
+* **conv**:  		Convert the backend type
 
-* **(M) sc**:     Vector scalar multiplication.
-* **(M) dot**:    Vector dot product.
-* **(M) add**:    Vector addition.
-* **(M) trans**:  Vector transpose.
+#### CPU_Dense_f
 
-#### Full <-- (Matrix)
+* **(D) Values**:	Host vector of length Size[2] storing type float.
+* **(D) Size**:		Array containing [ n, m, n*m ]
+* **(D) isVector**: Zero if it is not a Vector and One if it is a Vector.
+* **add**:			Links to CPU_methods.fadd().
+* **madd**:			Links to CPU_methods.fadd().
+* **trans**:		Transposes the Matrix or Vector.
+* **scp**:			Links to CPU_methods.fscp().
+* **dot**:			Links to CPU_methods.fdot().
+* **mv**:			Links to CPU_methods.dfgemv().
+* **mm**:			Links to CPU_methods.dfgemm().
+* **clone**: 		Make a clone.
+* **conv**:  		Convert the backend type
 
-* **(M) sc**:     Matrix scalar multiplication.
-* **(M) mm**: 	  Matrix Matrix multiplication.
-* **(M) mv**: 	  Matrix Vector multiplication.
-* **(M) add**:    Matrix addition.
-* **(M) trans**:  Matrix transpose.
+#### GPU_Dense
 
-#### Sparse <-- (Matrix)
+* **(D) Values**:	Device vector of length Size[2] storing type double.
+* **(D) Size**:		Array containing [ n, m, n*m ]
+* **(D) isVector**: Zero if it is not a Vector and One if it is a Vector.
+* **add**:			Links to GPU_methods.dadd().
+* **madd**:			Links to GPU_methods.dadd().
+* **trans**:		Transposes the Matrix or Vector.
+* **scp**:			Links to GPU_methods.dscp().
+* **dot**:			Links to GPU_methods.ddot().
+* **mv**:			Links to GPU_methods.ddgemv().
+* **mm**:			Links to GPU_methods.ddgemm().
+* **clone**: 		Make a clone.
+* **conv**:  		Convert the backend type
 
-* **(D) nnz**:    Number of non-zero elements.
-* **(D) base**:   Zero or One based indexing.
-* **(D) i**:      Thrust *array*.
-* **(D) j**:      Thrust *array*.
+#### GPU_Dense_f
 
-#### COO <-- (Sparse)
+* **(D) Values**:	Device vector of length Size[2] storing type float.
+* **(D) Size**:		Array containing [ n, m, n*m ]
+* **(D) isVector**: Zero if it is not a Vector and One if it is a Vector.
+* **add**:			Links to GPU_methods.fadd().
+* **madd**:			Links to GPU_methods.fadd().
+* **trans**:		Transposes the Matrix or Vector.
+* **scp**:			Links to GPU_methods.fscp().
+* **dot**:			Links to GPU_methods.fdot().
+* **mv**:			Links to GPU_methods.dfgemv().
+* **mm**:			Links to GPU_methods.dfgemm().
+* **clone**: 		Make a clone.
+* **conv**:  		Convert the backend type
 
-* **(M) sc**:     Matrix scalar multiplication.
-* **(M) mm**: 	  Matrix Matrix multiplication.
-* **(M) mv**: 	  Matrix Vector multiplication.
-* **(M) add**:    Matrix addition.
-* **(M) trans**:  Matrix transpose.
+#### CPU_Sparse
 
-#### CSC <-- (Sparse)
+* **(D) Values**:	Host vector of length Size[2] storing type double.
+* **(D) Size**:		Array containing [ n, m, nnz ]
+* **(D) I**:		Host vector of length Size[1] + 1 storing pointer list type int.
+* **(D) J**:		Host vector of length Size[2] storing type int.
+* **add**:			Links to CPU_methods.dadd().
+* **madd**:			Links to CPU_methods.spdadd().
+* **trans**:		Transposes the Matrix.
+* **scp**:			Links to CPU_methods.dscp().
+* **mv**:			Links to CPU_methods.spdgemv().
+* **mm**:			Links to CPU_methods.spdgemm().
+* **clone**: 		Make a clone.
+* **conv**:  		Convert the backend type
 
-* **(M) sc**:     Matrix scalar multiplication.
-* **(M) mm**: 	  Matrix Matrix multiplication.
-* **(M) mv**: 	  Matrix Vector multiplication.
-* **(M) add**:    Matrix addition.
-* **(M) trans**:  Matrix transpose.
+#### CPU_Sparse_f
 
-#### CSR <-- (Sparse)
+* **(D) Values**:	Host vector of length Size[2] storing type float.
+* **(D) Size**:		Array containing [ n, m, nnz ]
+* **(D) I**:		Host vector of length Size[1] + 1 storing pointer list type int.
+* **(D) J**:		Host vector of length Size[2] storing type int.
+* **add**:			Links to CPU_methods.fadd().
+* **madd**:			Links to CPU_methods.spfadd().
+* **trans**:		Transposes the Matrix.
+* **scp**:			Links to CPU_methods.fscp().
+* **mv**:			Links to CPU_methods.spfgemv().
+* **mm**:			Links to CPU_methods.spfgemm().
+* **clone**: 		Make a clone.
+* **conv**:  		Convert the backend type
 
-* **(M) sc**:     Matrix scalar multiplication.
-* **(M) mm**: 	  Matrix Matrix multiplication.
-* **(M) mv**: 	  Matrix Vector multiplication.
-* **(M) add**:    Matrix addition.
-* **(M) trans**:  Matrix transpose.
+#### GPU_Sparse
 
+* **(D) Values**:	Device vector of length Size[2] storing type double.
+* **(D) Size**:		Array containing [ n, m, nnz ]
+* **(D) I**:		Device vector of length Size[1] + 1 storing pointer list type int.
+* **(D) J**:		Device vector of length Size[2] storing type int.
+* **add**:			Links to GPU_methods.dadd().
+* **madd**:			Links to GPU_methods.spdadd().
+* **trans**:		Transposes the Matrix.
+* **scp**:			Links to GPU_methods.dscp().
+* **mv**:			Links to GPU_methods.spdgemv().
+* **mm**:			Links to GPU_methods.spdgemm().
+* **clone**: 		Make a clone.
+* **conv**:  		Convert the backend type
+
+#### GPU_Sparse_f
+
+* **(D) Values**:	Device vector of length Size[2] storing type float.
+* **(D) Size**:		Array containing [ n, m, nnz ]
+* **(D) I**:		Device vector of length Size[1] + 1 storing pointer list type int.
+* **(D) J**:		Device vector of length Size[2] storing type int.
+* **add**:			Links to GPU_methods.fadd().
+* **madd**:			Links to GPU_methods.spdadd().
+* **trans**:		Transposes the Matrix.
+* **scp**:			Links to GPU_methods.fscp().
+* **mv**:			Links to GPU_methods.spfgemv().
+* **mm**:			Links to GPU_methods.spfgemm().
+* **clone**: 		Make a clone.
+* **conv**:  		Convert the backend type

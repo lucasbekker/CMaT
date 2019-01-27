@@ -1,0 +1,3 @@
+MKL_ACT
+
+nvcc test3.cu -o test3 -O3 -L${MKLROOT}/lib/intel64 -lmkl_intel_lp64 -lmkl_tbb_thread -lmkl_core -ltbb -lstdc++ -lpthread -lm -ldl -m64 -I${MKLROOT}/include
