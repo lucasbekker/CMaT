@@ -21,18 +21,18 @@ void CPU_ddgemv_test () {
     thrust::host_vector<double> r3;
 
     // Fill matrix A1.
-    A1.Values[0] = 2;       // A1 = 2 0 0
-    A1.Values[1] = 0;       //      0 2 0
-    A1.Values[2] = 0;       //      0 0 2
-    A1.Values[3] = 1;       //      1 1 1
-    A1.Values[4] = 0;
-    A1.Values[5] = 2;
-    A1.Values[6] = 0;
-    A1.Values[7] = 1;
-    A1.Values[8] = 0;
-    A1.Values[9] = 0;
-    A1.Values[10] = 2;
-    A1.Values[11] = 1;
+    A3.Values[0] = 2;       // A1 = 2 0 0
+    A3.Values[1] = 0;       //      0 2 0
+    A3.Values[2] = 0;       //      0 0 2
+    A3.Values[3] = 1;       //      1 1 1
+    A3.Values[4] = 0;
+    A3.Values[5] = 2;
+    A3.Values[6] = 0;
+    A3.Values[7] = 1;
+    A3.Values[8] = 0;
+    A3.Values[9] = 0;
+    A3.Values[10] = 2;
+    A3.Values[11] = 1;
 
     // Fill matrix A2.
     A2.Values[0] = 2;       // A2 = 2 0 0
@@ -46,18 +46,18 @@ void CPU_ddgemv_test () {
     A2.Values[8] = 2;
 
     // Fill matrix A3.
-    A3.Values[0] = 2;       // A3 = 2 0 0 1
-    A3.Values[1] = 0;       //      0 2 0 1
-    A3.Values[2] = 0;       //      0 0 2 1
-    A3.Values[3] = 0;
-    A3.Values[4] = 2;
-    A3.Values[5] = 0;
-    A3.Values[6] = 0;
-    A3.Values[7] = 0;
-    A3.Values[8] = 2;
-    A3.Values[9] = 1;
-    A3.Values[10] = 1;
-    A3.Values[11] = 1;
+    A1.Values[0] = 2;       // A3 = 2 0 0 1
+    A1.Values[1] = 0;       //      0 2 0 1
+    A1.Values[2] = 0;       //      0 0 2 1
+    A1.Values[3] = 0;
+    A1.Values[4] = 2;
+    A1.Values[5] = 0;
+    A1.Values[6] = 0;
+    A1.Values[7] = 0;
+    A1.Values[8] = 2;
+    A1.Values[9] = 1;
+    A1.Values[10] = 1;
+    A1.Values[11] = 1;
 
     // Fill vector b1.
     b1.Values[0] = 3;

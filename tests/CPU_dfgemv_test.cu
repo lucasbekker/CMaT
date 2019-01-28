@@ -11,28 +11,28 @@ void CPU_dfgemv_test () {
     int pass = 1;
 
     // Initialize Matrices and vectors.
-    CPU_Dense_f A1(4,3);
-    CPU_Dense_f A2(3,3);
-    CPU_Dense_f A3(3,4);
-    CPU_Dense_f b1(3,1);
-    CPU_Dense_f b2(4,1);
+    CPU_Dense A1(4,3);
+    CPU_Dense A2(3,3);
+    CPU_Dense A3(3,4);
+    CPU_Dense b1(3,1);
+    CPU_Dense b2(4,1);
     thrust::host_vector<float> r1;
     thrust::host_vector<float> r2;
     thrust::host_vector<float> r3;
 
     // Fill matrix A1.
-    A1.Values[0] = 2;       // A1 = 2 0 0
-    A1.Values[1] = 0;       //      0 2 0
-    A1.Values[2] = 0;       //      0 0 2
-    A1.Values[3] = 1;       //      1 1 1
-    A1.Values[4] = 0;
-    A1.Values[5] = 2;
-    A1.Values[6] = 0;
-    A1.Values[7] = 1;
-    A1.Values[8] = 0;
-    A1.Values[9] = 0;
-    A1.Values[10] = 2;
-    A1.Values[11] = 1;
+    A3.Values[0] = 2;       // A1 = 2 0 0
+    A3.Values[1] = 0;       //      0 2 0
+    A3.Values[2] = 0;       //      0 0 2
+    A3.Values[3] = 1;       //      1 1 1
+    A3.Values[4] = 0;
+    A3.Values[5] = 2;
+    A3.Values[6] = 0;
+    A3.Values[7] = 1;
+    A3.Values[8] = 0;
+    A3.Values[9] = 0;
+    A3.Values[10] = 2;
+    A3.Values[11] = 1;
 
     // Fill matrix A2.
     A2.Values[0] = 2;       // A2 = 2 0 0
@@ -46,18 +46,18 @@ void CPU_dfgemv_test () {
     A2.Values[8] = 2;
 
     // Fill matrix A3.
-    A3.Values[0] = 2;       // A3 = 2 0 0 1
-    A3.Values[1] = 0;       //      0 2 0 1
-    A3.Values[2] = 0;       //      0 0 2 1
-    A3.Values[3] = 0;
-    A3.Values[4] = 2;
-    A3.Values[5] = 0;
-    A3.Values[6] = 0;
-    A3.Values[7] = 0;
-    A3.Values[8] = 2;
-    A3.Values[9] = 1;
-    A3.Values[10] = 1;
-    A3.Values[11] = 1;
+    A1.Values[0] = 2;       // A3 = 2 0 0 1
+    A1.Values[1] = 0;       //      0 2 0 1
+    A1.Values[2] = 0;       //      0 0 2 1
+    A1.Values[3] = 0;
+    A1.Values[4] = 2;
+    A1.Values[5] = 0;
+    A1.Values[6] = 0;
+    A1.Values[7] = 0;
+    A1.Values[8] = 2;
+    A1.Values[9] = 1;
+    A1.Values[10] = 1;
+    A1.Values[11] = 1;
 
     // Fill vector b1.
     b1.Values[0] = 3;
