@@ -1,24 +1,24 @@
 // How to build and execute:
 // $ MKL_ACT
-// $ nvcc tests/CPU_ddgemv_test.cu -o tests/bin/CPU_ddgemv_test -O3 -L${MKLROOT}/lib/intel64 -lmkl_intel_lp64 -lmkl_tbb_thread -lmkl_core -ltbb -lstdc++ -lpthread -lm -ldl -lcublas -m64 -I${MKLROOT}/include
-// $ tests/bin/CPU_ddgemv_test
+// $ nvcc tests/GPU_dfgemv_test.cu -o tests/bin/GPU_dfgemv_test -O3 -L${MKLROOT}/lib/intel64 -lmkl_intel_lp64 -lmkl_tbb_thread -lmkl_core -ltbb -lstdc++ -lpthread -lm -ldl -lcublas -m64 -I${MKLROOT}/include
+// $ tests/bin/GPU_dfgemv_test
 
 #include "../include/CMaT.h"
 
-void CPU_ddgemv_test () {
+void GPU_dfgemv_test () {
 
     // Check.
     int pass = 1;
 
     // Initialize Matrices and vectors.
-    CPU_Dense A1(4,3);
-    CPU_Dense A2(3,3);
-    CPU_Dense A3(3,4);
-    CPU_Dense b1(3,1);
-    CPU_Dense b2(4,1);
-    thrust::host_vector<double> r1;
-    thrust::host_vector<double> r2;
-    thrust::host_vector<double> r3;
+    GPU_Dense_f A1(4,3);
+    GPU_Dense_f A2(3,3);
+    GPU_Dense_f A3(3,4);
+    GPU_Dense_f b1(3,1);
+    GPU_Dense_f b2(4,1);
+    thrust::device_vector<float> r1;
+    thrust::device_vector<float> r2;
+    thrust::device_vector<float> r3;
 
     // Fill matrix A1.
     A1.Values[0] = 2;       // A1 = 2 0 0
@@ -71,9 +71,9 @@ void CPU_ddgemv_test () {
     b2.Values[3] = 3;
 
     // Perform the calculation.
-    r1 = A1.ddgemv(4,3,A1.Values,b1.Values);
-    r2 = A2.ddgemv(3,3,A2.Values,b1.Values);
-    r3 = A3.ddgemv(3,4,A3.Values,b2.Values);
+    r1 = A1.dfgemv(4,3,A1.Values,b1.Values);
+    r2 = A2.dfgemv(3,3,A2.Values,b1.Values);
+    r3 = A3.dfgemv(3,4,A3.Values,b2.Values);
 
     // Check for errors.
     if ((r1[0] == 6.0) && (r1[1] == 6.0) && (r1[2] == 6.0) && (r1[3] == 9.0)) {
@@ -100,13 +100,13 @@ void CPU_ddgemv_test () {
 
     // Print test result.
     if (pass == 1) {
-        std::cout << "Test of CPU_methods.ddgemv() passed" << std::endl;
+        std::cout << "Test of GPU_methods.dfgemv() passed" << std::endl;
     } else {
-        std::cout << "Test of CPU_methods.ddgemv() FAILED" << std::endl;
+        std::cout << "Test of GPU_methods.dfgemv() FAILED" << std::endl;
     }
 
 }
 
 int main () {
-    CPU_ddgemv_test();
+    GPU_dfgemv_test();
 }

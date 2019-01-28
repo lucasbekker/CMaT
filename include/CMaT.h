@@ -5,6 +5,9 @@
 
 #include "mkl.h"
 
+#include <cuda_runtime.h>
+#include "cublas_v2.h"
+
 class CPU_methods {
     public:        
         // Dense float matrix vector product. (MKL)
@@ -30,10 +33,10 @@ class CPU_methods {
             // y := alpha*A*x + beta*y.
             // x and y are vectors.
             // A is an m-by-n matrix.
-            cblas_sgemv ( CblasRowMajor, CblasNoTrans, m, n, alpha, A, n, x, 1, beta, y, 1);
+            cblas_sgemv ( CblasColMajor, CblasNoTrans, m, n, alpha, A, m, x, 1, beta, y, 1 );
 
             return yv;
-            // test using "tests/CPU_ddgemv_test.cu"
+            // test using "tests/CPU_dfgemv_test.cu"
         }
 
         // Dense double matrix vector product. (MKL)
@@ -59,10 +62,10 @@ class CPU_methods {
             // y := alpha*A*x + beta*y.
             // x and y are vectors.
             // A is an m-by-n matrix.
-            cblas_dgemv ( CblasRowMajor, CblasNoTrans, m, n, alpha, A, n, x, 1, beta, y, 1);
+            cblas_dgemv ( CblasColMajor, CblasNoTrans, m, n, alpha, A, m, x, 1, beta, y, 1 );
 
             return yv;
-            // test using "tests/CPU_dfgemv_test.cu"
+            // test using "tests/CPU_ddgemv_test.cu"
         }
 
         // Dense float matrix matrix product. (MKL)
@@ -111,10 +114,92 @@ class CPU_methods {
 class GPU_methods {
     public:
         // Dense float matrix vector product. (cuBLAS)
-        void dfgemv (  ) { std::cout << "empty" << std::endl; }
+        thrust::device_vector<float> dfgemv ( const int m, const int n, 
+                                            thrust::device_vector<float> Av, 
+                                            thrust::device_vector<float> xv ) {
+
+            // Initiate result vector.
+            thrust::device_vector<float> yv(m);
+
+            // Generate raw pointers.
+            float * A = thrust::raw_pointer_cast(&Av[0]);
+            float * x = thrust::raw_pointer_cast(&xv[0]);
+            float * y = thrust::raw_pointer_cast(&yv[0]);
+
+            // Set scalar values and pointers.
+            float Alfa = 1.0;
+            float Beta = 0.0;
+            float * alpha = &Alfa;
+            float * beta = &Beta;
+
+            // Create a handle for cuBLAS.
+            cublasHandle_t handle;
+            cublasStatus_t status;
+            status = cublasCreate(&handle);
+
+            // cuBLAS function, documentation:
+            // https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-gemv
+            //
+            // y := alpha*A*x + beta*y.
+            // x and y are vectors.
+            // A is an m-by-n matrix.
+            status = cublasSgemv( handle, CUBLAS_OP_N, m, n, alpha, A, m, x, 1, beta, y, 1 );
+
+            // check the status.
+            if (status != CUBLAS_STATUS_SUCCESS) {
+                std::cout << "cuBLAS status is not ok. " << std::endl;
+            }
+
+            // Destroy the handle
+            cublasDestroy(handle);
+
+            return yv;
+            // test using "tests/GPU_dfgemv_test.cu"
+        }
 
         // Dense double matrix vector product. (cuBLAS)
-        void ddgemv (  ) { std::cout << "empty" << std::endl; }
+        thrust::device_vector<double> ddgemv ( const int m, const int n, 
+                                            thrust::device_vector<double> Av, 
+                                            thrust::device_vector<double> xv ) {
+
+            // Initiate result vector.
+            thrust::device_vector<double> yv(m);
+
+            // Generate raw pointers.
+            double * A = thrust::raw_pointer_cast(&Av[0]);
+            double * x = thrust::raw_pointer_cast(&xv[0]);
+            double * y = thrust::raw_pointer_cast(&yv[0]);
+
+            // Set scalar values and pointers.
+            double Alfa = 1.0;
+            double Beta = 0.0;
+            double * alpha = &Alfa;
+            double * beta = &Beta;
+
+            // Create a handle for cuBLAS.
+            cublasHandle_t handle;
+            cublasStatus_t status;
+            status = cublasCreate(&handle);
+
+            // cuBLAS function, documentation:
+            // https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-gemv
+            //
+            // y := alpha*A*x + beta*y.
+            // x and y are vectors.
+            // A is an m-by-n matrix.
+            status = cublasDgemv( handle, CUBLAS_OP_N, m, n, alpha, A, m, x, 1, beta, y, 1 );
+
+            // check the status.
+            if (status != CUBLAS_STATUS_SUCCESS) {
+                std::cout << "cuBLAS status is not ok. " << std::endl;
+            }
+
+            // Destroy the handle
+            cublasDestroy(handle);
+
+            return yv;
+            // test using "tests/GPU_ddgemv_test.cu"
+        }
 
         // Dense float matrix matrix product. (cuBLAS)
         void dfgemm (  ) { std::cout << "empty" << std::endl; }

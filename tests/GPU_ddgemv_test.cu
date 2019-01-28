@@ -1,24 +1,24 @@
 // How to build and execute:
 // $ MKL_ACT
-// $ nvcc tests/CPU_ddgemv_test.cu -o tests/bin/CPU_ddgemv_test -O3 -L${MKLROOT}/lib/intel64 -lmkl_intel_lp64 -lmkl_tbb_thread -lmkl_core -ltbb -lstdc++ -lpthread -lm -ldl -lcublas -m64 -I${MKLROOT}/include
-// $ tests/bin/CPU_ddgemv_test
+// $ nvcc tests/GPU_ddgemv_test.cu -o tests/bin/GPU_ddgemv_test -O3 -L${MKLROOT}/lib/intel64 -lmkl_intel_lp64 -lmkl_tbb_thread -lmkl_core -ltbb -lstdc++ -lpthread -lm -ldl -lcublas -m64 -I${MKLROOT}/include
+// $ tests/bin/GPU_ddgemv_test
 
 #include "../include/CMaT.h"
 
-void CPU_ddgemv_test () {
+void GPU_ddgemv_test () {
 
     // Check.
     int pass = 1;
 
     // Initialize Matrices and vectors.
-    CPU_Dense A1(4,3);
-    CPU_Dense A2(3,3);
-    CPU_Dense A3(3,4);
-    CPU_Dense b1(3,1);
-    CPU_Dense b2(4,1);
-    thrust::host_vector<double> r1;
-    thrust::host_vector<double> r2;
-    thrust::host_vector<double> r3;
+    GPU_Dense A1(4,3);
+    GPU_Dense A2(3,3);
+    GPU_Dense A3(3,4);
+    GPU_Dense b1(3,1);
+    GPU_Dense b2(4,1);
+    thrust::device_vector<double> r1;
+    thrust::device_vector<double> r2;
+    thrust::device_vector<double> r3;
 
     // Fill matrix A1.
     A1.Values[0] = 2;       // A1 = 2 0 0
@@ -100,13 +100,13 @@ void CPU_ddgemv_test () {
 
     // Print test result.
     if (pass == 1) {
-        std::cout << "Test of CPU_methods.ddgemv() passed" << std::endl;
+        std::cout << "Test of GPU_methods.ddgemv() passed" << std::endl;
     } else {
-        std::cout << "Test of CPU_methods.ddgemv() FAILED" << std::endl;
+        std::cout << "Test of GPU_methods.ddgemv() FAILED" << std::endl;
     }
 
 }
 
 int main () {
-    CPU_ddgemv_test();
+    GPU_ddgemv_test();
 }
