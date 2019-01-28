@@ -33,7 +33,7 @@ class CPU_methods {
             cblas_sgemv ( CblasColMajor, CblasNoTrans, m, n, alpha, A, m, x, 1, beta, y, 1);
 
             return yv;
-
+            // test using "tests/CPU_ddgemv_test.cu"
         }
 
         // Dense double matrix vector product. (MKL)
@@ -62,7 +62,7 @@ class CPU_methods {
             cblas_dgemv ( CblasColMajor, CblasNoTrans, m, n, alpha, A, m, x, 1, beta, y, 1);
 
             return yv;
-
+            // test using "tests/CPU_dfgemv_test.cu"
         }
 
         // Dense float matrix matrix product. (MKL)
