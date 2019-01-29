@@ -1,10 +1,6 @@
-// How to build and execute:
-// $ MKL_ACT
-// $ nvcc tests/GPU_dfgemv_test.cu -o tests/bin/GPU_dfgemv_test -O3 -L${MKLROOT}/lib/intel64 -lmkl_intel_lp64 -lmkl_tbb_thread -lmkl_core -ltbb -lstdc++ -lpthread -lm -ldl -lcublas -m64 -I${MKLROOT}/include
-// $ tests/bin/GPU_dfgemv_test
-
 #include "../include/CMaT.h"
 
+// Test GPU_methods.dfgemv()
 int main (  ) {
 
     // Check.

@@ -2,8 +2,8 @@ class CPU_Sparse: public CPU_methods {
     public:
         // Data
         thrust::host_vector<double> Values;  // Host vector of length Size[2] storing type double.
-        int Size[3];                         // Array containing [ n, m, nnz ]
-        thrust::host_vector<int> I;          // Host vector of length Size[1] + 1 storing pointer list type int.
+        int Size[3];                         // Array containing [ m, n, nnz ]
+        thrust::host_vector<int> I;          // Host vector of length Size[0] + 1 storing pointer list type int.
         thrust::host_vector<int> J;          // Host vector of length Size[2] storing type int.
 
         // Methods
@@ -41,7 +41,7 @@ class CPU_Sparse: public CPU_methods {
 
             // Allocate sufficient memory.
             Values.resize(Size[2]);
-            I.resize(Size[1] + 1);
+            I.resize(Size[0] + 1);
             J.resize(Size[2]);
 
         }
@@ -51,8 +51,8 @@ class CPU_Sparse_f: public CPU_methods {
     public:
         // Data
         thrust::host_vector<float> Values;   // Host vector of length Size[2] storing type float.
-        int Size[3];                         // Array containing [ n, m, nnz ]
-        thrust::host_vector<int> I;          // Host vector of length Size[1] + 1 storing pointer list type int.
+        int Size[3];                         // Array containing [ m, n, nnz ]
+        thrust::host_vector<int> I;          // Host vector of length Size[0] + 1 storing pointer list type int.
         thrust::host_vector<int> J;          // Host vector of length Size[2] storing type int.
 
         // Methods
@@ -90,7 +90,7 @@ class CPU_Sparse_f: public CPU_methods {
 
             // Allocate sufficient memory.
             Values.resize(Size[2]);
-            I.resize(Size[1] + 1);
+            I.resize(Size[0] + 1);
             J.resize(Size[2]);
 
         }

@@ -1,10 +1,6 @@
-// How to build and execute:
-// $ MKL_ACT
-// $ nvcc tests/CPU_ddgemv_test.cu -o tests/bin/CPU_ddgemv_test -O3 -L${MKLROOT}/lib/intel64 -lmkl_intel_lp64 -lmkl_tbb_thread -lmkl_core -ltbb -lstdc++ -lpthread -lm -ldl -lcublas -m64 -I${MKLROOT}/include
-// $ tests/bin/CPU_ddgemv_test
-
 #include "../include/CMaT.h"
 
+// Test CPU_methods.ddgemv()
 int main (  ) {
 
     // Check.

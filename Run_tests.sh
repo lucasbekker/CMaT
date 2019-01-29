@@ -28,7 +28,7 @@ nvcc tests/CPU_dfgemv_test.cu -o tests/bin/CPU_dfgemv_test $GPP_COMPILER $MKL_IN
 echo "Building GPU_ddgemv_test.cu"
 nvcc tests/GPU_ddgemv_test.cu -o tests/bin/GPU_ddgemv_test $GPP_COMPILER $MKL_INCLUDE $MKL_COMPILER $MKL_LINKER $CUDA_LINKER
 
-echo "Building GPU_ddgemv_test.cu"
+echo "Building GPU_dfgemv_test.cu"
 nvcc tests/GPU_dfgemv_test.cu -o tests/bin/GPU_dfgemv_test $GPP_COMPILER $MKL_INCLUDE $MKL_COMPILER $MKL_LINKER $CUDA_LINKER
 
 # Run.

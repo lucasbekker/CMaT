@@ -2,7 +2,7 @@ class GPU_Dense: public GPU_methods {
     public:
         // Data
         thrust::device_vector<double> Values;  // Device vector of length Size[2] storing type double.
-        int Size[3];                           // Array containing [ n, m, n*m ]
+        int Size[3];                           // Array containing [ m, n, n*m ]
         int isVector;                          // Zero if it is not a Vector and One if it is a Vector.
 
         // Methods
@@ -80,7 +80,7 @@ class GPU_Dense_f: public GPU_methods {
     public:
         // Data
         thrust::device_vector<float> Values;   // Device vector of length Size[2] storing type float.
-        int Size[3];                           // Array containing [ n, m, n*m ]
+        int Size[3];                           // Array containing [ m, n, n*m ]
         int isVector;                          // Zero if it is not a Vector and One if it is a Vector.
 
         // Methods

@@ -2,7 +2,7 @@ class CPU_Dense: public CPU_methods {
     public:
         // Data
         thrust::host_vector<double> Values;    // Host vector of length Size[2] storing type double.
-        int Size[3];                           // Array containing [ n, m, n*m ]
+        int Size[3];                           // Array containing [ m, n, n*m ]
         int isVector;                          // Zero if it is not a Vector and One if it is a Vector.
 
         // Methods
@@ -80,7 +80,7 @@ class CPU_Dense_f: public CPU_methods {
     public:
         // Data
         thrust::host_vector<float> Values;   // Host vector of length Size[2] storing type float.
-        int Size[3];                         // Array containing [ n, m, n*m ]
+        int Size[3];                         // Array containing [ m, n, n*m ]
         int isVector;                        // Zero if it is not a Vector and One if it is a Vector.
 
         // Methods
