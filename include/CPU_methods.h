@@ -46,6 +46,15 @@ class CPU_methods {
 
         // Sparse float matrix vector product. (MKL)
         void spfgemv (  ) { std::cout << "empty" << std::endl; }
+        /*thrust::host_vector<float> spfgemv ( const int m, const int n, const int numnz, const float * A, const float * x ) {
+          
+            // Initiate result vector and pointer.
+            thrust::host_vector<float> yv(m);
+            float * y = thrust::raw_pointer_cast(&yv[0]);
+
+            sparse_status_t mkl_sparse_s_mv (SPARSE_OPERATION_NON_TRANSPOSE, 1.0, const sparse_matrix_t A, struct matrix_descr descr, x, 0.0, y);
+
+        }*/
 
         // Sparse double matrix vector product. (MKL)
         void spdgemv (  ) { std::cout << "empty" << std::endl; }

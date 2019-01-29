@@ -3,6 +3,7 @@
 
 // Include the MKL header files.
 #include "mkl.h"
+#include "mkl_spblas.h"
 
 // Include the Thrust header files.
 #include <thrust/host_vector.h>
