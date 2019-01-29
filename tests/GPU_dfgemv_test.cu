@@ -5,7 +5,7 @@
 
 #include "../include/CMaT.h"
 
-void GPU_dfgemv_test () {
+int main (  ) {
 
     // Check.
     int pass = 1;
@@ -105,8 +105,6 @@ void GPU_dfgemv_test () {
         std::cout << "Test of GPU_methods.dfgemv() FAILED" << std::endl;
     }
 
-}
+    return 0;
 
-int main () {
-    GPU_dfgemv_test();
 }

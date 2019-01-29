@@ -5,7 +5,7 @@
 
 #include "../include/CMaT.h"
 
-void CPU_dfgemv_test () {
+int main (  ) {
 
     // Check.
     int pass = 1;
@@ -70,10 +70,17 @@ void CPU_dfgemv_test () {
     b2.Values[2] = 3;
     b2.Values[3] = 3;
 
+    // Create pointers.
+    float * A1p = thrust::raw_pointer_cast(&A1.Values[0]);
+    float * A2p = thrust::raw_pointer_cast(&A2.Values[0]);
+    float * A3p = thrust::raw_pointer_cast(&A3.Values[0]);
+    float * b1p = thrust::raw_pointer_cast(&b1.Values[0]);
+    float * b2p = thrust::raw_pointer_cast(&b2.Values[0]);
+
     // Perform the calculation.
-    r1 = A1.dfgemv(4,3,A1.Values,b1.Values);
-    r2 = A2.dfgemv(3,3,A2.Values,b1.Values);
-    r3 = A3.dfgemv(3,4,A3.Values,b2.Values);
+    r1 = A1.dfgemv(4,3,A1p,b1p);
+    r2 = A2.dfgemv(3,3,A2p,b1p);
+    r3 = A3.dfgemv(3,4,A3p,b2p);
 
     // Check for errors.
     if ((r1[0] == 6.0) && (r1[1] == 6.0) && (r1[2] == 6.0) && (r1[3] == 9.0)) {
@@ -105,8 +112,6 @@ void CPU_dfgemv_test () {
         std::cout << "Test of CPU_methods.dfgemv() FAILED" << std::endl;
     }
 
-}
+    return 0;
 
-int main () {
-    CPU_dfgemv_test();
 }
