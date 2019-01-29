@@ -1,21 +1,11 @@
 class CPU_methods {
     public:        
         // Dense float matrix vector product. (MKL)
-        thrust::host_vector<float> dfgemv ( const int m, const int n, 
-                                            thrust::host_vector<float> Av, 
-                                            thrust::host_vector<float> xv ) {
+        thrust::host_vector<float> dfgemv ( const int m, const int n, const float * A, const float * x ) {
 
-            // Initiate result vector.
+            // Initiate result vector and pointer.
             thrust::host_vector<float> yv(m);
-
-            // Generate raw pointers.
-            float * A = thrust::raw_pointer_cast(&Av[0]);
-            float * x = thrust::raw_pointer_cast(&xv[0]);
             float * y = thrust::raw_pointer_cast(&yv[0]);
-
-            // Set scalar values.
-            float alpha = 1.0;
-            float beta  = 0.0;
 
             // MKL function, documentation:
             // https://software.intel.com/en-us/mkl-developer-reference-c-cblas-gemv
@@ -23,28 +13,18 @@ class CPU_methods {
             // y := alpha*A*x + beta*y.
             // x and y are vectors.
             // A is an m-by-n matrix.
-            cblas_sgemv ( CblasColMajor, CblasNoTrans, m, n, alpha, A, m, x, 1, beta, y, 1 );
+            cblas_sgemv ( CblasColMajor, CblasNoTrans, m, n, 1.0, A, m, x, 1, 0.0, y, 1 );
 
             return yv;
             // test using "tests/CPU_dfgemv_test.cu"
         }
 
         // Dense double matrix vector product. (MKL)
-        thrust::host_vector<double> ddgemv ( const int m, const int n, 
-                                             thrust::host_vector<double> Av, 
-                                             thrust::host_vector<double> xv ) {
+        thrust::host_vector<double> ddgemv ( const int m, const int n, const double * A, const double * x ) {
 
-            // Initiate result vector.
+            // Initiate result vector and pointer.
             thrust::host_vector<double> yv(m);
-
-            // Generate raw pointers.
-            double * A = thrust::raw_pointer_cast(&Av[0]);
-            double * x = thrust::raw_pointer_cast(&xv[0]);
             double * y = thrust::raw_pointer_cast(&yv[0]);
-
-            // Set scalar values.
-            double alpha = 1.0;
-            double beta  = 0.0;
 
             // MKL function, documentation:
             // https://software.intel.com/en-us/mkl-developer-reference-c-cblas-gemv
@@ -52,7 +32,7 @@ class CPU_methods {
             // y := alpha*A*x + beta*y.
             // x and y are vectors.
             // A is an m-by-n matrix.
-            cblas_dgemv ( CblasColMajor, CblasNoTrans, m, n, alpha, A, m, x, 1, beta, y, 1 );
+            cblas_dgemv ( CblasColMajor, CblasNoTrans, m, n, 1.0, A, m, x, 1, 0.0, y, 1 );
 
             return yv;
             // test using "tests/CPU_ddgemv_test.cu"
