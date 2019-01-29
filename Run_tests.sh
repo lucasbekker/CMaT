@@ -43,6 +43,3 @@ tests/bin/GPU_ddgemv_test
 
 echo "Running GPU_dfgemv_test.cu"
 tests/bin/GPU_dfgemv_test
-
-# Press any key to continue...
-read -rsp $'Press any key to continue...\n' -n1 key

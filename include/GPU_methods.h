@@ -1,24 +1,16 @@
 class GPU_methods {
     public:
         // Dense float matrix vector product. (cuBLAS)
-        thrust::device_vector<float> dfgemv ( const int m, const int n, 
-                                            thrust::device_vector<float> Av, 
-                                            thrust::device_vector<float> xv ) {
+        thrust::device_vector<float> dfgemv ( const int m, const int n, const float * A, const float * x ) {
 
-            // Initiate result vector.
+            // Initiate result vector and pointer.
             thrust::device_vector<float> yv(m);
-
-            // Generate raw pointers.
-            float * A = thrust::raw_pointer_cast(&Av[0]);
-            float * x = thrust::raw_pointer_cast(&xv[0]);
             float * y = thrust::raw_pointer_cast(&yv[0]);
 
             // Set scalar values and pointers.
-            float Alfa = 1.0;
-            float Beta = 0.0;
-            float * alpha = &Alfa;
-            float * beta = &Beta;
-
+            float Alfa = 1.0; float * alpha = &Alfa;
+            float Beta = 0.0; float * beta = &Beta;
+            
             // Create a handle for cuBLAS.
             cublasHandle_t handle;
             cublasStatus_t status;
@@ -45,23 +37,15 @@ class GPU_methods {
         }
 
         // Dense double matrix vector product. (cuBLAS)
-        thrust::device_vector<double> ddgemv ( const int m, const int n, 
-                                            thrust::device_vector<double> Av, 
-                                            thrust::device_vector<double> xv ) {
+        thrust::device_vector<double> ddgemv ( const int m, const int n, const double * A, const double * x ) {
 
-            // Initiate result vector.
+            // Initiate result vector and pointer.
             thrust::device_vector<double> yv(m);
-
-            // Generate raw pointers.
-            double * A = thrust::raw_pointer_cast(&Av[0]);
-            double * x = thrust::raw_pointer_cast(&xv[0]);
             double * y = thrust::raw_pointer_cast(&yv[0]);
 
             // Set scalar values and pointers.
-            double Alfa = 1.0;
-            double Beta = 0.0;
-            double * alpha = &Alfa;
-            double * beta = &Beta;
+            double Alfa = 1.0; double * alpha = &Alfa;
+            double Beta = 0.0; double * beta = &Beta;
 
             // Create a handle for cuBLAS.
             cublasHandle_t handle;

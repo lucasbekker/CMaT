@@ -70,10 +70,17 @@ int main (  ) {
     b2.Values[2] = 3;
     b2.Values[3] = 3;
 
+    // Create pointers.
+    double * A1p = thrust::raw_pointer_cast(&A1.Values[0]);
+    double * A2p = thrust::raw_pointer_cast(&A2.Values[0]);
+    double * A3p = thrust::raw_pointer_cast(&A3.Values[0]);
+    double * b1p = thrust::raw_pointer_cast(&b1.Values[0]);
+    double * b2p = thrust::raw_pointer_cast(&b2.Values[0]);
+
     // Perform the calculation.
-    r1 = A1.ddgemv(4,3,A1.Values,b1.Values);
-    r2 = A2.ddgemv(3,3,A2.Values,b1.Values);
-    r3 = A3.ddgemv(3,4,A3.Values,b2.Values);
+    r1 = A1.ddgemv(4,3,A1p,b1p);
+    r2 = A2.ddgemv(3,3,A2p,b1p);
+    r3 = A3.ddgemv(3,4,A3p,b2p);
 
     // Check for errors.
     if ((r1[0] == 6.0) && (r1[1] == 6.0) && (r1[2] == 6.0) && (r1[3] == 9.0)) {
