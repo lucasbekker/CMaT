@@ -12,11 +12,16 @@ MKL_LINKER="-L${MKLROOT}/lib/intel64 -lmkl_intel_lp64 -lmkl_tbb_thread -lmkl_cor
 CUDA_LINKER="-lcublas"
 GPP_COMPILER="-O3"
 
+# Input argument.
 called_test=$1
+called_test_cu=$called_test.cu
+
+# Removing old build.
+rm tests/bin/$called_test
 
 # Build.
 echo "Building" $called_test
-nvcc tests/$called_test -o tests/bin/$called_test $GPP_COMPILER $MKL_INCLUDE $MKL_COMPILER $MKL_LINKER $CUDA_LINKER
+nvcc tests/$called_test_cu -o tests/bin/$called_test $GPP_COMPILER $MKL_INCLUDE $MKL_COMPILER $MKL_LINKER $CUDA_LINKER
 
 # Run.
 echo "Running" $called_test

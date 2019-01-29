@@ -12,6 +12,12 @@ MKL_LINKER="-L${MKLROOT}/lib/intel64 -lmkl_intel_lp64 -lmkl_tbb_thread -lmkl_cor
 CUDA_LINKER="-lcublas"
 GPP_COMPILER="-O3"
 
+# Removing old builds.
+rm tests/bin/CPU_ddgemv_test
+rm tests/bin/CPU_dfgemv_test
+rm tests/bin/GPU_ddgemv_test
+rm tests/bin/GPU_dfgemv_test
+
 # Build.
 echo "Building CPU_ddgemv_test.cu"
 nvcc tests/CPU_ddgemv_test.cu -o tests/bin/CPU_ddgemv_test $GPP_COMPILER $MKL_INCLUDE $MKL_COMPILER $MKL_LINKER $CUDA_LINKER
