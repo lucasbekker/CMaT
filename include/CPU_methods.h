@@ -46,7 +46,7 @@ class CPU_methods {
 
         // Sparse float matrix vector product. (MKL)
         thrust::host_vector<float> spfgemv ( const int m, const int n, const float * Values, 
-                                              const int * Ib, const int * Ie, const int * J, const float * x ) { 
+                                             const int * Ib, const int * Ie, const int * J, const float * x ) { 
             
             // Initiate result vector and pointer.
             thrust::host_vector<float> yv(m);

@@ -9,7 +9,7 @@ source /opt/intel/compilers_and_libraries/linux/mkl/bin/mklvars.sh intel64
 MKL_INCLUDE="-I${MKLROOT}/include"
 MKL_COMPILER="-m64"
 MKL_LINKER="-L${MKLROOT}/lib/intel64 -lmkl_intel_lp64 -lmkl_tbb_thread -lmkl_core -ltbb -lstdc++ -lpthread -lm -ldl"
-CUDA_LINKER="-lcublas"
+CUDA_LINKER="-lcublas -lcusparse"
 GPP_COMPILER="-O3"
 
 # Removing old builds.

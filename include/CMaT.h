@@ -9,9 +9,10 @@
 #include <thrust/host_vector.h>
 #include <thrust/device_vector.h>
 
-// Include the cuBLAS header files.
+// Include the CUDA header files.
 #include <cuda_runtime.h>
 #include "cublas_v2.h"
+#include "cusparse_v2.h"
 
 // Include the CMaT project header files.
 #include "CPU_methods.h"
