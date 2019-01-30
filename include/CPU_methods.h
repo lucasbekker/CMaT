@@ -57,15 +57,16 @@ class CPU_methods {
             const float Beta = 0.0; const float * beta = &Beta;
 
             // See: https://software.intel.com/en-us/mkl-developer-reference-c-interface-consideration#TBL2-6
-            char matdescra[6] = {'G','O','O','C','O','O'};
-
+            const char matdescra[] = "GOOCOO";
+            const char transa[] = "N";
+            
             // MKL function, documentation:
             // https://software.intel.com/en-us/mkl-developer-reference-c-mkl-csrmv
             //
             // y := alpha*A*x + beta*y.
             // x and y are vectors.
             // A is an m-by-n matrix.
-            mkl_scsrmv ( 'N', &m, &n, alpha, matdescra, Values, J, Ib, Ie, x, beta, y );
+            mkl_scsrmv ( transa, &m, &n, alpha, matdescra, Values, J, Ib, Ie, x, beta, y );
             
             return yv;
             // test using "tests/CPU_spfgemv_test.cu"
@@ -84,7 +85,8 @@ class CPU_methods {
             const double Beta = 0.0; const double * beta = &Beta;
 
             // See: https://software.intel.com/en-us/mkl-developer-reference-c-interface-consideration#TBL2-6
-            char matdescra[6] = {'G','O','O','C','O','O'};
+            const char matdescra[] = "GOOCOO";
+            const char transa[] = "N";
 
             // MKL function, documentation:
             // https://software.intel.com/en-us/mkl-developer-reference-c-mkl-csrmv
@@ -92,7 +94,7 @@ class CPU_methods {
             // y := alpha*A*x + beta*y.
             // x and y are vectors.
             // A is an m-by-n matrix.
-            mkl_dcsrmv ( 'N', &m, &n, alpha, matdescra, Values, J, Ib, Ie, x, beta, y );
+            mkl_dcsrmv ( transa, &m, &n, alpha, matdescra, Values, J, Ib, Ie, x, beta, y );
             
             return yv;
             // test using "tests/CPU_spdgemv_test.cu"
