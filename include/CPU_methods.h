@@ -45,19 +45,58 @@ class CPU_methods {
         void ddgemm (  ) { std::cout << "empty" << std::endl; }
 
         // Sparse float matrix vector product. (MKL)
-        void spfgemv (  ) { std::cout << "empty" << std::endl; }
-        /*thrust::host_vector<float> spfgemv ( const int m, const int n, const int numnz, const float * A, const float * x ) {
-          
+        thrust::host_vector<float> spfgemv ( const int m, const int n, const float * Values, 
+                                              const int * Ib, const int * Ie, const int * J, const float * x ) { 
+            
             // Initiate result vector and pointer.
             thrust::host_vector<float> yv(m);
             float * y = thrust::raw_pointer_cast(&yv[0]);
 
-            sparse_status_t mkl_sparse_s_mv (SPARSE_OPERATION_NON_TRANSPOSE, 1.0, const sparse_matrix_t A, struct matrix_descr descr, x, 0.0, y);
+            // Set scalar values and pointers.
+            const float Alfa = 1.0; const float * alpha = &Alfa;
+            const float Beta = 0.0; const float * beta = &Beta;
 
-        }*/
+            // See: https://software.intel.com/en-us/mkl-developer-reference-c-interface-consideration#TBL2-6
+            char matdescra[6] = {'G','O','O','C','O','O'};
 
+            // MKL function, documentation:
+            // https://software.intel.com/en-us/mkl-developer-reference-c-mkl-csrmv
+            //
+            // y := alpha*A*x + beta*y.
+            // x and y are vectors.
+            // A is an m-by-n matrix.
+            mkl_scsrmv ( 'N', &m, &n, alpha, matdescra, Values, J, Ib, Ie, x, beta, y );
+            
+            return yv;
+            // test using "tests/CPU_spfgemv_test.cu"
+        }
+       
         // Sparse double matrix vector product. (MKL)
-        void spdgemv (  ) { std::cout << "empty" << std::endl; }
+        thrust::host_vector<double> spdgemv ( const int m, const int n, const double * Values, 
+                                              const int * Ib, const int * Ie, const int * J, const double * x ) { 
+            
+            // Initiate result vector and pointer.
+            thrust::host_vector<double> yv(m);
+            double * y = thrust::raw_pointer_cast(&yv[0]);
+
+            // Set scalar values and pointers.
+            const double Alfa = 1.0; const double * alpha = &Alfa;
+            const double Beta = 0.0; const double * beta = &Beta;
+
+            // See: https://software.intel.com/en-us/mkl-developer-reference-c-interface-consideration#TBL2-6
+            char matdescra[6] = {'G','O','O','C','O','O'};
+
+            // MKL function, documentation:
+            // https://software.intel.com/en-us/mkl-developer-reference-c-mkl-csrmv
+            //
+            // y := alpha*A*x + beta*y.
+            // x and y are vectors.
+            // A is an m-by-n matrix.
+            mkl_dcsrmv ( 'N', &m, &n, alpha, matdescra, Values, J, Ib, Ie, x, beta, y );
+            
+            return yv;
+            // test using "tests/CPU_spdgemv_test.cu"
+        }
 
         // Sparse float matrix matrix product. (MKL)
         void spfgemm (  ) { std::cout << "empty" << std::endl; }

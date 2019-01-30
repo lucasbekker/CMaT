@@ -1,9 +1,13 @@
 class CPU_Sparse: public CPU_methods {
     public:
+        // Based on MKL CSR four array zero based indexing.
+        // https://software.intel.com/en-us/mkl-developer-reference-c-sparse-blas-csr-matrix-storage-format
+
         // Data
         thrust::host_vector<double> Values;  // Host vector of length Size[2] storing type double.
         int Size[3];                         // Array containing [ m, n, nnz ]
-        thrust::host_vector<int> I;          // Host vector of length Size[0] + 1 storing pointer list type int.
+        thrust::host_vector<int> Ib;         // Host vector of length Size[0] storing pointer list type int.
+        thrust::host_vector<int> Ie;         // Host vector of length Size[0] storing pointer list type int.
         thrust::host_vector<int> J;          // Host vector of length Size[2] storing type int.
 
         // Methods
@@ -41,7 +45,8 @@ class CPU_Sparse: public CPU_methods {
 
             // Allocate sufficient memory.
             Values.resize(Size[2]);
-            I.resize(Size[0] + 1);
+            Ib.resize(Size[0]);
+            Ie.resize(Size[0]);
             J.resize(Size[2]);
 
         }
@@ -49,10 +54,14 @@ class CPU_Sparse: public CPU_methods {
 
 class CPU_Sparse_f: public CPU_methods {
     public:
+        // Based on MKL CSR four array zero based indexing.
+        // https://software.intel.com/en-us/mkl-developer-reference-c-sparse-blas-csr-matrix-storage-format
+
         // Data
         thrust::host_vector<float> Values;   // Host vector of length Size[2] storing type float.
         int Size[3];                         // Array containing [ m, n, nnz ]
-        thrust::host_vector<int> I;          // Host vector of length Size[0] + 1 storing pointer list type int.
+        thrust::host_vector<int> Ib;         // Host vector of length Size[0] storing pointer list type int.
+        thrust::host_vector<int> Ie;         // Host vector of length Size[0] storing pointer list type int.
         thrust::host_vector<int> J;          // Host vector of length Size[2] storing type int.
 
         // Methods
@@ -90,7 +99,8 @@ class CPU_Sparse_f: public CPU_methods {
 
             // Allocate sufficient memory.
             Values.resize(Size[2]);
-            I.resize(Size[0] + 1);
+            Ib.resize(Size[0]);
+            Ie.resize(Size[0]);
             J.resize(Size[2]);
 
         }
