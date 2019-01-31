@@ -22,7 +22,22 @@ class GPU_Dense: public GPU_methods {
         void dot (  ) { std::cout << "empty" << std::endl; }
 
         // Links to GPU_methods.ddgemv().
-        void mv (  ) { std::cout << "empty" << std::endl; }
+        GPU_Dense mv ( const GPU_Dense x ) {
+            
+            // Initialize result Vector.
+            GPU_Dense y(Size[0],1,handles);
+
+            // Create pointers.
+            const double * A = thrust::raw_pointer_cast(&Values[0]);
+            const double * xp = thrust::raw_pointer_cast(&x.Values[0]);
+
+            // Call CPU_methods.ddgemv().
+            y.Values = this->ddgemv(Size[0],Size[1],A,xp);
+
+            // Return the result.
+            return y;
+
+        }
 
         // Links to GPU_methods.ddgemm().
         void mm (  ) { std::cout << "empty" << std::endl; }
@@ -100,7 +115,22 @@ class GPU_Dense_f: public GPU_methods {
         void dot (  ) { std::cout << "empty" << std::endl; }
 
         // Links to GPU_methods.dfgemv().
-        void mv (  ) { std::cout << "empty" << std::endl; }
+        GPU_Dense_f mv ( GPU_Dense_f x ) {
+            
+            // Initialize result Vector.
+            GPU_Dense_f y(Size[0],1,handles);
+
+            // Create pointers.
+            const float * A = thrust::raw_pointer_cast(&Values[0]);
+            const float * xp = thrust::raw_pointer_cast(&x.Values[0]);
+
+            // Call CPU_methods.ddgemv().
+            y.Values = this->dfgemv(Size[0],Size[1],A,xp);
+
+            // Return the result.
+            return y;
+
+        }
 
         // Links to GPU_methods.dfgemm().
         void mm (  ) { std::cout << "empty" << std::endl; }
