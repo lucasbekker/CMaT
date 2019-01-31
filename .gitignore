@@ -1,3 +1,9 @@
+# test binaries
+tests/bin/
+
+# VS code settings
+.vscode/
+
 # Prerequisites
 *.d
 
