@@ -4,7 +4,7 @@ class GPU_Dense: public GPU_methods {
         thrust::device_vector<double> Values;  // Device vector of length Size[2] storing type double.
         int Size[3];                           // Array containing [ m, n, n*m ]
         int isVector;                          // Zero if it is not a Vector and One if it is a Vector.
-
+        
         // Methods
         // Links to GPU_methods.dadd().
         void add (  ) { std::cout << "empty" << std::endl; }
@@ -34,7 +34,7 @@ class GPU_Dense: public GPU_methods {
         void conv (  ) { std::cout << "empty" << std::endl; }
 
         // Constructor
-        GPU_Dense ( int m, int n ) {
+        GPU_Dense ( int m, int n, HANDLES * _handles ): GPU_methods(_handles) {
             
             // Fill Size array.
             Size[0] = m;
@@ -55,7 +55,7 @@ class GPU_Dense: public GPU_methods {
         }
 
         // Overloaded constructor for manual isVector manipulation.
-        GPU_Dense ( int m, int n, int isv ) {
+        GPU_Dense ( int m, int n, HANDLES * _handles, int isv ): GPU_methods(_handles) {
             
             // Fill Size array.
             Size[0] = m;
@@ -112,7 +112,7 @@ class GPU_Dense_f: public GPU_methods {
         void conv (  ) { std::cout << "empty" << std::endl; }
 
         // Constructor
-        GPU_Dense_f ( int m, int n ) {
+        GPU_Dense_f ( int m, int n, HANDLES * _handles ): GPU_methods(_handles) {
             
             // Fill Size array.
             Size[0] = m;
@@ -133,7 +133,7 @@ class GPU_Dense_f: public GPU_methods {
         }
 
         // Overloaded constructor for manual isVector manipulation.
-        GPU_Dense_f ( int m, int n, int isv ) {
+        GPU_Dense_f ( int m, int n, HANDLES * _handles, int isv ): GPU_methods(_handles) {
             
             // Fill Size array.
             Size[0] = m;

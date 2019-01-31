@@ -15,6 +15,7 @@
 #include "cusparse_v2.h"
 
 // Include the CMaT project header files.
+#include "Handles.h"
 #include "CPU_methods.h"
 #include "GPU_methods.h"
 #include "CPU_Dense.h"

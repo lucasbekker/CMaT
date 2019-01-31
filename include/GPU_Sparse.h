@@ -5,7 +5,7 @@ class GPU_Sparse: public GPU_methods {
         int Size[3];                           // Array containing [ m, n, nnz ]
         thrust::device_vector<int> I;          // Device vector of length Size[0] + 1 storing pointer list type int.
         thrust::device_vector<int> J;          // Device vector of length Size[2] storing type int.
-
+        
         // Methods
         // Links to GPU_methods.dadd().
         void add (  ) { std::cout << "empty" << std::endl; }
@@ -32,7 +32,7 @@ class GPU_Sparse: public GPU_methods {
         void conv (  ) { std::cout << "empty" << std::endl; }
 
         // Constructor
-        GPU_Sparse ( int m, int n, int nnz ) {
+        GPU_Sparse ( int m, int n, int nnz, HANDLES * _handles ): GPU_methods(_handles) {
             
             // Fill Size array.
             Size[0] = m;
@@ -54,6 +54,7 @@ class GPU_Sparse_f: public GPU_methods {
         int Size[3];                          // Array containing [ m, n, nnz ]
         thrust::device_vector<int> I;         // Device vector of length Size[0] + 1 storing pointer list type int.
         thrust::device_vector<int> J;         // Device vector of length Size[2] storing type int.
+        HANDLES * handles;                     // Handles to CUDA libraries.
 
         // Methods
         // Links to GPU_methods.fadd().
@@ -81,7 +82,7 @@ class GPU_Sparse_f: public GPU_methods {
         void conv (  ) { std::cout << "empty" << std::endl; }
 
         // Constructor
-        GPU_Sparse_f ( int m, int n, int nnz ) {
+        GPU_Sparse_f ( int m, int n, int nnz, HANDLES * _handles ): GPU_methods(_handles)  {
             
             // Fill Size array.
             Size[0] = m;

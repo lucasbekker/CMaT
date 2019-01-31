@@ -3,15 +3,18 @@
 // Test GPU_methods.spfgemv()
 int main (  ) {
 
+    // Create the handles.
+    HANDLES handles = createHandles();
+
     // Check.
     int pass = 1;
 
     // Initialize Matrices and vectors.
-    GPU_Sparse_f A1(4,3,6);
-    GPU_Sparse_f A2(3,3,3);
-    GPU_Sparse_f A3(3,4,6);
-    GPU_Dense_f b1(3,1);
-    GPU_Dense_f b2(4,1);
+    GPU_Sparse_f A1(4,3,6,&handles);
+    GPU_Sparse_f A2(3,3,3,&handles);
+    GPU_Sparse_f A3(3,4,6,&handles);
+    GPU_Dense_f b1(3,1,&handles);
+    GPU_Dense_f b2(4,1,&handles);
     thrust::device_vector<float> r1(4);
     thrust::device_vector<float> r2(3);
     thrust::device_vector<float> r3(3);
@@ -123,6 +126,8 @@ int main (  ) {
     } else {
         std::cout << "Test of GPU_methods.spfgemv() FAILED" << std::endl;
     }
+
+    destroyHandles(handles);
 
     return 0;
 

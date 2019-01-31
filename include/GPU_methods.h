@@ -1,5 +1,14 @@
 class GPU_methods {
     public:
+
+        HANDLES * handles;                     // Handles to CUDA libraries.
+
+        // Constructor
+        GPU_methods ( HANDLES * _handles ) {
+            // Assign pointers to cuSPARSE handle and status.
+            handles = _handles;
+        }
+
         // Dense float matrix vector product. (cuBLAS)
         thrust::device_vector<float> dfgemv ( const int m, const int n, const float * A, const float * x ) {
 
@@ -73,7 +82,7 @@ class GPU_methods {
         }
 
         // Dense float matrix matrix product. (cuBLAS)
-        void dfgemm (  ) { std::cout << "empty" << std::endl; }
+        void dfgemm (  );
 
         // Dense double matrix matrix product. (cuBLAS)
         void ddgemm (  ) { std::cout << "empty" << std::endl; }
@@ -91,13 +100,13 @@ class GPU_methods {
             float Beta = 0.0; float * beta = &Beta;
             
             // Create a handle for cuSPARSE.
-            cusparseHandle_t handle;
-            cusparseStatus_t status;
+            //cusparseHandle_t handle;
+            //cusparseStatus_t status;
             cusparseMatDescr_t descrA = NULL;
-            status = cusparseCreateMatDescr(&descrA);
-            status = cusparseSetMatType(descrA,CUSPARSE_MATRIX_TYPE_GENERAL);
-            status = cusparseSetMatIndexBase(descrA,CUSPARSE_INDEX_BASE_ZERO);
-            status = cusparseCreate(&handle);
+            handles->csstatus = cusparseCreateMatDescr(&descrA);
+            handles->csstatus = cusparseSetMatType(descrA,CUSPARSE_MATRIX_TYPE_GENERAL);
+            handles->csstatus = cusparseSetMatIndexBase(descrA,CUSPARSE_INDEX_BASE_ZERO);
+            //status = cusparseCreate(&handle);
             
             // cuSPARSE function, documentation:
             // https://docs.nvidia.com/cuda/cusparse/index.html#cusparse-lt-t-gt-csrmv
@@ -105,16 +114,16 @@ class GPU_methods {
             // y := alpha*A*x + beta*y.
             // x and y are vectors.
             // A is an m-by-n matrix.
-            status = cusparseScsrmv( handle, CUSPARSE_OPERATION_NON_TRANSPOSE, m, n, numnz, alpha, 
+            handles->csstatus = cusparseScsrmv( handles->cshandle, CUSPARSE_OPERATION_NON_TRANSPOSE, m, n, numnz, alpha, 
                                      descrA, Values, I, J, x, beta, y );
 
             // check the status.
-            if (status != CUSPARSE_STATUS_SUCCESS) {
+            if (handles->csstatus != CUSPARSE_STATUS_SUCCESS) {
                 std::cout << "cuSPARSE status is not ok. " << std::endl;
             }
 
             // Destroy the handle
-            cusparseDestroy(handle);
+            //cusparseDestroy(handle);
 
             return yv;
             // test using "tests/GPU_spfgemv_test.cu"

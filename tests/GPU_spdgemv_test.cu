@@ -3,15 +3,18 @@
 // Test GPU_methods.spdgemv()
 int main (  ) {
 
+    // Create the handles.
+    HANDLES handles = createHandles();
+
     // Check.
     int pass = 1;
 
     // Initialize Matrices and vectors.
-    GPU_Sparse A1(4,3,6);
-    GPU_Sparse A2(3,3,3);
-    GPU_Sparse A3(3,4,6);
-    GPU_Dense b1(3,1);
-    GPU_Dense b2(4,1);
+    GPU_Sparse A1(4,3,6,&handles);
+    GPU_Sparse A2(3,3,3,&handles);
+    GPU_Sparse A3(3,4,6,&handles);
+    GPU_Dense b1(3,1,&handles);
+    GPU_Dense b2(4,1,&handles);
     thrust::device_vector<double> r1(4);
     thrust::device_vector<double> r2(3);
     thrust::device_vector<double> r3(3);
@@ -123,6 +126,8 @@ int main (  ) {
     } else {
         std::cout << "Test of GPU_methods.spdgemv() FAILED" << std::endl;
     }
+
+    destroyHandles ( HANDLES handles )
 
     return 0;
 
