@@ -3,15 +3,18 @@
 // Test GPU_methods.ddgemv()
 int main (  ) {
 
+    // Create the handles.
+    HANDLES handles = createHandles();
+
     // Check.
     int pass = 1;
 
     // Initialize Matrices and vectors.
-    GPU_Dense A1(4,3);
-    GPU_Dense A2(3,3);
-    GPU_Dense A3(3,4);
-    GPU_Dense b1(3,1);
-    GPU_Dense b2(4,1);
+    GPU_Dense A1(4,3,&handles);
+    GPU_Dense A2(3,3,&handles);
+    GPU_Dense A3(3,4,&handles);
+    GPU_Dense b1(3,1,&handles);
+    GPU_Dense b2(4,1,&handles);
     thrust::device_vector<double> r1;
     thrust::device_vector<double> r2;
     thrust::device_vector<double> r3;
@@ -107,6 +110,8 @@ int main (  ) {
     } else {
         std::cout << "Test of GPU_methods.ddgemv() FAILED" << std::endl;
     }
+
+    destroyHandles(handles);
 
     return 0;
 

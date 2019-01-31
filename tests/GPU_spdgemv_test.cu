@@ -127,7 +127,7 @@ int main (  ) {
         std::cout << "Test of GPU_methods.spdgemv() FAILED" << std::endl;
     }
 
-    destroyHandles ( HANDLES handles )
+    destroyHandles(handles);
 
     return 0;
 
