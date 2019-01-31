@@ -94,6 +94,7 @@ class GPU_methods {
             cusparseHandle_t handle;
             cusparseStatus_t status;
             cusparseMatDescr_t descrA = NULL;
+            status = cusparseCreateMatDescr(&descrA);
             status = cusparseSetMatType(descrA,CUSPARSE_MATRIX_TYPE_GENERAL);
             status = cusparseSetMatIndexBase(descrA,CUSPARSE_INDEX_BASE_ZERO);
             status = cusparseCreate(&handle);
@@ -135,6 +136,7 @@ class GPU_methods {
             cusparseHandle_t handle;
             cusparseStatus_t status;
             cusparseMatDescr_t descrA = NULL;
+            status = cusparseCreateMatDescr(&descrA);
             status = cusparseSetMatType(descrA,CUSPARSE_MATRIX_TYPE_GENERAL);
             status = cusparseSetMatIndexBase(descrA,CUSPARSE_INDEX_BASE_ZERO);
             status = cusparseCreate(&handle);

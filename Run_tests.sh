@@ -37,6 +37,12 @@ nvcc tests/CPU_spdgemv_test.cu -o tests/bin/CPU_spdgemv_test $GPP_COMPILER $MKL_
 echo "Building CPU_spfgemv_test.cu"
 nvcc tests/CPU_spfgemv_test.cu -o tests/bin/CPU_spfgemv_test $GPP_COMPILER $MKL_INCLUDE $MKL_COMPILER $MKL_LINKER $CUDA_LINKER
 
+echo "Building GPU_spdgemv_test.cu"
+nvcc tests/GPU_spdgemv_test.cu -o tests/bin/GPU_spdgemv_test $GPP_COMPILER $MKL_INCLUDE $MKL_COMPILER $MKL_LINKER $CUDA_LINKER
+
+echo "Building GPU_spfgemv_test.cu"
+nvcc tests/GPU_spfgemv_test.cu -o tests/bin/GPU_spfgemv_test $GPP_COMPILER $MKL_INCLUDE $MKL_COMPILER $MKL_LINKER $CUDA_LINKER
+
 # Run.
 echo "Running CPU_ddgemv_test.cu"
 tests/bin/CPU_ddgemv_test
@@ -55,3 +61,9 @@ tests/bin/CPU_spdgemv_test
 
 echo "Running CPU_spfgemv_test.cu"
 tests/bin/CPU_spfgemv_test
+
+echo "Running GPU_spdgemv_test.cu"
+tests/bin/GPU_spdgemv_test
+
+echo "Running GPU_spfgemv_test.cu"
+tests/bin/GPU_spfgemv_test
