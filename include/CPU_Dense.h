@@ -22,7 +22,22 @@ class CPU_Dense: public CPU_methods {
         void dot (  ) { std::cout << "empty" << std::endl; }
 
         // Links to CPU_methods.ddgemv().
-        void mv (  ) { std::cout << "empty" << std::endl; }
+        CPU_Dense mv ( const CPU_Dense x ) {
+
+            // Initialize result Vector.
+            CPU_Dense y(Size[0],1);
+
+            // Create pointers.
+            const double * A = thrust::raw_pointer_cast(&Values[0]);
+            const double * xp = thrust::raw_pointer_cast(&x.Values[0]);
+
+            // Call CPU_methods.ddgemv().
+            y.Values = this->ddgemv(Size[0],Size[1],A,xp);
+
+            // Return the result.
+            return y;
+
+        }
 
         // Links to CPU_methods.ddgemm().
         void mm (  ) { std::cout << "empty" << std::endl; }
@@ -100,7 +115,22 @@ class CPU_Dense_f: public CPU_methods {
         void dot (  ) { std::cout << "empty" << std::endl; }
 
         // Links to CPU_methods.dfgemv().
-        void mv (  ) { std::cout << "empty" << std::endl; }
+        CPU_Dense_f mv ( CPU_Dense_f x ) {
+            
+            // Initialize result Vector.
+            CPU_Dense_f y(Size[0],1);
+
+            // Create pointers.
+            const float * A = thrust::raw_pointer_cast(&Values[0]);
+            const float * xp = thrust::raw_pointer_cast(&x.Values[0]);
+
+            // Call CPU_methods.ddgemv().
+            y.Values = this->dfgemv(Size[0],Size[1],A,xp);
+
+            // Return the result.
+            return y;
+
+        }
 
         // Links to CPU_methods.dfgemm().
         void mm (  ) { std::cout << "empty" << std::endl; }
