@@ -74,7 +74,7 @@ class GPU_methods {
 
         // Sparse float matrix vector product. (cuSPARSE)
         thrust::device_vector<float> spfgemv ( const int m, const int n, const int numnz, const float * Values,
-                                               const int * I, const int * J, const float * x ) {
+                                               const int * I, const int * J, const float * x, cusparseMatDescr_t descr ) {
 
             // Initiate result vector and pointer.
             thrust::device_vector<float> yv(m);
@@ -83,13 +83,7 @@ class GPU_methods {
             // Set scalar values and pointers.
             float Alfa = 1.0; float * alpha = &Alfa;
             float Beta = 0.0; float * beta = &Beta;
-            
-            // Create a handle for cuSPARSE.
-            cusparseMatDescr_t descrA = NULL;
-            handles->csstatus = cusparseCreateMatDescr(&descrA);
-            handles->csstatus = cusparseSetMatType(descrA,CUSPARSE_MATRIX_TYPE_GENERAL);
-            handles->csstatus = cusparseSetMatIndexBase(descrA,CUSPARSE_INDEX_BASE_ZERO);
-                        
+                                    
             // cuSPARSE function, documentation:
             // https://docs.nvidia.com/cuda/cusparse/index.html#cusparse-lt-t-gt-csrmv
             //
@@ -97,7 +91,7 @@ class GPU_methods {
             // x and y are vectors.
             // A is an m-by-n matrix.
             handles->csstatus = cusparseScsrmv( handles->cshandle, CUSPARSE_OPERATION_NON_TRANSPOSE, m, n,
-                                                numnz, alpha, descrA, Values, I, J, x, beta, y );
+                                                numnz, alpha, descr, Values, I, J, x, beta, y );
 
             // check the status.
             if (handles->csstatus != CUSPARSE_STATUS_SUCCESS) {
@@ -109,8 +103,8 @@ class GPU_methods {
         }
 
         // Sparse double matrix vector product. (cuSPARSE)
-        thrust::device_vector<double> spdgemv ( int m, int n, int numnz, const double * Values,
-                                                const int * I, const int * J, const double * x ) {
+        thrust::device_vector<double> spdgemv ( const int m, const int n, const int numnz, const double * Values,
+                                                const int * I, const int * J, const double * x, cusparseMatDescr_t descr ) {
 
             // Initiate result vector and pointer.
             thrust::device_vector<double> yv(m);

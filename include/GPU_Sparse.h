@@ -5,6 +5,7 @@ class GPU_Sparse: public GPU_methods {
         int Size[3];                           // Array containing [ m, n, nnz ]
         thrust::device_vector<int> I;          // Device vector of length Size[0] + 1 storing pointer list type int.
         thrust::device_vector<int> J;          // Device vector of length Size[2] storing type int.
+        cusparseMatDescr_t descr = NULL;       // Matrix description.
         
         // Methods
         // Links to GPU_methods.dadd().
@@ -44,6 +45,11 @@ class GPU_Sparse: public GPU_methods {
             I.resize(Size[0] + 1);
             J.resize(Size[2]);
 
+            // Fill matrix description.
+            handles->csstatus = cusparseCreateMatDescr(&descr);
+            handles->csstatus = cusparseSetMatType(descr,CUSPARSE_MATRIX_TYPE_GENERAL);
+            handles->csstatus = cusparseSetMatIndexBase(descr,CUSPARSE_INDEX_BASE_ZERO);
+
         }
 };
 
@@ -54,7 +60,7 @@ class GPU_Sparse_f: public GPU_methods {
         int Size[3];                          // Array containing [ m, n, nnz ]
         thrust::device_vector<int> I;         // Device vector of length Size[0] + 1 storing pointer list type int.
         thrust::device_vector<int> J;         // Device vector of length Size[2] storing type int.
-        HANDLES * handles;                     // Handles to CUDA libraries.
+        cusparseMatDescr_t descr = NULL;      // Matrix description.
 
         // Methods
         // Links to GPU_methods.fadd().
@@ -93,6 +99,11 @@ class GPU_Sparse_f: public GPU_methods {
             Values.resize(Size[2]);
             I.resize(Size[0] + 1);
             J.resize(Size[2]);
+
+            // Fill matrix description.
+            handles->csstatus = cusparseCreateMatDescr(&descr);
+            handles->csstatus = cusparseSetMatType(descr,CUSPARSE_MATRIX_TYPE_GENERAL);
+            handles->csstatus = cusparseSetMatIndexBase(descr,CUSPARSE_INDEX_BASE_ZERO);
 
         }
 };

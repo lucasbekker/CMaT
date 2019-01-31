@@ -93,9 +93,9 @@ int main (  ) {
     double * b2p = thrust::raw_pointer_cast(&b2.Values[0]);
 
     // Perform the calculation.
-    r1 = A1.spdgemv(4,3,6,A1vp,A1ip,A1jp,b1p);
-    r2 = A2.spdgemv(3,3,3,A2vp,A2ip,A2jp,b1p);
-    r3 = A3.spdgemv(3,4,6,A3vp,A3ip,A3jp,b2p);
+    r1 = A1.spdgemv(4,3,6,A1vp,A1ip,A1jp,b1p,A1.descr);
+    r2 = A2.spdgemv(3,3,3,A2vp,A2ip,A2jp,b1p,A2.descr);
+    r3 = A3.spdgemv(3,4,6,A3vp,A3ip,A3jp,b2p,A3.descr);
 
     // Check for errors.
     if ((r1[0] == 6.0) && (r1[1] == 6.0) && (r1[2] == 6.0) && (r1[3] == 9.0)) {
