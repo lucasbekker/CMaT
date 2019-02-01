@@ -74,13 +74,13 @@ int main (  ) {
     // Check for errors.
     if ((r1.Values[0] == 6.0) && (r1.Values[1] == 6.0) && (r1.Values[2] == 6.0) && (r1.Values[3] == 9.0)) {
         std::cout << "No errors in A1*b1" << std::endl;
-    } 
+    } else { pass = 0; } 
     if ((r2.Values[0] == 6.0) && (r2.Values[1] == 6.0) && (r2.Values[2] == 6.0)) {
         std::cout << "No errors in A2*b1" << std::endl;
-    } 
+    } else { pass = 0; }
     if ((r3.Values[0] == 9.0) && (r3.Values[1] == 9.0) && (r3.Values[2] == 9.0)) {
         std::cout << "No errors in A3*b2" << std::endl;
-    } 
+    } else { pass = 0; } 
 
     // Print test result.
     if (pass == 1) {
