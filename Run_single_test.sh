@@ -10,7 +10,15 @@ MKL_INCLUDE="-I${MKLROOT}/include"
 MKL_COMPILER="-m64"
 MKL_LINKER="-L${MKLROOT}/lib/intel64 -lmkl_intel_lp64 -lmkl_tbb_thread -lmkl_core -ltbb -lstdc++ -lpthread -lm -ldl"
 CUDA_LINKER="-lcublas -lcusparse"
-GPP_COMPILER="-O3"
+CUDA_COMPILER="-Wno-deprecated-gpu-targets"
+GPP_COMPILER="-O3 -std=c++11"
+
+# Combine compiler flags.
+FLAGS="$GPP_COMPILER $MKL_INCLUDE $MKL_COMPILER $MKL_LINKER $CUDA_COMPILER $CUDA_LINKER"
+
+# Message to user.
+echo "Building with the following compiler flags:"
+echo $FLAGS
 
 # Input argument.
 called_test=$1
@@ -21,7 +29,7 @@ rm tests/bin/$called_test
 
 # Build.
 echo "Building" $called_test
-nvcc tests/$called_test_cu -o tests/bin/$called_test $GPP_COMPILER $MKL_INCLUDE $MKL_COMPILER $MKL_LINKER $CUDA_LINKER
+nvcc tests/$called_test_cu -o tests/bin/$called_test $FLAGS
 
 # Run.
 echo "Running" $called_test
