@@ -12,24 +12,28 @@ MKL_LINKER="-L${MKLROOT}/lib/intel64 -lmkl_intel_lp64 -lmkl_tbb_thread -lmkl_cor
 CUDA_LINKER="-lcublas -lcusparse"
 CUDA_COMPILER="-Wno-deprecated-gpu-targets"
 GPP_COMPILER="-O3 -std=c++11"
+GPP_NATIVE="--compiler-options -march=native"
 
 # Combine compiler flags.
-FLAGS="$GPP_COMPILER $MKL_INCLUDE $MKL_COMPILER $MKL_LINKER $CUDA_COMPILER $CUDA_LINKER"
+FLAGS="$GPP_COMPILER $GPP_NATIVE $MKL_INCLUDE $MKL_COMPILER $MKL_LINKER $CUDA_COMPILER $CUDA_LINKER"
 
-# Message to user.
-echo "Building with the following compiler flags:"
-echo $FLAGS
+# Check if "bin" directory exists.
+if [ ! -d "tests/bin" ]; then
+    mkdir tests/bin
+fi
 
 # Input argument.
 called_test=$1
-called_test_cu=$called_test.cu
 
-# Removing old build.
-rm tests/bin/$called_test
+# Remove the test binary if it exists.
+if [ -f tests/bin/$called_test ]
+then
+    rm tests/bin/$called_test
+fi
 
 # Build.
 echo "Building" $called_test
-nvcc tests/$called_test_cu -o tests/bin/$called_test $FLAGS
+nvcc tests/$called_test.cu -o tests/bin/$called_test $FLAGS
 
 # Run.
 echo "Running" $called_test
