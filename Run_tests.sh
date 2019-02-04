@@ -7,15 +7,15 @@ source /opt/intel/compilers_and_libraries/linux/mkl/bin/mklvars.sh intel64
 
 # Compiler flags.
 MKL_INCLUDE="-I${MKLROOT}/include"
-MKL_COMPILER="-m64"
 MKL_LINKER="-L${MKLROOT}/lib/intel64 -lmkl_intel_lp64 -lmkl_tbb_thread -lmkl_core -ltbb -lstdc++ -lpthread -lm -ldl"
 CUDA_LINKER="-lcublas -lcusparse"
-CUDA_COMPILER="-Wno-deprecated-gpu-targets"
-GPP_COMPILER="-O3 -std=c++11"
-GPP_NATIVE="--compiler-options -march=native"
+CUDA_NATIVE="--ptxas-options -O3"
+GPP_NATIVE="--compiler-options -march=native,-O3,-std=c++11,-m64"
+WARNINGS="-Wno-deprecated-gpu-targets -Wno-deprecated-declarations"
 
 # Combine compiler flags.
-FLAGS="$GPP_COMPILER $GPP_NATIVE $MKL_INCLUDE $MKL_COMPILER $MKL_LINKER $CUDA_COMPILER $CUDA_LINKER"
+FLAGS0="$CUDA_NATIVE $GPP_NATIVE"
+FLAGS1="$WARNINGS $MKL_INCLUDE $MKL_LINKER $CUDA_LINKER"
 
 # Create "bin" directory if it doesn't exist.
 if [ ! -d "tests/bin" ]; then
@@ -42,7 +42,7 @@ do
     fi
     # Build the test.
     echo "Building" $TEST
-    nvcc tests/$TEST.cu -o tests/bin/$TEST $FLAGS
+    nvcc tests/$TEST.cu $FLAGS0 -o tests/bin/$TEST $FLAGS1
     # Run the test.
     echo "Running" $TEST
     tests/bin/$TEST

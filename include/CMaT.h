@@ -1,5 +1,3 @@
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-
 // Included for printing to screen.
 #include <iostream>
 
