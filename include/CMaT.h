@@ -8,6 +8,7 @@
 // Include the Thrust header files.
 #include <thrust/host_vector.h>
 #include <thrust/device_vector.h>
+#include <thrust/inner_product.h>
 
 // Include the CUDA header files.
 #include <cuda_runtime.h>
