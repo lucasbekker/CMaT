@@ -30,6 +30,8 @@ GPU_Dense_mv_test
 GPU_Dense_f_mv_test
 CPU_Sparse_mv_test
 CPU_Sparse_f_mv_test
+GPU_Sparse_mv_test
+GPU_Sparse_f_mv_test
 "
 
 # Build and run.

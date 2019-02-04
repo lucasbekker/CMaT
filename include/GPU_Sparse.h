@@ -21,7 +21,24 @@ class GPU_Sparse: public GPU_methods {
         void scp (  ) { std::cout << "empty" << std::endl; }
         
         // Links to GPU_methods.spdgemv().
-        void mv (  ) { std::cout << "empty" << std::endl; }
+        GPU_Dense mv ( const GPU_Dense x ) {
+
+            // Initialize result Vector.
+            GPU_Dense y(Size[0],1,handles);
+
+            // Create pointers.
+            const double * Vp = thrust::raw_pointer_cast(&Values[0]);
+            const int * Ip = thrust::raw_pointer_cast(&I[0]);
+            const int * Jp = thrust::raw_pointer_cast(&J[0]);
+            const double * xp = thrust::raw_pointer_cast(&x.Values[0]);
+
+            // Call GPU_methods.spdgemv().
+            y.Values = this->spdgemv(Size[0],Size[1],Size[2],Vp,Ip,Jp,xp,descr);
+
+            // Return the result.
+            return y;
+
+        }
 
         // Links to GPU_methods.spdgemm().
         void mm (  ) { std::cout << "empty" << std::endl; }
@@ -76,7 +93,24 @@ class GPU_Sparse_f: public GPU_methods {
         void scp (  ) { std::cout << "empty" << std::endl; }
 
         // Links to GPU_methods.spfgemv().
-        void mv (  ) { std::cout << "empty" << std::endl; }
+        GPU_Dense_f mv ( const GPU_Dense_f x ) {
+
+            // Initialize result Vector.
+            GPU_Dense_f y(Size[0],1,handles);
+
+            // Create pointers.
+            const float * Vp = thrust::raw_pointer_cast(&Values[0]);
+            const int * Ip = thrust::raw_pointer_cast(&I[0]);
+            const int * Jp = thrust::raw_pointer_cast(&J[0]);
+            const float * xp = thrust::raw_pointer_cast(&x.Values[0]);
+
+            // Call GPU_methods.spdgemv().
+            y.Values = this->spfgemv(Size[0],Size[1],Size[2],Vp,Ip,Jp,xp,descr);
+
+            // Return the result.
+            return y;
+
+        }
 
         // Links to GPU_methods.spfgemm().
         void mm (  ) { std::cout << "empty" << std::endl; }
