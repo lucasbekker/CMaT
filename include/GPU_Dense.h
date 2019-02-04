@@ -25,7 +25,7 @@ class GPU_Dense: public GPU_methods {
         GPU_Dense mv ( const GPU_Dense x ) {
             
             // Initialize result Vector.
-            GPU_Dense y(Size[0],1,handles);
+            GPU_Dense y(Size[0],1);
 
             // Create pointers.
             const double * A = thrust::raw_pointer_cast(&Values[0]);
@@ -49,7 +49,7 @@ class GPU_Dense: public GPU_methods {
         void conv (  ) { std::cout << "empty" << std::endl; }
 
         // Constructor
-        GPU_Dense ( int m, int n, HANDLES * _handles ): GPU_methods(_handles) {
+        GPU_Dense ( int m, int n ) {
             
             // Fill Size array.
             Size[0] = m;
@@ -70,7 +70,7 @@ class GPU_Dense: public GPU_methods {
         }
 
         // Overloaded constructor for manual isVector manipulation.
-        GPU_Dense ( int m, int n, HANDLES * _handles, int isv ): GPU_methods(_handles) {
+        GPU_Dense ( int m, int n, int isv ) {
             
             // Fill Size array.
             Size[0] = m;
@@ -118,7 +118,7 @@ class GPU_Dense_f: public GPU_methods {
         GPU_Dense_f mv ( GPU_Dense_f x ) {
             
             // Initialize result Vector.
-            GPU_Dense_f y(Size[0],1,handles);
+            GPU_Dense_f y(Size[0],1);
 
             // Create pointers.
             const float * A = thrust::raw_pointer_cast(&Values[0]);
@@ -142,7 +142,7 @@ class GPU_Dense_f: public GPU_methods {
         void conv (  ) { std::cout << "empty" << std::endl; }
 
         // Constructor
-        GPU_Dense_f ( int m, int n, HANDLES * _handles ): GPU_methods(_handles) {
+        GPU_Dense_f ( int m, int n ) {
             
             // Fill Size array.
             Size[0] = m;
@@ -163,7 +163,7 @@ class GPU_Dense_f: public GPU_methods {
         }
 
         // Overloaded constructor for manual isVector manipulation.
-        GPU_Dense_f ( int m, int n, HANDLES * _handles, int isv ): GPU_methods(_handles) {
+        GPU_Dense_f ( int m, int n, int isv ) {
             
             // Fill Size array.
             Size[0] = m;

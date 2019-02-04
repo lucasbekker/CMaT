@@ -3,18 +3,15 @@
 // Test GPU_Sparse_f.mv()
 int main (  ) {
 
-    // Create the handles.
-    HANDLES handles = createHandles();
-
     // Check.
     int pass = 1;
 
     // Initialize Matrices and vectors.
-    GPU_Sparse_f A1(4,3,6,&handles);
-    GPU_Sparse_f A2(3,3,3,&handles);
-    GPU_Sparse_f A3(3,4,6,&handles);
-    GPU_Dense_f b1(3,1,&handles);
-    GPU_Dense_f b2(4,1,&handles);
+    GPU_Sparse_f A1(4,3,6);
+    GPU_Sparse_f A2(3,3,3);
+    GPU_Sparse_f A3(3,4,6);
+    GPU_Dense_f b1(3,1);
+    GPU_Dense_f b2(4,1);
 
     // Fill matrix A1.
     A1.Values[0] = 2;       // A1 = 2 0 0
@@ -98,8 +95,6 @@ int main (  ) {
     } else {
         std::cout << "Test of GPU_Sparse_f.mv() FAILED" << std::endl;
     }
-
-    destroyHandles(handles);
 
     return 0;
 

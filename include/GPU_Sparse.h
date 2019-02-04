@@ -24,7 +24,7 @@ class GPU_Sparse: public GPU_methods {
         GPU_Dense mv ( const GPU_Dense x ) {
 
             // Initialize result Vector.
-            GPU_Dense y(Size[0],1,handles);
+            GPU_Dense y(Size[0],1);
 
             // Create pointers.
             const double * Vp = thrust::raw_pointer_cast(&Values[0]);
@@ -50,7 +50,7 @@ class GPU_Sparse: public GPU_methods {
         void conv (  ) { std::cout << "empty" << std::endl; }
 
         // Constructor
-        GPU_Sparse ( int m, int n, int nnz, HANDLES * _handles ): GPU_methods(_handles) {
+        GPU_Sparse ( int m, int n, int nnz ) {
             
             // Fill Size array.
             Size[0] = m;
@@ -63,9 +63,9 @@ class GPU_Sparse: public GPU_methods {
             J.resize(Size[2]);
 
             // Fill matrix description.
-            handles->csstatus = cusparseCreateMatDescr(&descr);
-            handles->csstatus = cusparseSetMatType(descr,CUSPARSE_MATRIX_TYPE_GENERAL);
-            handles->csstatus = cusparseSetMatIndexBase(descr,CUSPARSE_INDEX_BASE_ZERO);
+            _handles->csstatus = cusparseCreateMatDescr(&descr);
+            _handles->csstatus = cusparseSetMatType(descr,CUSPARSE_MATRIX_TYPE_GENERAL);
+            _handles->csstatus = cusparseSetMatIndexBase(descr,CUSPARSE_INDEX_BASE_ZERO);
 
         }
 };
@@ -96,7 +96,7 @@ class GPU_Sparse_f: public GPU_methods {
         GPU_Dense_f mv ( const GPU_Dense_f x ) {
 
             // Initialize result Vector.
-            GPU_Dense_f y(Size[0],1,handles);
+            GPU_Dense_f y(Size[0],1);
 
             // Create pointers.
             const float * Vp = thrust::raw_pointer_cast(&Values[0]);
@@ -122,7 +122,7 @@ class GPU_Sparse_f: public GPU_methods {
         void conv (  ) { std::cout << "empty" << std::endl; }
 
         // Constructor
-        GPU_Sparse_f ( int m, int n, int nnz, HANDLES * _handles ): GPU_methods(_handles)  {
+        GPU_Sparse_f ( int m, int n, int nnz ) {
             
             // Fill Size array.
             Size[0] = m;
@@ -135,9 +135,9 @@ class GPU_Sparse_f: public GPU_methods {
             J.resize(Size[2]);
 
             // Fill matrix description.
-            handles->csstatus = cusparseCreateMatDescr(&descr);
-            handles->csstatus = cusparseSetMatType(descr,CUSPARSE_MATRIX_TYPE_GENERAL);
-            handles->csstatus = cusparseSetMatIndexBase(descr,CUSPARSE_INDEX_BASE_ZERO);
+            _handles->csstatus = cusparseCreateMatDescr(&descr);
+            _handles->csstatus = cusparseSetMatType(descr,CUSPARSE_MATRIX_TYPE_GENERAL);
+            _handles->csstatus = cusparseSetMatIndexBase(descr,CUSPARSE_INDEX_BASE_ZERO);
 
         }
 };

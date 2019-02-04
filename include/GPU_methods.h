@@ -1,15 +1,5 @@
 class GPU_methods {
     public:
-        // Handles to CUDA libraries.
-        HANDLES * handles;
-
-        // Constructor
-        GPU_methods ( HANDLES * _handles ) {
-            
-            // Assign pointers to cuSPARSE handle and status.
-            handles = _handles;
-        }
-
         // Dense float matrix vector product. (cuBLAS)
         thrust::device_vector<float> dfgemv ( const int m, const int n, const float * A, const float * x ) {
 
@@ -27,10 +17,10 @@ class GPU_methods {
             // y := alpha*A*x + beta*y.
             // x and y are vectors.
             // A is an m-by-n matrix.
-            handles->cbstatus = cublasSgemv( handles->cbhandle, CUBLAS_OP_N, m, n, alpha, A, m, x, 1, beta, y, 1 );
+            _handles->cbstatus = cublasSgemv( _handles->cbhandle, CUBLAS_OP_N, m, n, alpha, A, m, x, 1, beta, y, 1 );
 
             // check the status.
-            if (handles->cbstatus != CUBLAS_STATUS_SUCCESS) {
+            if (_handles->cbstatus != CUBLAS_STATUS_SUCCESS) {
                 std::cout << "cuBLAS status is not ok. " << std::endl;
             }
 
@@ -55,10 +45,10 @@ class GPU_methods {
             // y := alpha*A*x + beta*y.
             // x and y are vectors.
             // A is an m-by-n matrix.
-            handles->cbstatus = cublasDgemv( handles->cbhandle, CUBLAS_OP_N, m, n, alpha, A, m, x, 1, beta, y, 1 );
+            _handles->cbstatus = cublasDgemv( _handles->cbhandle, CUBLAS_OP_N, m, n, alpha, A, m, x, 1, beta, y, 1 );
 
             // check the status.
-            if (handles->cbstatus != CUBLAS_STATUS_SUCCESS) {
+            if (_handles->cbstatus != CUBLAS_STATUS_SUCCESS) {
                 std::cout << "cuBLAS status is not ok. " << std::endl;
             }
 
@@ -90,11 +80,11 @@ class GPU_methods {
             // y := alpha*A*x + beta*y.
             // x and y are vectors.
             // A is an m-by-n matrix.
-            handles->csstatus = cusparseScsrmv( handles->cshandle, CUSPARSE_OPERATION_NON_TRANSPOSE, m, n,
-                                                numnz, alpha, descr, Values, I, J, x, beta, y );
+            _handles->csstatus = cusparseScsrmv( _handles->cshandle, CUSPARSE_OPERATION_NON_TRANSPOSE, m, n,
+                                                 numnz, alpha, descr, Values, I, J, x, beta, y );
 
             // check the status.
-            if (handles->csstatus != CUSPARSE_STATUS_SUCCESS) {
+            if (_handles->csstatus != CUSPARSE_STATUS_SUCCESS) {
                 std::cout << "cuSPARSE status is not ok. " << std::endl;
             }
 
@@ -114,23 +104,17 @@ class GPU_methods {
             double Alfa = 1.0; double * alpha = &Alfa;
             double Beta = 0; double * beta = &Beta;
             
-            // Create a handle for cuSPARSE.
-            cusparseMatDescr_t descrA = NULL;
-            handles->csstatus = cusparseCreateMatDescr(&descrA);
-            handles->csstatus = cusparseSetMatType(descrA,CUSPARSE_MATRIX_TYPE_GENERAL);
-            handles->csstatus = cusparseSetMatIndexBase(descrA,CUSPARSE_INDEX_BASE_ZERO);
-           
             // cuSPARSE function, documentation:
             // https://docs.nvidia.com/cuda/cusparse/index.html#cusparse-lt-t-gt-csrmv
             //
             // y := alpha*A*x + beta*y.
             // x and y are vectors.
             // A is an m-by-n matrix.
-            handles->csstatus = cusparseDcsrmv( handles->cshandle, CUSPARSE_OPERATION_NON_TRANSPOSE, m, n,
-                                                numnz, alpha, descrA, Values, I, J, x, beta, y );
+            _handles->csstatus = cusparseDcsrmv( _handles->cshandle, CUSPARSE_OPERATION_NON_TRANSPOSE, m, n,
+                                                 numnz, alpha, descr, Values, I, J, x, beta, y );
 
             // check the status.
-            if (handles->csstatus != CUSPARSE_STATUS_SUCCESS) {
+            if (_handles->csstatus != CUSPARSE_STATUS_SUCCESS) {
                 std::cout << "cuSPARSE status is not ok. " << std::endl;
             }
 
