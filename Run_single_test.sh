@@ -33,7 +33,7 @@ fi
 
 # Build.
 echo "Building" $called_test
-nvcc tests/$called_test.cu $FLAGS0 -o tests/bin/$called_test $FLAGS1
+nvcc $FLAGS0 tests/$called_test.cu -o tests/bin/$called_test $FLAGS1
 
 # Run.
 echo "Running" $called_test

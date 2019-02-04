@@ -42,7 +42,7 @@ do
     fi
     # Build the test.
     echo "Building" $TEST
-    nvcc tests/$TEST.cu $FLAGS0 -o tests/bin/$TEST $FLAGS1
+    nvcc $FLAGS0 tests/$TEST.cu -o tests/bin/$TEST $FLAGS1
     # Run the test.
     echo "Running" $TEST
     tests/bin/$TEST
