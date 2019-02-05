@@ -19,7 +19,7 @@ class CPU_Dense: public CPU_methods {
         void scp (  ) { std::cout << "empty" << std::endl; }
 
         // Links to CPU_methods.ddot().
-        double dot ( const CPU_Dense x ) {
+        double dot ( const CPU_Dense& x ) {
             
             // Create pointers.
             const thrust::host_vector<double> * xp = &x.Values;
@@ -34,7 +34,7 @@ class CPU_Dense: public CPU_methods {
         }
 
         // Links to CPU_methods.ddgemv().
-        CPU_Dense mv ( const CPU_Dense x ) {
+        CPU_Dense mv ( const CPU_Dense& x ) {
 
             // Initialize result Vector.
             CPU_Dense y(Size[0],1);
@@ -124,7 +124,7 @@ class CPU_Dense_f: public CPU_methods {
         void scp (  ) { std::cout << "empty" << std::endl; }
 
         // Links to CPU_methods.fdot().
-        float dot ( const CPU_Dense_f x ) {
+        float dot ( const CPU_Dense_f& x ) {
 
             // Create pointers.
             const thrust::host_vector<float> * xp = &x.Values;
@@ -139,7 +139,7 @@ class CPU_Dense_f: public CPU_methods {
         }
 
         // Links to CPU_methods.dfgemv().
-        CPU_Dense_f mv ( CPU_Dense_f x ) {
+        CPU_Dense_f mv ( CPU_Dense_f& x ) {
             
             // Initialize result Vector.
             CPU_Dense_f y(Size[0],1);

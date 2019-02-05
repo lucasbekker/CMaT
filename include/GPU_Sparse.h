@@ -21,7 +21,7 @@ class GPU_Sparse: public GPU_methods {
         void scp (  ) { std::cout << "empty" << std::endl; }
         
         // Links to GPU_methods.spdgemv().
-        GPU_Dense mv ( const GPU_Dense x ) {
+        GPU_Dense mv ( const GPU_Dense& x ) {
 
             // Initialize result Vector.
             GPU_Dense y(Size[0],1);
@@ -93,7 +93,7 @@ class GPU_Sparse_f: public GPU_methods {
         void scp (  ) { std::cout << "empty" << std::endl; }
 
         // Links to GPU_methods.spfgemv().
-        GPU_Dense_f mv ( const GPU_Dense_f x ) {
+        GPU_Dense_f mv ( const GPU_Dense_f& x ) {
 
             // Initialize result Vector.
             GPU_Dense_f y(Size[0],1);

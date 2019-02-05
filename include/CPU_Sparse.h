@@ -24,7 +24,7 @@ class CPU_Sparse: public CPU_methods {
         void scp (  ) { std::cout << "empty" << std::endl; }
 
         // Links to CPU_methods.spdgemv().
-        CPU_Dense mv ( const CPU_Dense x  ) {
+        CPU_Dense mv ( const CPU_Dense& x  ) {
 
             // Initialize result Vector.
             CPU_Dense y(Size[0],1);
@@ -96,7 +96,7 @@ class CPU_Sparse_f: public CPU_methods {
         void scp (  ) { std::cout << "empty" << std::endl; }
 
         // Links to CPU_methods.spfgemv().
-        CPU_Dense_f mv ( const CPU_Dense_f x  ) {
+        CPU_Dense_f mv ( const CPU_Dense_f& x  ) {
 
             // Initialize result Vector.
             CPU_Dense_f y(Size[0],1);
