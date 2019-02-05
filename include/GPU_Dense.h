@@ -19,7 +19,18 @@ class GPU_Dense: public GPU_methods {
         void scp (  ) { std::cout << "empty" << std::endl; }
 
         // Links to GPU_methods.ddot().
-        void dot (  ) { std::cout << "empty" << std::endl; }
+        double dot ( const GPU_Dense x ) {
+
+            // Create pointers.
+            const thrust::device_vector<double> * xp = &x.Values;
+            const thrust::device_vector<double> * yp = &Values;
+
+            // Call GPU_methods.ddot().
+            double result = ddot(xp,yp);
+
+            // Return the result.
+            return result;
+        }
 
         // Links to GPU_methods.ddgemv().
         GPU_Dense mv ( const GPU_Dense x ) {
@@ -112,7 +123,19 @@ class GPU_Dense_f: public GPU_methods {
         void scp (  ) { std::cout << "empty" << std::endl; }
 
         // Links to GPU_methods.fdot().
-        void dot (  ) { std::cout << "empty" << std::endl; }
+        float dot ( const GPU_Dense_f x ) {
+
+            // Create pointers.
+            const thrust::device_vector<float> * xp = &x.Values;
+            const thrust::device_vector<float> * yp = &Values;
+
+            // Call GPU_methods.ddot().
+            float result = fdot(xp,yp);
+
+            // Return the result.
+            return result;
+            
+        }
 
         // Links to GPU_methods.dfgemv().
         GPU_Dense_f mv ( GPU_Dense_f x ) {

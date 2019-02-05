@@ -129,10 +129,26 @@ class GPU_methods {
         void spdgemm (  ) { std::cout << "empty" << std::endl; }
 
         // Float vector dot product. (Thrust)
-        void fdot (  ) { std::cout << "empty" << std::endl; }
+        float fdot ( const thrust::device_vector<float> * x, const thrust::device_vector<float> * y ) {
+            
+            // Perform the calculation.
+            float result = thrust::inner_product(x->begin(),x->end(),y->begin(),0.0);
+
+            // Return the result.
+            return result;
+
+        }
 
         // Double vector dot product. (Thrust)
-        void ddot (  ) { std::cout << "empty" << std::endl; }
+        double ddot ( const thrust::device_vector<double> * x, const thrust::device_vector<double> * y ) {
+            
+            // Perform the calculation.
+            double result = thrust::inner_product(x->begin(),x->end(),y->begin(),0.0);
+
+            // Return the result.
+            return result;
+
+        }
 
         // Float scalar multiplication. (Thrust)
         void fscp (  ) { std::cout << "empty" << std::endl; }
