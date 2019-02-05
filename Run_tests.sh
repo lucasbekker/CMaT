@@ -36,6 +36,8 @@ CPU_Dense_dot_test
 CPU_Dense_f_dot_test
 GPU_Dense_dot_test
 GPU_Dense_f_dot_test
+CPU_Dense_scp_test
+CPU_Dense_f_scp_test
 "
 
 # Build and run.
