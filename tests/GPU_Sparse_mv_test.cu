@@ -73,7 +73,7 @@ int main (  ) {
     b2.Values[2] = 3;
     b2.Values[3] = 3;
 
-        // Perform the calculation.
+    // Perform the calculation.
     GPU_Dense r1 = A1.mv(b1);
     GPU_Dense r2 = A2.mv(b1);
     GPU_Dense r3 = A3.mv(b2);

@@ -9,6 +9,8 @@
 #include <thrust/host_vector.h>
 #include <thrust/device_vector.h>
 #include <thrust/inner_product.h>
+#include <thrust/transform.h>
+#include "Thrust_functors.h"
 
 // Include the CUDA header files.
 #include <cuda_runtime.h>

@@ -129,10 +129,31 @@ class CPU_methods {
         }
 
         // Float scalar multiplication. (Thrust)
-        void fscp (  ) { std::cout << "empty" << std::endl; }
+        thrust::host_vector<float> fscp ( const float a, thrust::host_vector<float> * x ) {
+            
+            // Initiate the result vector.
+            thrust::host_vector<float> y(x->size());
+
+            // Call the transformation.
+            thrust::transform(x->begin(),x->end(),y.begin(),fscp_functor(a));
+
+            // Return the result.
+            return y;
+
+        }
 
         // Double scalar multiplication. (Thrust)
-        void dscp (  ) { std::cout << "empty" << std::endl; }
+        thrust::host_vector<double> dscp ( const double a, thrust::host_vector<double> * x ) {
+            
+            // Initiate the result vector.
+            thrust::host_vector<double> y(x->size());
+
+            // Call the transformation.
+            thrust::transform(x->begin(),x->end(),y.begin(),dscp_functor(a));
+
+            // Return the result.
+            return y;
+        }
 
         // Float scalar addition. (Thrust)
         void fadd (  ) { std::cout << "empty" << std::endl; }
