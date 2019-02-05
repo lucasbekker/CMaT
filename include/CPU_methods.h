@@ -129,7 +129,7 @@ class CPU_methods {
         }
 
         // Float scalar multiplication. (Thrust)
-        thrust::host_vector<float> fscp ( const float a, thrust::host_vector<float> * x ) {
+        thrust::host_vector<float> fscp ( const float a, const thrust::host_vector<float> * x ) {
             
             // Initiate the result vector.
             thrust::host_vector<float> y(x->size());
@@ -143,7 +143,7 @@ class CPU_methods {
         }
 
         // Double scalar multiplication. (Thrust)
-        thrust::host_vector<double> dscp ( const double a, thrust::host_vector<double> * x ) {
+        thrust::host_vector<double> dscp ( const double a, const thrust::host_vector<double> * x ) {
             
             // Initiate the result vector.
             thrust::host_vector<double> y(x->size());

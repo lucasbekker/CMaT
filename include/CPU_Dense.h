@@ -16,7 +16,21 @@ class CPU_Dense: public CPU_methods {
         void trans (  ) { std::cout << "empty" << std::endl; }
 
         // Links to CPU_methods.dscp().
-        void scp (  ) { std::cout << "empty" << std::endl; }
+        CPU_Dense scp ( const double a ) {
+            
+            // Initialize result Vector.
+            CPU_Dense y(Size[0],Size[1]);
+
+            // Create pointers.
+            const thrust::host_vector<double> * xp = &Values;
+
+            // Call CPU_methods.dscp().
+            y.Values = dscp(a,xp);
+
+            // Return the result.
+            return y;
+
+        }
 
         // Links to CPU_methods.ddot().
         double dot ( const CPU_Dense& x ) {
@@ -121,7 +135,21 @@ class CPU_Dense_f: public CPU_methods {
         void trans (  ) { std::cout << "empty" << std::endl; }
 
         // Links to CPU_methods.fscp().
-        void scp (  ) { std::cout << "empty" << std::endl; }
+        CPU_Dense_f scp ( const float a ) {
+            
+            // Initialize result Vector.
+            CPU_Dense_f y(Size[0],Size[1]);
+
+            // Create pointers.
+            const thrust::host_vector<float> * xp = &Values;
+
+            // Call CPU_methods.dscp().
+            y.Values = fscp(a,xp);
+
+            // Return the result.
+            return y;
+
+        }
 
         // Links to CPU_methods.fdot().
         float dot ( const CPU_Dense_f& x ) {
