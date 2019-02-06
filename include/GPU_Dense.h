@@ -16,7 +16,7 @@ class GPU_Dense: public GPU_methods {
             const thrust::device_vector<double> * xp = &Values;
 
             // Call CPU_methods.dscp().
-            y.Values = dadd(a,xp);
+            y.Values = dadd(a,xp,0);
 
             // Return the result.
             return y;
@@ -39,7 +39,7 @@ class GPU_Dense: public GPU_methods {
             const thrust::device_vector<double> * xp = &Values;
 
             // Call GPU_methods.dscp().
-            y.Values = dscp(a,xp);
+            y.Values = dscp(a,xp,0);
 
             // Return the result.
             return y;
@@ -164,7 +164,7 @@ class GPU_Dense_f: public GPU_methods {
             const thrust::device_vector<float> * xp = &Values;
 
             // Call CPU_methods.dscp().
-            y.Values = fadd(a,xp);
+            y.Values = fadd(a,xp,0);
 
             // Return the result.
             return y;
@@ -187,7 +187,7 @@ class GPU_Dense_f: public GPU_methods {
             const thrust::device_vector<float> * xp = &Values;
 
             // Call GPU_methods.fscp().
-            y.Values = fscp(a,xp);
+            y.Values = fscp(a,xp,0);
 
             // Return the result.
             return y;

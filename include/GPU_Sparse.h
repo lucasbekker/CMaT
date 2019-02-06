@@ -18,7 +18,7 @@ class GPU_Sparse: public GPU_methods {
             const thrust::device_vector<double> * xp = &Values;
 
             // Call GPU_methods.dadd().
-            y.Values = dadd(a,xp);
+            y.Values = dadd(a,xp,0);
 
             // Fill the index arrays.
             y.I = I;
@@ -45,7 +45,7 @@ class GPU_Sparse: public GPU_methods {
             const thrust::device_vector<double> * xp = &Values;
 
             // Call GPU_methods.dscp().
-            y.Values = dscp(a,xp);
+            y.Values = dscp(a,xp,0);
 
             // Fill the index arrays.
             y.I = I;
@@ -131,7 +131,7 @@ class GPU_Sparse_f: public GPU_methods {
             const thrust::device_vector<float> * xp = &Values;
 
             // Call GPU_methods.fadd().
-            y.Values = fadd(a,xp);
+            y.Values = fadd(a,xp,0);
 
             // Fill the index arrays.
             y.I = I;
@@ -158,7 +158,7 @@ class GPU_Sparse_f: public GPU_methods {
             const thrust::device_vector<float> * xp = &Values;
 
             // Call GPU_methods.fscp().
-            y.Values = fscp(a,xp);
+            y.Values = fscp(a,xp,0);
 
             // Fill the index arrays.
             y.I = I;
