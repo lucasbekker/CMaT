@@ -36,5 +36,8 @@ echo "Building" $called_test
 nvcc $FLAGS0 tests/$called_test.cu -o tests/bin/$called_test $FLAGS1
 
 # Run.
-echo "Running" $called_test
-tests/bin/$called_test
+if [ -f tests/bin/$called_test ]
+then
+    echo "Running" $called_test
+    tests/bin/$called_test
+fi

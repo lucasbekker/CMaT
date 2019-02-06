@@ -24,18 +24,8 @@ fi
 
 # Tests to run.
 FILES="
-CPU_Dense_mv_test
-CPU_Dense_f_mv_test
-GPU_Dense_mv_test
-GPU_Dense_f_mv_test
-CPU_Sparse_mv_test
-CPU_Sparse_f_mv_test
-GPU_Sparse_mv_test
-GPU_Sparse_f_mv_test
-CPU_Dense_dot_test
-CPU_Dense_f_dot_test
-GPU_Dense_dot_test
-GPU_Dense_f_dot_test
+Matrix_vector_product_test
+Inner_product_test
 CPU_Dense_scp_test
 CPU_Dense_f_scp_test
 GPU_Dense_scp_test
@@ -50,10 +40,15 @@ do
     then
         rm tests/bin/$TEST
     fi
+    
     # Build the test.
     echo "Building" $TEST
     nvcc $FLAGS0 tests/$TEST.cu -o tests/bin/$TEST $FLAGS1
+    
     # Run the test.
-    echo "Running" $TEST
-    tests/bin/$TEST
+    if [ -f tests/bin/$TEST ]
+    then
+        echo "Running" $TEST
+        tests/bin/$TEST
+    fi
 done
