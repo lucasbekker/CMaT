@@ -21,7 +21,26 @@ class CPU_Sparse: public CPU_methods {
         void trans (  ) { std::cout << "empty" << std::endl; }
 
         // Links to CPU_methods.dscp().
-        void scp (  ) { std::cout << "empty" << std::endl; }
+        CPU_Sparse scp ( const double a ) {
+            
+            // Initialize result Vector.
+            CPU_Sparse y(Size[0],Size[1],Size[2]);
+
+            // Create pointers.
+            const thrust::host_vector<double> * xp = &Values;
+
+            // Call GPU_methods.dscp().
+            y.Values = dscp(a,xp);
+
+            // Fill the index arrays.
+            y.Ib = Ib;
+            y.Ie = Ie;
+            y.J = J;
+
+            // Return the result.
+            return y;
+
+        }
 
         // Links to CPU_methods.spdgemv().
         CPU_Dense mv ( const CPU_Dense& x  ) {
@@ -93,7 +112,26 @@ class CPU_Sparse_f: public CPU_methods {
         void trans (  ) { std::cout << "empty" << std::endl; }
 
         // Links to CPU_methods.fscp().
-        void scp (  ) { std::cout << "empty" << std::endl; }
+        CPU_Sparse_f scp ( const float a ) {
+            
+            // Initialize result Vector.
+            CPU_Sparse_f y(Size[0],Size[1],Size[2]);
+
+            // Create pointers.
+            const thrust::host_vector<float> * xp = &Values;
+
+            // Call GPU_methods.fscp().
+            y.Values = fscp(a,xp);
+
+            // Fill the index arrays.
+            y.Ib = Ib;
+            y.Ie = Ie;
+            y.J = J;
+
+            // Return the result.
+            return y;
+
+        }
 
         // Links to CPU_methods.spfgemv().
         CPU_Dense_f mv ( const CPU_Dense_f& x  ) {

@@ -26,10 +26,7 @@ fi
 FILES="
 Matrix_vector_product_test
 Inner_product_test
-CPU_Dense_scp_test
-CPU_Dense_f_scp_test
-GPU_Dense_scp_test
-GPU_Dense_f_scp_test
+Scalar_product_test
 "
 
 # Build and run.

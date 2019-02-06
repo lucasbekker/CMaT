@@ -18,7 +18,25 @@ class GPU_Sparse: public GPU_methods {
         void trans (  ) { std::cout << "empty" << std::endl; }
 
         // Links to GPU_methods.dscp().
-        void scp (  ) { std::cout << "empty" << std::endl; }
+        GPU_Sparse scp ( const double a ) {
+            
+            // Initialize result Vector.
+            GPU_Sparse y(Size[0],Size[1],Size[2]);
+
+            // Create pointers.
+            const thrust::device_vector<double> * xp = &Values;
+
+            // Call GPU_methods.dscp().
+            y.Values = dscp(a,xp);
+
+            // Fill the index arrays.
+            y.I = I;
+            y.J = J;
+
+            // Return the result.
+            return y;
+
+        }
         
         // Links to GPU_methods.spdgemv().
         GPU_Dense mv ( const GPU_Dense& x ) {
@@ -90,7 +108,25 @@ class GPU_Sparse_f: public GPU_methods {
         void trans (  ) { std::cout << "empty" << std::endl; }
 
         // Links to GPU_methods.fscp().
-        void scp (  ) { std::cout << "empty" << std::endl; }
+        GPU_Sparse_f scp ( const float a ) {
+            
+            // Initialize result Vector.
+            GPU_Sparse_f y(Size[0],Size[1],Size[2]);
+
+            // Create pointers.
+            const thrust::device_vector<float> * xp = &Values;
+
+            // Call GPU_methods.fscp().
+            y.Values = fscp(a,xp);
+
+            // Fill the index arrays.
+            y.I = I;
+            y.J = J;
+
+            // Return the result.
+            return y;
+
+        }
 
         // Links to GPU_methods.spfgemv().
         GPU_Dense_f mv ( const GPU_Dense_f& x ) {
