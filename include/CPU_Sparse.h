@@ -12,8 +12,27 @@ class CPU_Sparse: public CPU_methods {
 
         // Methods
         // Links to CPU_methods.dadd().
-        void add (  ) { std::cout << "empty" << std::endl; }
+        CPU_Sparse add ( const double a ) {
+            
+            // Initialize result Vector.
+            CPU_Sparse y(Size[0],Size[1],Size[2]);
 
+            // Create pointers.
+            const thrust::host_vector<double> * xp = &Values;
+
+            // Call GPU_methods.dadd().
+            y.Values = dadd(a,xp);
+
+            // Fill the index arrays.
+            y.Ib = Ib;
+            y.Ie = Ie;
+            y.J = J;
+
+            // Return the result.
+            return y;
+
+        }
+        
         // Links to CPU_methods.spdadd().
         void madd (  ) { std::cout << "empty" << std::endl; }
 
@@ -108,7 +127,26 @@ class CPU_Sparse_f: public CPU_methods {
 
         // Methods
         // Links to CPU_methods.fadd().
-        void add (  ) { std::cout << "empty" << std::endl; }
+        CPU_Sparse_f add ( const float a ) {
+            
+            // Initialize result Vector.
+            CPU_Sparse_f y(Size[0],Size[1],Size[2]);
+
+            // Create pointers.
+            const thrust::host_vector<float> * xp = &Values;
+
+            // Call GPU_methods.fadd().
+            y.Values = fadd(a,xp);
+
+            // Fill the index arrays.
+            y.Ib = Ib;
+            y.Ie = Ie;
+            y.J = J;
+
+            // Return the result.
+            return y;
+
+        }
 
         // Links to CPU_methods.spfadd().
         void madd (  ) { std::cout << "empty" << std::endl; }

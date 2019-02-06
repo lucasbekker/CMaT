@@ -9,7 +9,25 @@ class GPU_Sparse: public GPU_methods {
         
         // Methods
         // Links to GPU_methods.dadd().
-        void add (  ) { std::cout << "empty" << std::endl; }
+        GPU_Sparse add ( const double a ) {
+            
+            // Initialize result Vector.
+            GPU_Sparse y(Size[0],Size[1],Size[2]);
+
+            // Create pointers.
+            const thrust::device_vector<double> * xp = &Values;
+
+            // Call GPU_methods.dadd().
+            y.Values = dadd(a,xp);
+
+            // Fill the index arrays.
+            y.I = I;
+            y.J = J;
+
+            // Return the result.
+            return y;
+
+        }
 
         // Links to GPU_methods.spdadd().
         void madd (  ) { std::cout << "empty" << std::endl; }
@@ -104,7 +122,25 @@ class GPU_Sparse_f: public GPU_methods {
 
         // Methods
         // Links to GPU_methods.fadd().
-        void add (  ) { std::cout << "empty" << std::endl; }
+        GPU_Sparse_f add ( const float a ) {
+            
+            // Initialize result Vector.
+            GPU_Sparse_f y(Size[0],Size[1],Size[2]);
+
+            // Create pointers.
+            const thrust::device_vector<float> * xp = &Values;
+
+            // Call GPU_methods.fadd().
+            y.Values = fadd(a,xp);
+
+            // Fill the index arrays.
+            y.I = I;
+            y.J = J;
+
+            // Return the result.
+            return y;
+
+        }
 
         // Links to CPU_methods.spfadd().
         void madd (  ) { std::cout << "empty" << std::endl; }

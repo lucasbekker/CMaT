@@ -7,7 +7,21 @@ class GPU_Dense: public GPU_methods {
         
         // Methods
         // Links to GPU_methods.dadd().
-        void add (  ) { std::cout << "empty" << std::endl; }
+        GPU_Dense add ( const double a ) {
+            
+            // Initialize result Vector.
+            GPU_Dense y(Size[0],Size[1]);
+
+            // Create pointers.
+            const thrust::device_vector<double> * xp = &Values;
+
+            // Call CPU_methods.dscp().
+            y.Values = dadd(a,xp);
+
+            // Return the result.
+            return y;
+
+        }
 
         // Links to GPU_methods.dadd().
         void madd (  ) { std::cout << "empty" << std::endl; }
@@ -141,7 +155,21 @@ class GPU_Dense_f: public GPU_methods {
 
         // Methods
         // Links to GPU_methods.fadd().
-        void add (  ) { std::cout << "empty" << std::endl; }
+        GPU_Dense_f add ( const float a ) {
+            
+            // Initialize result Vector.
+            GPU_Dense_f y(Size[0],Size[1]);
+
+            // Create pointers.
+            const thrust::device_vector<float> * xp = &Values;
+
+            // Call CPU_methods.dscp().
+            y.Values = fadd(a,xp);
+
+            // Return the result.
+            return y;
+
+        }
 
         // Links to GPU_methods.fadd().
         void madd (  ) { std::cout << "empty" << std::endl; }

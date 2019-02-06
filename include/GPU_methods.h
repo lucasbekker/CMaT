@@ -177,11 +177,31 @@ class GPU_methods {
             return y;
         }
 
-        // Float addition. (Thrust)
-        void fadd (  ) { std::cout << "empty" << std::endl; }
+        // Float scalar addition. (Thrust)
+        thrust::device_vector<float> fadd ( const float a, const thrust::device_vector<float> * x ) {
+            
+            // Initiate the result vector.
+            thrust::device_vector<float> y(x->size());
 
-        // Double addition. (Thrust)
-        void dadd (  ) { std::cout << "empty" << std::endl; }
+            // Call the transformation.
+            thrust::transform(x->begin(),x->end(),y.begin(),fadd_functor(a));
+
+            // Return the result.
+            return y;
+        }
+
+        // Double scalar addition. (Thrust)
+        thrust::device_vector<double> dadd ( const double a, const thrust::device_vector<double> * x ) {
+            
+            // Initiate the result vector.
+            thrust::device_vector<double> y(x->size());
+
+            // Call the transformation.
+            thrust::transform(x->begin(),x->end(),y.begin(),dadd_functor(a));
+
+            // Return the result.
+            return y;
+        }
 
         // Float sparse matrix addition. (cuSPARSE)
         void spfadd (  ) { std::cout << "empty" << std::endl; }

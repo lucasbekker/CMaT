@@ -156,10 +156,30 @@ class CPU_methods {
         }
 
         // Float scalar addition. (Thrust)
-        void fadd (  ) { std::cout << "empty" << std::endl; }
+        thrust::host_vector<float> fadd ( const float a, const thrust::host_vector<float> * x ) {
+            
+            // Initiate the result vector.
+            thrust::host_vector<float> y(x->size());
+
+            // Call the transformation.
+            thrust::transform(x->begin(),x->end(),y.begin(),fadd_functor(a));
+
+            // Return the result.
+            return y;
+        }
 
         // Double scalar addition. (Thrust)
-        void dadd (  ) { std::cout << "empty" << std::endl; }
+        thrust::host_vector<double> dadd ( const double a, const thrust::host_vector<double> * x ) {
+            
+            // Initiate the result vector.
+            thrust::host_vector<double> y(x->size());
+
+            // Call the transformation.
+            thrust::transform(x->begin(),x->end(),y.begin(),dadd_functor(a));
+
+            // Return the result.
+            return y;
+        }
 
         // Float sparse matrix addition. (MKL)
         void spfadd (  ) { std::cout << "empty" << std::endl; }
