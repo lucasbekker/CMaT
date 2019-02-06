@@ -44,14 +44,19 @@ class GPU_Sparse: public GPU_methods {
             // Initialize result Vector.
             GPU_Dense y(Size[0],1);
 
-            // Create pointers.
-            const double * Vp = thrust::raw_pointer_cast(&Values[0]);
-            const int * Ip = thrust::raw_pointer_cast(&I[0]);
-            const int * Jp = thrust::raw_pointer_cast(&J[0]);
-            const double * xp = thrust::raw_pointer_cast(&x.Values[0]);
+            // Check if the dimensions are correct.
+            if ((Size[1] == x.Size[0]) && (x.isVector == 1)) {
 
-            // Call GPU_methods.spdgemv().
-            y.Values = this->spdgemv(Size[0],Size[1],Size[2],Vp,Ip,Jp,xp,descr);
+                // Create pointers.
+                const double * Vp = thrust::raw_pointer_cast(&Values[0]);
+                const int * Ip = thrust::raw_pointer_cast(&I[0]);
+                const int * Jp = thrust::raw_pointer_cast(&J[0]);
+                const double * xp = thrust::raw_pointer_cast(&x.Values[0]);
+
+                // Call GPU_methods.spdgemv().
+                y.Values = this->spdgemv(Size[0],Size[1],Size[2],Vp,Ip,Jp,xp,descr);
+
+            } else { std::cout << "ERROR: Input GPU_Sparse.mv()" << std::endl; }
 
             // Return the result.
             return y;
@@ -134,14 +139,18 @@ class GPU_Sparse_f: public GPU_methods {
             // Initialize result Vector.
             GPU_Dense_f y(Size[0],1);
 
-            // Create pointers.
-            const float * Vp = thrust::raw_pointer_cast(&Values[0]);
-            const int * Ip = thrust::raw_pointer_cast(&I[0]);
-            const int * Jp = thrust::raw_pointer_cast(&J[0]);
-            const float * xp = thrust::raw_pointer_cast(&x.Values[0]);
+            if ((Size[1] == x.Size[0]) && (x.isVector == 1)) {
 
-            // Call GPU_methods.spdgemv().
-            y.Values = this->spfgemv(Size[0],Size[1],Size[2],Vp,Ip,Jp,xp,descr);
+                // Create pointers.
+                const float * Vp = thrust::raw_pointer_cast(&Values[0]);
+                const int * Ip = thrust::raw_pointer_cast(&I[0]);
+                const int * Jp = thrust::raw_pointer_cast(&J[0]);
+                const float * xp = thrust::raw_pointer_cast(&x.Values[0]);
+
+                // Call GPU_methods.spdgemv().
+                y.Values = this->spfgemv(Size[0],Size[1],Size[2],Vp,Ip,Jp,xp,descr);
+
+            } else { std::cout << "ERROR: Input GPU_Sparse_f.mv()" << std::endl; }
 
             // Return the result.
             return y;

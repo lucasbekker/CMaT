@@ -48,16 +48,21 @@ class CPU_Sparse: public CPU_methods {
             // Initialize result Vector.
             CPU_Dense y(Size[0],1);
 
-            // Create pointers.
-            const double * Vp = thrust::raw_pointer_cast(&Values[0]);
-            const int * Ibp = thrust::raw_pointer_cast(&Ib[0]);
-            const int * Iep = thrust::raw_pointer_cast(&Ie[0]);
-            const int * Jp = thrust::raw_pointer_cast(&J[0]);
-            const double * xp = thrust::raw_pointer_cast(&x.Values[0]);
+            // Check if the dimensions are correct.
+            if ((Size[1] == x.Size[0]) && (x.isVector == 1)) {
+            
+                // Create pointers.
+                const double * Vp = thrust::raw_pointer_cast(&Values[0]);
+                const int * Ibp = thrust::raw_pointer_cast(&Ib[0]);
+                const int * Iep = thrust::raw_pointer_cast(&Ie[0]);
+                const int * Jp = thrust::raw_pointer_cast(&J[0]);
+                const double * xp = thrust::raw_pointer_cast(&x.Values[0]);
 
-            // Call CPU_methods.spdgemv().
-            y.Values = this->spdgemv(Size[0],Size[1],Vp,Ibp,Iep,Jp,xp);
+                // Call CPU_methods.spdgemv().
+                y.Values = spdgemv(Size[0],Size[1],Vp,Ibp,Iep,Jp,xp);
 
+            } else { std::cout << "ERROR: Input CPU_Sparse.mv()" << std::endl; }
+            
             // Return the result.
             return y;
 
@@ -139,15 +144,20 @@ class CPU_Sparse_f: public CPU_methods {
             // Initialize result Vector.
             CPU_Dense_f y(Size[0],1);
 
-            // Create pointers.
-            const float * Vp = thrust::raw_pointer_cast(&Values[0]);
-            const int * Ibp = thrust::raw_pointer_cast(&Ib[0]);
-            const int * Iep = thrust::raw_pointer_cast(&Ie[0]);
-            const int * Jp = thrust::raw_pointer_cast(&J[0]);
-            const float * xp = thrust::raw_pointer_cast(&x.Values[0]);
+            // Check if the dimensions are correct.
+            if ((Size[1] == x.Size[0]) && (x.isVector == 1)) {
+            
+                // Create pointers.
+                const float * Vp = thrust::raw_pointer_cast(&Values[0]);
+                const int * Ibp = thrust::raw_pointer_cast(&Ib[0]);
+                const int * Iep = thrust::raw_pointer_cast(&Ie[0]);
+                const int * Jp = thrust::raw_pointer_cast(&J[0]);
+                const float * xp = thrust::raw_pointer_cast(&x.Values[0]);
 
-            // Call CPU_methods.spfgemv().
-            y.Values = this->spfgemv(Size[0],Size[1],Vp,Ibp,Iep,Jp,xp);
+                // Call CPU_methods.spfgemv().
+                y.Values = spfgemv(Size[0],Size[1],Vp,Ibp,Iep,Jp,xp);
+
+            } else { std::cout << "ERROR: Input CPU_Sparse_f.mv()" << std::endl; }
 
             // Return the result.
             return y;
