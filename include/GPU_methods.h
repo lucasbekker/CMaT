@@ -151,7 +151,7 @@ class GPU_methods {
         }
 
         // Float scalar multiplication. (Thrust)
-        thrust::device_vector<float> fscp ( const float a, thrust::device_vector<float> * x ) {
+        thrust::device_vector<float> fscp ( const float a, const thrust::device_vector<float> * x ) {
             
             // Initiate the result vector.
             thrust::device_vector<float> y(x->size());
@@ -165,7 +165,7 @@ class GPU_methods {
         }
 
         // Double scalar multiplication. (Thrust)
-        thrust::device_vector<double> dscp ( const double a, thrust::device_vector<double> * x ) {
+        thrust::device_vector<double> dscp ( const double a, const thrust::device_vector<double> * x ) {
             
             // Initiate the result vector.
             thrust::device_vector<double> y(x->size());

@@ -35,12 +35,21 @@ class CPU_Dense: public CPU_methods {
         // Links to CPU_methods.ddot().
         double dot ( const CPU_Dense& x ) {
             
-            // Create pointers.
-            const thrust::host_vector<double> * xp = &x.Values;
-            const thrust::host_vector<double> * yp = &Values;
+            // Initialize the result.
+            double result;
 
-            // Call CPU_methods.ddot().
-            double result = ddot(xp,yp);
+            // Check if the dimensions are correct.
+            if ((isVector == 1) && (x.isVector == 1) &&
+                (Size[0] == x.Size[0])) {
+
+                // Create pointers.
+                const thrust::host_vector<double> * xp = &x.Values;
+                const thrust::host_vector<double> * yp = &Values;
+
+                // Call CPU_methods.ddot().
+                result = ddot(xp,yp);
+
+            } else { std::cout << "ERROR: Input CPU_Dense.dot()" << std::endl; }
 
             // Return the result.
             return result;
@@ -53,16 +62,22 @@ class CPU_Dense: public CPU_methods {
             // Initialize result Vector.
             CPU_Dense y(Size[0],1);
 
-            // Create pointers.
-            const double * A = thrust::raw_pointer_cast(&Values[0]);
-            const double * xp = thrust::raw_pointer_cast(&x.Values[0]);
+            // Check if the dimensions are correct.
+            if ((isVector == 0) && (x.isVector == 1) &&
+                (Size[1] == x.Size[0])) {
 
-            // Call CPU_methods.ddgemv().
-            y.Values = this->ddgemv(Size[0],Size[1],A,xp);
+                // Create pointers.
+                const double * A = thrust::raw_pointer_cast(&Values[0]);
+                const double * xp = thrust::raw_pointer_cast(&x.Values[0]);
+
+                // Call CPU_methods.ddgemv().
+                y.Values = ddgemv(Size[0],Size[1],A,xp);
+
+            } else { std::cout << "ERROR: Input CPU_Dense.mv()" << std::endl; }
 
             // Return the result.
             return y;
-
+            
         }
 
         // Links to CPU_methods.ddgemm().
@@ -143,7 +158,7 @@ class CPU_Dense_f: public CPU_methods {
             // Create pointers.
             const thrust::host_vector<float> * xp = &Values;
 
-            // Call CPU_methods.dscp().
+            // Call CPU_methods.fscp().
             y.Values = fscp(a,xp);
 
             // Return the result.
@@ -154,12 +169,21 @@ class CPU_Dense_f: public CPU_methods {
         // Links to CPU_methods.fdot().
         float dot ( const CPU_Dense_f& x ) {
 
-            // Create pointers.
-            const thrust::host_vector<float> * xp = &x.Values;
-            const thrust::host_vector<float> * yp = &Values;
+            // Initialize the result.
+            float result;
 
-            // Call CPU_methods.ddot().
-            float result = fdot(xp,yp);
+            // Check if the dimensions are correct.
+            if ((isVector == 1) && (x.isVector == 1) &&
+                (Size[0] == x.Size[0])) {
+
+                // Create pointers.
+                const thrust::host_vector<float> * xp = &x.Values;
+                const thrust::host_vector<float> * yp = &Values;
+
+                // Call CPU_methods.fdot().
+                result = fdot(xp,yp);
+
+            } else { std::cout << "ERROR: Input CPU_Dense_f.dot()" << std::endl; }
 
             // Return the result.
             return result;
@@ -172,12 +196,18 @@ class CPU_Dense_f: public CPU_methods {
             // Initialize result Vector.
             CPU_Dense_f y(Size[0],1);
 
-            // Create pointers.
-            const float * A = thrust::raw_pointer_cast(&Values[0]);
-            const float * xp = thrust::raw_pointer_cast(&x.Values[0]);
+            // Check if the dimensions are correct.
+            if ((isVector == 0) && (x.isVector == 1) &&
+                (Size[1] == x.Size[0])) {
 
-            // Call CPU_methods.ddgemv().
-            y.Values = this->dfgemv(Size[0],Size[1],A,xp);
+                // Create pointers.
+                const float * A = thrust::raw_pointer_cast(&Values[0]);
+                const float * xp = thrust::raw_pointer_cast(&x.Values[0]);
+
+                // Call CPU_methods.dfgemv().
+                y.Values = dfgemv(Size[0],Size[1],A,xp);
+
+            } else { std::cout << "ERROR: Input CPU_Dense_f.mv()" << std::endl; }
 
             // Return the result.
             return y;
