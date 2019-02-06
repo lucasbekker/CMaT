@@ -181,6 +181,12 @@ class CPU_methods {
             return y;
         }
 
+        // Double dense matrix addition. (Thrust)
+        void ddmadd (  ) { std::cout << "empty" << std::endl; }
+
+        // Float dense matrix addition. (Thrust)
+        void dfmadd (  ) { std::cout << "empty" << std::endl; }
+
         // Float sparse matrix addition. (MKL)
         void spfadd (  ) { std::cout << "empty" << std::endl; }
 

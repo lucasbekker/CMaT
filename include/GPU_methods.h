@@ -203,6 +203,12 @@ class GPU_methods {
             return y;
         }
 
+        // Double dense matrix addition. (Thrust)
+        void ddmadd (  ) { std::cout << "empty" << std::endl; }
+
+        // Float dense matrix addition. (Thrust)
+        void dfmadd (  ) { std::cout << "empty" << std::endl; }
+
         // Float sparse matrix addition. (cuSPARSE)
         void spfadd (  ) { std::cout << "empty" << std::endl; }
 
