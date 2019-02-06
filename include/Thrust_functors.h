@@ -11,6 +11,10 @@ struct fscp_functor {
     __host__ __device__
     float operator () ( const float& x ) const { return a * x; }
 
+    // Overload the () operator, minus.
+    __host__ __device__
+    float operator () ( const float& x, char minus ) const { return -a * x; }
+
 };
 
 // Functor for dscp.
@@ -25,6 +29,10 @@ struct dscp_functor {
     // Overload the () operator.
     __host__ __device__
     double operator () ( const double& x ) const { return a * x; }
+
+    // Overload the () operator, minus.
+    __host__ __device__
+    double operator () ( const double& x, char minus ) const { return -a * x; }
 
 };
 
@@ -41,6 +49,10 @@ struct fadd_functor {
     __host__ __device__
     float operator () ( const float& x ) const { return a + x; }
 
+    // Overload the () operator, minus.
+    __host__ __device__
+    float operator () ( const float& x, char minus ) const { return a - x; }
+
 };
 
 // Functor for dadd.
@@ -55,5 +67,9 @@ struct dadd_functor {
     // Overload the () operator.
     __host__ __device__
     double operator () ( const double& x ) const { return a + x; }
+
+    // Overload the () operator, minus.
+    __host__ __device__
+    double operator () ( const double& x, char minus ) const { return a - x; }
 
 };
