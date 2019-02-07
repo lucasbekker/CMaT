@@ -4,6 +4,9 @@
 // Included for error handling.
 #include <assert.h>
 
+// Included for .mat file support.
+#include <matio.h>
+
 // Include the MKL header files.
 #include "mkl.h"
 #include "mkl_spblas.h"
