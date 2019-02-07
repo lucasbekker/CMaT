@@ -53,17 +53,14 @@ class GPU_Dense: public GPU_methods {
             double result;
 
             // Check if the dimensions are correct.
-            if ((isVector == 1) && (x.isVector == 1) &&
-                (Size[0] == x.Size[0])) {
+            assert((isVector == 1) && (x.isVector == 1) && (Size[0] == x.Size[0]));
 
-                // Create pointers.
-                const thrust::device_vector<double> * xp = &x.Values;
-                const thrust::device_vector<double> * yp = &Values;
+            // Create pointers.
+            const thrust::device_vector<double> * xp = &x.Values;
+            const thrust::device_vector<double> * yp = &Values;
 
-                // Call GPU_methods.ddot().
-                result = ddot(xp,yp);
-
-            } else { std::cout << "ERROR: Input GPU_Dense.dot()" << std::endl; }
+            // Call GPU_methods.ddot().
+            result = ddot(xp,yp);
 
             // Return the result.
             return result;
@@ -77,17 +74,14 @@ class GPU_Dense: public GPU_methods {
             GPU_Dense y(Size[0],1);
 
             // Check if the dimensions are correct.
-            if ((isVector == 0) && (x.isVector == 1) &&
-                (Size[1] == x.Size[0])) {
+            assert((isVector == 0) && (x.isVector == 1) && (Size[1] == x.Size[0]));
 
-                // Create pointers.
-                const double * A = thrust::raw_pointer_cast(&Values[0]);
-                const double * xp = thrust::raw_pointer_cast(&x.Values[0]);
+            // Create pointers.
+            const double * A = thrust::raw_pointer_cast(&Values[0]);
+            const double * xp = thrust::raw_pointer_cast(&x.Values[0]);
 
-                // Call GPU_methods.ddgemv().
-                y.Values = ddgemv(Size[0],Size[1],A,xp);
-
-            } else { std::cout << "ERROR: Input CPU_Dense.mv()" << std::endl; }
+            // Call GPU_methods.ddgemv().
+            y.Values = ddgemv(Size[0],Size[1],A,xp);
 
             // Return the result.
             return y;
@@ -201,17 +195,14 @@ class GPU_Dense_f: public GPU_methods {
             float result;
 
             // Check if the dimensions are correct.
-            if ((isVector == 1) && (x.isVector == 1) &&
-                (Size[0] == x.Size[0])) {
+            assert((isVector == 1) && (x.isVector == 1) && (Size[0] == x.Size[0]));
 
-                // Create pointers.
-                const thrust::device_vector<float> * xp = &x.Values;
-                const thrust::device_vector<float> * yp = &Values;
+            // Create pointers.
+            const thrust::device_vector<float> * xp = &x.Values;
+            const thrust::device_vector<float> * yp = &Values;
 
-                // Call GPU_methods.fdot().
-                result = fdot(xp,yp);
-
-            } else { std::cout << "ERROR: Input GPU_Dense_f.dot()" << std::endl; }
+            // Call GPU_methods.fdot().
+            result = fdot(xp,yp);
 
             // Return the result.
             return result;
@@ -225,17 +216,14 @@ class GPU_Dense_f: public GPU_methods {
             GPU_Dense_f y(Size[0],1);
 
             // Check if the dimensions are correct.
-            if ((isVector == 0) && (x.isVector == 1) &&
-                (Size[1] == x.Size[0])) {
+            assert((isVector == 0) && (x.isVector == 1) && (Size[1] == x.Size[0]));
 
-                // Create pointers.
-                const float * A = thrust::raw_pointer_cast(&Values[0]);
-                const float * xp = thrust::raw_pointer_cast(&x.Values[0]);
+            // Create pointers.
+            const float * A = thrust::raw_pointer_cast(&Values[0]);
+            const float * xp = thrust::raw_pointer_cast(&x.Values[0]);
 
-                // Call GPU_methods.dfgemv().
-                y.Values = dfgemv(Size[0],Size[1],A,xp);
-
-            } else { std::cout << "ERROR: Input GPU_Dense_f.mv()" << std::endl; }
+            // Call GPU_methods.dfgemv().
+            y.Values = dfgemv(Size[0],Size[1],A,xp);
 
             // Return the result.
             return y;
