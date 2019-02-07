@@ -1,0 +1,11 @@
+lhs0 = numpy.zeros(res.shape)
+matrix = res.derivative('lhs').eval(lhs=lhs0)
+rhs = res.eval(lhs=lhs0)
+
+free = numpy.isnan(cons)
+zcons = cons.copy()
+zcons[free] = 0
+b = (rhs - matrix.matvec(zcons))[free]
+submatrix = matrix.submatrix(free, free)
+A = scipy.sparse.csr_matrix(submatrix.export('csr'), shape=submatrix.shape)
+scipy.io.savemat('mymatrix.mat', {'A': A, 'b': b})
