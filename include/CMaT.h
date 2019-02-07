@@ -1,6 +1,9 @@
 // Included for printing to screen.
 #include <iostream>
 
+// Included for error handling.
+#include <assert.h>
+
 // Include the MKL header files.
 #include "mkl.h"
 #include "mkl_spblas.h"

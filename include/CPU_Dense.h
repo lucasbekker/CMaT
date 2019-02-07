@@ -53,17 +53,14 @@ class CPU_Dense: public CPU_methods {
             double result;
 
             // Check if the dimensions are correct.
-            if ((isVector == 1) && (x.isVector == 1) &&
-                (Size[0] == x.Size[0])) {
+            assert((isVector == 1) && (x.isVector == 1) && (Size[0] == x.Size[0])); 
 
-                // Create pointers.
-                const thrust::host_vector<double> * xp = &x.Values;
-                const thrust::host_vector<double> * yp = &Values;
+            // Create pointers.
+            const thrust::host_vector<double> * xp = &x.Values;
+            const thrust::host_vector<double> * yp = &Values;
 
-                // Call CPU_methods.ddot().
-                result = ddot(xp,yp);
-
-            } else { std::cout << "ERROR: Input CPU_Dense.dot()" << std::endl; }
+            // Call CPU_methods.ddot().
+            result = ddot(xp,yp);
 
             // Return the result.
             return result;

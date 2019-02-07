@@ -18,7 +18,7 @@ class GPU_Sparse: public GPU_methods {
             const thrust::device_vector<double> * xp = &Values;
 
             // Call GPU_methods.dadd().
-            y.Values = dadd(a,xp,0);
+            y.Values = dadd(a,xp);
 
             // Fill the index arrays.
             y.I = I;
@@ -45,7 +45,7 @@ class GPU_Sparse: public GPU_methods {
             const thrust::device_vector<double> * xp = &Values;
 
             // Call GPU_methods.dscp().
-            y.Values = dscp(a,xp,0);
+            y.Values = dscp(a,xp);
 
             // Fill the index arrays.
             y.I = I;
@@ -72,7 +72,7 @@ class GPU_Sparse: public GPU_methods {
                 const double * xp = thrust::raw_pointer_cast(&x.Values[0]);
 
                 // Call GPU_methods.spdgemv().
-                y.Values = this->spdgemv(Size[0],Size[1],Size[2],Vp,Ip,Jp,xp,descr);
+                y.Values = spdgemv(Size[0],Size[1],Size[2],Vp,Ip,Jp,xp,descr);
 
             } else { std::cout << "ERROR: Input GPU_Sparse.mv()" << std::endl; }
 
@@ -131,7 +131,7 @@ class GPU_Sparse_f: public GPU_methods {
             const thrust::device_vector<float> * xp = &Values;
 
             // Call GPU_methods.fadd().
-            y.Values = fadd(a,xp,0);
+            y.Values = fadd(a,xp);
 
             // Fill the index arrays.
             y.I = I;
@@ -158,7 +158,7 @@ class GPU_Sparse_f: public GPU_methods {
             const thrust::device_vector<float> * xp = &Values;
 
             // Call GPU_methods.fscp().
-            y.Values = fscp(a,xp,0);
+            y.Values = fscp(a,xp);
 
             // Fill the index arrays.
             y.I = I;
@@ -184,7 +184,7 @@ class GPU_Sparse_f: public GPU_methods {
                 const float * xp = thrust::raw_pointer_cast(&x.Values[0]);
 
                 // Call GPU_methods.spdgemv().
-                y.Values = this->spfgemv(Size[0],Size[1],Size[2],Vp,Ip,Jp,xp,descr);
+                y.Values = spfgemv(Size[0],Size[1],Size[2],Vp,Ip,Jp,xp,descr);
 
             } else { std::cout << "ERROR: Input GPU_Sparse_f.mv()" << std::endl; }
 

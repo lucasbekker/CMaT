@@ -151,14 +151,13 @@ class GPU_methods {
         }
 
         // Float scalar multiplication. (Thrust)
-        thrust::device_vector<float> fscp ( const float a, const thrust::device_vector<float> * x, const int minus ) {
+        thrust::device_vector<float> fscp ( const float a, const thrust::device_vector<float> * x ) {
             
             // Initiate the result vector.
             thrust::device_vector<float> y(x->size());
 
             // Call the transformation.
-            if (minus == 1) { thrust::transform(x->begin(),x->end(),y.begin(),fscp_m_functor(a)); }
-            else { thrust::transform(x->begin(),x->end(),y.begin(),fscp_functor(a)); }
+            thrust::transform(x->begin(),x->end(),y.begin(),fscp_functor(a));
 
             // Return the result.
             return y;
@@ -166,28 +165,26 @@ class GPU_methods {
         }
 
         // Double scalar multiplication. (Thrust)
-        thrust::device_vector<double> dscp ( const double a, const thrust::device_vector<double> * x, const int minus ) {
+        thrust::device_vector<double> dscp ( const double a, const thrust::device_vector<double> * x ) {
             
             // Initiate the result vector.
             thrust::device_vector<double> y(x->size());
 
             // Call the transformation.
-            if (minus == 1) { thrust::transform(x->begin(),x->end(),y.begin(),dscp_m_functor(a)); }
-            else { thrust::transform(x->begin(),x->end(),y.begin(),dscp_functor(a)); }
+            thrust::transform(x->begin(),x->end(),y.begin(),dscp_functor(a));
 
             // Return the result.
             return y;
         }
 
         // Float scalar addition. (Thrust)
-        thrust::device_vector<float> fadd ( const float a, const thrust::device_vector<float> * x, const int minus ) {
+        thrust::device_vector<float> fadd ( const float a, const thrust::device_vector<float> * x ) {
             
             // Initiate the result vector.
             thrust::device_vector<float> y(x->size());
 
             // Call the transformation.
-            if (minus == 1) { thrust::transform(x->begin(),x->end(),y.begin(),fadd_m_functor(a)); }
-            else { thrust::transform(x->begin(),x->end(),y.begin(),fadd_functor(a)); }
+            thrust::transform(x->begin(),x->end(),y.begin(),fadd_functor(a));
 
 
             // Return the result.
@@ -195,14 +192,13 @@ class GPU_methods {
         }
 
         // Double scalar addition. (Thrust)
-        thrust::device_vector<double> dadd ( const double a, const thrust::device_vector<double> * x, const int minus ) {
+        thrust::device_vector<double> dadd ( const double a, const thrust::device_vector<double> * x ) {
             
             // Initiate the result vector.
             thrust::device_vector<double> y(x->size());
 
             // Call the transformation.
-            if (minus == 1) { thrust::transform(x->begin(),x->end(),y.begin(),dadd_m_functor(a)); }
-            else { thrust::transform(x->begin(),x->end(),y.begin(),dadd_functor(a)); }
+            thrust::transform(x->begin(),x->end(),y.begin(),dadd_functor(a));
 
             // Return the result.
             return y;
