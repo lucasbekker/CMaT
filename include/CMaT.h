@@ -7,6 +7,9 @@
 // Included for .mat file support.
 #include <matio.h>
 
+// Included for string support.
+#include <string>
+
 // Include the MKL header files.
 #include "mkl.h"
 #include "mkl_spblas.h"
