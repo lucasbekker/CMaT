@@ -29,6 +29,7 @@ Matrix_vector_product_test
 Inner_product_test
 Scalar_product_test
 Scalar_addition_test
+Matio_test
 "
 
 # Build and run.
