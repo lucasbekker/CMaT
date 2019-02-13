@@ -128,6 +128,92 @@ class GPU_methods {
         // Sparse double matrix matrix product. (cuSPARSE)
         void spdgemm (  ) { std::cout << "empty" << std::endl; }
 
+        // Sparse double matrix transpose. (Thrust)
+        void spdtrans ( const thrust::device_vector<double> & V, const thrust::device_vector<int> & i, 
+                        const thrust::device_vector<int> & jp, thrust::device_vector<double> & V_new,
+                        thrust::device_vector<int> & j_new, thrust::device_vector<int> & ip_new ) {
+
+            // Create temporary data vector.
+            thrust::device_vector<int> i_temp(i.size());
+
+            // Copy data to the new and temporary vectors.
+            thrust::copy(V.begin(), V.end(), V_new.begin());
+            thrust::copy(i.begin(), i.end(), i_temp.begin());
+    
+            // Fill j_new using COO layout.
+            for ( int k = 0; k < (jp.size() - 1); k++ ) {
+
+                thrust::fill_n((j_new.begin() + jp[k] - 1), (jp[k + 1] - jp[k]), (k + 1)); 
+
+            }
+
+            // Typedefs for zip iterator.
+            typedef thrust::device_vector<double>::iterator DoubleIt;
+            typedef thrust::device_vector<int>::iterator IntIt;
+            typedef thrust::tuple<DoubleIt,IntIt> TupleIt;
+            typedef thrust::zip_iterator<TupleIt> ZipIt;
+
+            // Create the zip iterator
+            ZipIt zip_iterator(thrust::make_tuple(V_new.begin(), j_new.begin()));
+
+            // Reorder V, i and j such that V and j conform to the CSR layout.
+            thrust::stable_sort_by_key(i_temp.begin(), i_temp.end(), zip_iterator);
+
+            // Fill the first value of ip_new.
+            ip_new[0] = 1;
+
+            // Fill ip_new using the CSR layout.
+            for ( int k = 0; k < (ip_new.size() - 1); k++ ) {
+        
+                ip_new[k + 1] = ip_new[k] + thrust::count(i.begin(), i.end(), (k + 1));
+
+            }
+
+        }
+
+        // Sparse float matrix transpose. (Thrust)
+        void spftrans ( const thrust::device_vector<float> & V, const thrust::device_vector<int> & i, 
+                        const thrust::device_vector<int> & jp, thrust::device_vector<float> & V_new,
+                        thrust::device_vector<int> & j_new, thrust::device_vector<int> & ip_new ) {
+
+            // Create temporary data vector.
+            thrust::device_vector<int> i_temp(i.size());
+
+            // Copy data to the new and temporary vectors.
+            thrust::copy(V.begin(), V.end(), V_new.begin());
+            thrust::copy(i.begin(), i.end(), i_temp.begin());
+    
+            // Fill j_new using COO layout.
+            for ( int k = 0; k < (jp.size() - 1); k++ ) {
+
+                thrust::fill_n((j_new.begin() + jp[k] - 1), (jp[k + 1] - jp[k]), (k + 1)); 
+
+            }
+
+            // Typedefs for zip iterator.
+            typedef thrust::device_vector<float>::iterator FloatIt;
+            typedef thrust::device_vector<int>::iterator IntIt;
+            typedef thrust::tuple<FloatIt,IntIt> TupleIt;
+            typedef thrust::zip_iterator<TupleIt> ZipIt;
+
+            // Create the zip iterator
+            ZipIt zip_iterator(thrust::make_tuple(V_new.begin(), j_new.begin()));
+
+            // Reorder V, i and j such that V and j conform to the CSR layout.
+            thrust::stable_sort_by_key(i_temp.begin(), i_temp.end(), zip_iterator);
+
+            // Fill the first value of ip_new.
+            ip_new[0] = 1;
+
+            // Fill ip_new using the CSR layout.
+            for ( int k = 0; k < (ip_new.size() - 1); k++ ) {
+        
+                ip_new[k + 1] = ip_new[k] + thrust::count(i.begin(), i.end(), (k + 1));
+
+            }
+
+        }
+
         // Float vector dot product. (Thrust)
         float fdot ( const thrust::device_vector<float> * x, const thrust::device_vector<float> * y ) {
             
