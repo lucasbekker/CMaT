@@ -1,5 +1,8 @@
 class GPU_Sparse: public GPU_methods {
     public:
+        // Based on cuSPARSE CSR three array zero based indexing.
+        // https://docs.nvidia.com/cuda/cusparse/index.html#compressed-sparse-row-format-csr
+
         // Data
         thrust::device_vector<double> Values;  // Device vector of length Size[2] storing type double.
         int Size[3];                           // Array containing [ m, n, nnz ]
@@ -111,6 +114,9 @@ class GPU_Sparse: public GPU_methods {
 
 class GPU_Sparse_f: public GPU_methods {
     public:
+        // Based on cuSPARSE CSR three array zero based indexing.
+        // https://docs.nvidia.com/cuda/cusparse/index.html#compressed-sparse-row-format-csr
+        
         // Data
         thrust::device_vector<float> Values;  // Device vector of length Size[2] storing type float.
         int Size[3];                          // Array containing [ m, n, nnz ]
