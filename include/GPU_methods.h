@@ -143,7 +143,7 @@ class GPU_methods {
             // Fill j_new using COO layout.
             for ( int k = 0; k < (jp.size() - 1); k++ ) {
 
-                thrust::fill_n((j_new.begin() + jp[k] - 1), (jp[k + 1] - jp[k]), (k + 1)); 
+                thrust::fill_n((j_new.begin() + jp[k]), (jp[k + 1] - jp[k]), k); 
 
             }
 
@@ -160,12 +160,12 @@ class GPU_methods {
             thrust::stable_sort_by_key(i_temp.begin(), i_temp.end(), zip_iterator);
 
             // Fill the first value of ip_new.
-            ip_new[0] = 1;
+            ip_new[0] = 0;
 
             // Fill ip_new using the CSR layout.
             for ( int k = 0; k < (ip_new.size() - 1); k++ ) {
         
-                ip_new[k + 1] = ip_new[k] + thrust::count(i.begin(), i.end(), (k + 1));
+                ip_new[k + 1] = ip_new[k] + thrust::count(i.begin(), i.end(), k);
 
             }
 
@@ -186,7 +186,7 @@ class GPU_methods {
             // Fill j_new using COO layout.
             for ( int k = 0; k < (jp.size() - 1); k++ ) {
 
-                thrust::fill_n((j_new.begin() + jp[k] - 1), (jp[k + 1] - jp[k]), (k + 1)); 
+                thrust::fill_n((j_new.begin() + jp[k]), (jp[k + 1] - jp[k]), k); 
 
             }
 
@@ -203,12 +203,12 @@ class GPU_methods {
             thrust::stable_sort_by_key(i_temp.begin(), i_temp.end(), zip_iterator);
 
             // Fill the first value of ip_new.
-            ip_new[0] = 1;
+            ip_new[0] = 0;
 
             // Fill ip_new using the CSR layout.
             for ( int k = 0; k < (ip_new.size() - 1); k++ ) {
         
-                ip_new[k + 1] = ip_new[k] + thrust::count(i.begin(), i.end(), (k + 1));
+                ip_new[k + 1] = ip_new[k] + thrust::count(i.begin(), i.end(), k);
 
             }
 
