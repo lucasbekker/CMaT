@@ -1,4 +1,4 @@
-class GPU_Sparse: public GPU_methods {
+class GPU_Sparse: private GPU_methods {
     public:
         // Based on cuSPARSE CSR three array zero based indexing.
         // https://docs.nvidia.com/cuda/cusparse/index.html#compressed-sparse-row-format-csr
@@ -112,7 +112,7 @@ class GPU_Sparse: public GPU_methods {
         }
 };
 
-class GPU_Sparse_f: public GPU_methods {
+class GPU_Sparse_f: private GPU_methods {
     public:
         // Based on cuSPARSE CSR three array zero based indexing.
         // https://docs.nvidia.com/cuda/cusparse/index.html#compressed-sparse-row-format-csr

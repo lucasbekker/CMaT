@@ -1,4 +1,4 @@
-class CPU_Dense: public CPU_methods {
+class CPU_Dense: private CPU_methods {
     public:
         // Data
         thrust::host_vector<double> Values;    // Host vector of length Size[2] storing type double.
@@ -140,7 +140,7 @@ class CPU_Dense: public CPU_methods {
         }
 };
 
-class CPU_Dense_f: public CPU_methods {
+class CPU_Dense_f: private CPU_methods {
     public:
         // Data
         thrust::host_vector<float> Values;   // Host vector of length Size[2] storing type float.

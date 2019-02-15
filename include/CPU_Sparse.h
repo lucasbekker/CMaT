@@ -1,4 +1,4 @@
-class CPU_Sparse: public CPU_methods {
+class CPU_Sparse: private CPU_methods {
     public:
         // Based on MKL CSR four array zero based indexing.
         // https://software.intel.com/en-us/mkl-developer-reference-c-sparse-blas-csr-matrix-storage-format
@@ -111,7 +111,7 @@ class CPU_Sparse: public CPU_methods {
         }
 };
 
-class CPU_Sparse_f: public CPU_methods {
+class CPU_Sparse_f: private CPU_methods {
     public:
         // Based on MKL CSR four array zero based indexing.
         // https://software.intel.com/en-us/mkl-developer-reference-c-sparse-blas-csr-matrix-storage-format
