@@ -147,7 +147,7 @@ class GPU_Dense: private GPU_methods {
 
             // Fill Size array.
             Size[0] = mat_var.varstream->dims[0];
-            Size[1] = mat_var.varstream->dims[1];
+            Size[1] = mat_var.varstream->dims[0];
             Size[2] = Size[0]*Size[1];
 
             // Allocate sufficient memory.
