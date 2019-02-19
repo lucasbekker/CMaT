@@ -1,16 +1,11 @@
-#include <matio.h>
-#include <string>
-#include <iostream>
-#include <list>
-
 // Struct used in matfile_load.
 struct matvar {
 
-    matvar_t * variable;                    // MatIO variable.
-    std::string type;                       // Double or Float.
-    bool issparse = false;                  // True if MatIO variable is a sparse variable.
-    mat_sparse_t * sparse;                  // Only contains data if "matvar.issparse=true".
-
+    matvar_t * varstream;                   // MatIO variable.
+    mat_sparse_t * sparsestream;            // Only contains data if "matvar.issparse=true".
+    std::string type;                       // Double, float or unsupported.
+    bool issparse = false;                  // True if varstream is a sparse variable.
+    
 };
 
 // Class definition of a MAT file from which to load variables.
@@ -43,8 +38,7 @@ class matfile_load {
             while ( mat_var != NULL ) {
 
                 // Check if the variable is sparse and store the result.
-                if (mat_var->class_type == 5) {
-                    issparselist.push_back("true");
+                if (mat_var->class_type == 5) { issparselist.push_back("true");
                 } else { issparselist.push_back("false"); }
 
                 // Check if the variable is of type double or float and store the result.
@@ -98,32 +92,33 @@ class matfile_load {
         matvar openvar ( std::string variable ) {
             
             // Initialize matvar.
-            matvar mat_variable;
+            matvar mat_var;
 
             // Open variable in .mat file.
-            mat_variable.variable = Mat_VarRead(mat_file,variable.c_str());
+            mat_var.varstream = Mat_VarRead(mat_file,variable.c_str());
 
             // Check succesfull opening of variable in .mat file.
-            if (mat_variable.variable == NULL) {
+            if (mat_var.varstream == NULL) {
                 std::cout << "Variable: '" << variable << "' not found." << std::endl; 
             } else {
 
                 // Check if the variable is sparse.
-                if (mat_variable.variable->class_type == 5) {
-                    mat_variable.issparse = true;
-                    mat_variable.sparse = (mat_sparse_t *) mat_variable.variable->data;
+                if (mat_var.varstream->class_type == 5) {
+                    mat_var.issparse = true;
+                    mat_var.sparsestream = (mat_sparse_t *) mat_var.varstream->data;
                 }
 
                 // Check if the variable is of type double or float.
-                if (mat_variable.variable->data_type == 9) { mat_variable.type = "double"; }
-                if (mat_variable.variable->data_type == 7) { mat_variable.type = "float"; }
+                if (mat_var.varstream->data_type == 9) { mat_var.type = "double"; }
+                if (mat_var.varstream->data_type == 7) { mat_var.type = "float"; }
                 
             }
 
             // Reset the MatIO stream.
             Mat_Rewind(mat_file);
 
-            return mat_variable;
+            // Return the MAT variable.
+            return mat_var;
 
         }
 
@@ -145,9 +140,7 @@ class matfile_load {
             } else { status = 1; }
 
             // Fill variables list.
-            if ( status == 1) {
-                getvarprops();
-            }
+            if ( status == 1 ) { getvarprops(); }
 
         }
 
@@ -169,9 +162,7 @@ class matfile_load {
             } else { status = 1; }
 
             // Fill variables list.
-            if ( status == 1) {
-                getvarprops();
-            }
+            if ( status == 1 ) { getvarprops(); }
 
         }
 
@@ -184,27 +175,3 @@ class matfile_load {
         }
 
 };
-
-
-int main () {
-    
-    matfile_load matfile("matfile.mat");
-
-    matvar mat_variable = matfile.openvar("b");
-
-    matfile.printvarprops();
-
-    /*mat_sparse_t * mat_sparse = (mat_sparse_t * ) mat_variable.variable->data;
-
-    double * mat_sparse_v = (double *) mat_sparse->data;
-
-    std::cout << mat_sparse->ir[3] << std::endl;
-    std::cout << mat_sparse_v[3] << std::endl;*/
-
-    double * mat_variable_data = (double *) mat_variable.variable->data;
-
-    std::cout << mat_variable_data[1] << std::endl;
-    
-    return 0;
-    
-}
