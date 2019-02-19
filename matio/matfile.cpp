@@ -80,8 +80,8 @@ class matfile_load {
             std::list<std::string>::iterator v_it = varlist.begin();
 
             // Loop over the elements in varlist.
-            for ( ;((v_it != varlist.end()) || (t_it != typelist.end()) ||
-                (s_it != issparselist.end())); ) {
+            while ( (v_it != varlist.end()) || (t_it != typelist.end()) ||
+                (s_it != issparselist.end()) ) {
                 
                 // Print the properties.
                 std::cout << "Variable " << *v_it << "\t type: "
@@ -119,6 +119,9 @@ class matfile_load {
                 if (mat_variable.variable->data_type == 7) { mat_variable.type = "float"; }
                 
             }
+
+            // Reset the MatIO stream.
+            Mat_Rewind(mat_file);
 
             return mat_variable;
 
