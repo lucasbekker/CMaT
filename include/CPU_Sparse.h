@@ -109,6 +109,7 @@ class CPU_Sparse: private CPU_methods {
             J.resize(Size[2]);
 
         }
+
 };
 
 class CPU_Sparse_f: private CPU_methods {
