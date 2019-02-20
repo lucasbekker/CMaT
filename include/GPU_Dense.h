@@ -138,6 +138,31 @@ class GPU_Dense: private GPU_methods {
             }
 
         }
+
+        // Overloaded constructor for MAT file load.
+        GPU_Dense ( matfile_load & mat_file, std::string variable ) {
+            
+            // Open the variable in MAT file.
+            matvar_load mat_var = mat_file.openvar(variable);
+
+            // Fill Size array.
+            Size[0] = mat_var.varstream->dims[0];
+            Size[1] = mat_var.varstream->dims[0];
+            Size[2] = Size[0]*Size[1];
+
+            // Insert the data into the Values vector.
+            double * data_p = (double *) mat_var.varstream->data;
+            Values.insert(Values.begin(),data_p,(data_p + Size[2]));
+
+            // Check if it is a Vector.
+            if ( Size[1] == 1 ) {
+                isVector = 1;
+            }
+            else {
+                isVector = 0;
+            }
+
+        }
 };
 
 class GPU_Dense_f: private GPU_methods {
@@ -277,6 +302,31 @@ class GPU_Dense_f: private GPU_methods {
             }
             else {
                 isVector = 1;
+            }
+
+        }
+
+        // Overloaded constructor for MAT file load.
+        GPU_Dense_f ( matfile_load & mat_file, std::string variable ) {
+            
+            // Open the variable in MAT file.
+            matvar_load mat_var = mat_file.openvar(variable);
+
+            // Fill Size array.
+            Size[0] = mat_var.varstream->dims[0];
+            Size[1] = mat_var.varstream->dims[1];
+            Size[2] = Size[0]*Size[1];
+
+            // Insert the data into the Values vector.
+            float * data_p = (float *) mat_var.varstream->data;
+            Values.insert(Values.begin(),data_p,(data_p + Size[2]));
+
+            // Check if it is a Vector.
+            if ( Size[1] == 1 ) {
+                isVector = 1;
+            }
+            else {
+                isVector = 0;
             }
 
         }

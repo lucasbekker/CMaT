@@ -109,6 +109,44 @@ class CPU_Sparse: private CPU_methods {
             J.resize(Size[2]);
 
         }
+
+        // Overloaded constructor for MAT file load.
+        CPU_Sparse ( matfile_load & mat_file, std::string variable ) {
+
+            // Open the variable in MAT file.
+            matvar_load mat_var = mat_file.openvar(variable);
+            
+            // Fill Size array.
+            Size[0] = mat_var.varstream->dims[0];
+            Size[1] = mat_var.varstream->dims[1];
+            Size[2] = mat_var.sparsestream->ndata;
+
+            // Allocate sufficient memory.
+            Values.resize(Size[2]);
+            Ib.resize(Size[0]);
+            Ie.resize(Size[0]);
+            J.resize(Size[2]);
+
+            // Cast pointers to appropriate type.
+            double * data_p = (double *) mat_var.sparsestream->data;
+            int * i_p = (int *) mat_var.sparsestream->ir;
+            int * j_p = (int *) mat_var.sparsestream->jc;
+
+            // Initialize temporary vectors and fill them.
+            thrust::host_vector<double> V_temp; 
+            thrust::host_vector<int> i_temp;
+            thrust::host_vector<int> jb_temp;
+            thrust::host_vector<int> je_temp;
+            V_temp.insert(V_temp.begin(),data_p,(data_p + Size[2]));
+            i_temp.insert(i_temp.begin(),i_p,(i_p + Size[2]));
+            jb_temp.insert(jb_temp.begin(),j_p,(j_p + Size[1]));
+            je_temp.insert(je_temp.begin(),(j_p + 1),(j_p + Size[1] + 1));
+
+            // Transpose the matrix and fill Values, I and J.
+            spdtrans(V_temp,i_temp,jb_temp,je_temp,Values,J,Ib,Ie);
+
+        }
+
 };
 
 class CPU_Sparse_f: private CPU_methods {
@@ -219,6 +257,43 @@ class CPU_Sparse_f: private CPU_methods {
             Ib.resize(Size[0]);
             Ie.resize(Size[0]);
             J.resize(Size[2]);
+
+        }
+
+        // Overloaded constructor for MAT file load.
+        CPU_Sparse_f ( matfile_load & mat_file, std::string variable ) {
+
+            // Open the variable in MAT file.
+            matvar_load mat_var = mat_file.openvar(variable);
+            
+            // Fill Size array.
+            Size[0] = mat_var.varstream->dims[0];
+            Size[1] = mat_var.varstream->dims[1];
+            Size[2] = mat_var.sparsestream->ndata;
+
+            // Allocate sufficient memory.
+            Values.resize(Size[2]);
+            Ib.resize(Size[0]);
+            Ie.resize(Size[0]);
+            J.resize(Size[2]);
+
+            // Cast pointers to appropriate type.
+            float * data_p = (float *) mat_var.sparsestream->data;
+            int * i_p = (int *) mat_var.sparsestream->ir;
+            int * j_p = (int *) mat_var.sparsestream->jc;
+
+            // Initialize temporary vectors and fill them.
+            thrust::host_vector<float> V_temp; 
+            thrust::host_vector<int> i_temp;
+            thrust::host_vector<int> jb_temp;
+            thrust::host_vector<int> je_temp;
+            V_temp.insert(V_temp.begin(),data_p,(data_p + Size[2]));
+            i_temp.insert(i_temp.begin(),i_p,(i_p + Size[2]));
+            jb_temp.insert(jb_temp.begin(),j_p,(j_p + Size[1]));
+            je_temp.insert(je_temp.begin(),(j_p + 1),(j_p + Size[1] + 1));
+
+            // Transpose the matrix and fill Values, I and J.
+            spftrans(V_temp,i_temp,jb_temp,je_temp,Values,J,Ib,Ie);
 
         }
 };

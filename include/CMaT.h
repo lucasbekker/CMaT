@@ -1,14 +1,12 @@
-// Included for printing to screen.
+// STD libs.
 #include <iostream>
-
-// Included for error handling.
 #include <assert.h>
+#include <string>
+#include <list>
 
 // Included for .mat file support.
 #include <matio.h>
-
-// Included for string support.
-#include <string>
+#include "Matfile_load.h"
 
 // Include the MKL header files.
 #include "mkl.h"
@@ -37,4 +35,3 @@
 #include "GPU_Dense.h"
 #include "CPU_Sparse.h"
 #include "GPU_Sparse.h"
-#include "Matio_functions.h"

@@ -110,6 +110,45 @@ class GPU_Sparse: private GPU_methods {
             _handles->csstatus = cusparseSetMatIndexBase(descr,CUSPARSE_INDEX_BASE_ZERO);
 
         }
+
+        // Overloaded constructor for MAT file load.
+        GPU_Sparse ( matfile_load & mat_file, std::string variable ) {
+
+            // Open the variable in MAT file.
+            matvar_load mat_var = mat_file.openvar(variable);
+            
+            // Fill Size array.
+            Size[0] = mat_var.varstream->dims[0];
+            Size[1] = mat_var.varstream->dims[1];
+            Size[2] = mat_var.sparsestream->ndata;
+
+            // Allocate sufficient memory.
+            Values.resize(Size[2]);
+            I.resize(Size[0] + 1);
+            J.resize(Size[2]);
+
+            // Fill matrix description.
+            _handles->csstatus = cusparseCreateMatDescr(&descr);
+            _handles->csstatus = cusparseSetMatType(descr,CUSPARSE_MATRIX_TYPE_GENERAL);
+            _handles->csstatus = cusparseSetMatIndexBase(descr,CUSPARSE_INDEX_BASE_ZERO);
+
+            // Cast pointers to appropriate type.
+            double * data_p = (double *) mat_var.sparsestream->data;
+            int * i_p = (int *) mat_var.sparsestream->ir;
+            int * j_p = (int *) mat_var.sparsestream->jc;
+
+            // Initialize temporary vectors and fill them.
+            thrust::device_vector<double> V_temp; 
+            thrust::device_vector<int> i_temp;
+            thrust::device_vector<int> j_temp;
+            V_temp.insert(V_temp.begin(),data_p,(data_p + Size[2]));
+            i_temp.insert(i_temp.begin(),i_p,(i_p + Size[2]));
+            j_temp.insert(j_temp.begin(),j_p,(j_p + Size[1] + 1));
+            
+            // Transpose the matrix and fill Values, I and J.
+            spdtrans(V_temp,i_temp,j_temp,Values,J,I);
+
+        }
 };
 
 class GPU_Sparse_f: private GPU_methods {
@@ -221,6 +260,45 @@ class GPU_Sparse_f: private GPU_methods {
             _handles->csstatus = cusparseCreateMatDescr(&descr);
             _handles->csstatus = cusparseSetMatType(descr,CUSPARSE_MATRIX_TYPE_GENERAL);
             _handles->csstatus = cusparseSetMatIndexBase(descr,CUSPARSE_INDEX_BASE_ZERO);
+
+        }
+
+        // Overloaded constructor for MAT file load.
+        GPU_Sparse_f ( matfile_load & mat_file, std::string variable ) {
+
+            // Open the variable in MAT file.
+            matvar_load mat_var = mat_file.openvar(variable);
+            
+            // Fill Size array.
+            Size[0] = mat_var.varstream->dims[0];
+            Size[1] = mat_var.varstream->dims[1];
+            Size[2] = mat_var.sparsestream->ndata;
+
+            // Allocate sufficient memory.
+            Values.resize(Size[2]);
+            I.resize(Size[0] + 1);
+            J.resize(Size[2]);
+
+            // Fill matrix description.
+            _handles->csstatus = cusparseCreateMatDescr(&descr);
+            _handles->csstatus = cusparseSetMatType(descr,CUSPARSE_MATRIX_TYPE_GENERAL);
+            _handles->csstatus = cusparseSetMatIndexBase(descr,CUSPARSE_INDEX_BASE_ZERO);
+
+            // Cast pointers to appropriate type.
+            float * data_p = (float *) mat_var.sparsestream->data;
+            int * i_p = (int *) mat_var.sparsestream->ir;
+            int * j_p = (int *) mat_var.sparsestream->jc;
+
+            // Initialize temporary vectors and fill them.
+            thrust::device_vector<float> V_temp; 
+            thrust::device_vector<int> i_temp;
+            thrust::device_vector<int> j_temp;
+            V_temp.insert(V_temp.begin(),data_p,(data_p + Size[2]));
+            i_temp.insert(i_temp.begin(),i_p,(i_p + Size[2]));
+            j_temp.insert(j_temp.begin(),j_p,(j_p + Size[1] + 1));
+            
+            // Transpose the matrix and fill Values, I and J.
+            spftrans(V_temp,i_temp,j_temp,Values,J,I);
 
         }
 };
