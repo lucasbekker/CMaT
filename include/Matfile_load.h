@@ -1,11 +1,19 @@
-// Struct used in matfile_load.
-struct matvar {
-
-    matvar_t * varstream;                   // MatIO variable.
-    mat_sparse_t * sparsestream;            // Only contains data if "matvar.issparse=true".
-    std::string type;                       // Double, float or unsupported.
-    bool issparse = false;                  // True if varstream is a sparse variable.
+// Class definition of a variable in a MAT file to load.
+class matvar_load {
+    public:
+        // Data
+        matvar_t * varstream;                   // MatIO stream of the variable.
+        mat_sparse_t * sparsestream;            // Empty if "matvar_load.issparse=false".
+        std::string type;                       // Data type of the variable. (double, float or unsupported)
+        bool issparse = false;                  // True if varstream contains a sparse variable.
     
+        // Destructor
+        ~matvar_load (  ) {
+
+            // Free the variable.
+            Mat_VarFree(varstream);
+            
+        }
 };
 
 // Class definition of a MAT file from which to load variables.
@@ -32,31 +40,31 @@ class matfile_load {
         void getvarprops (  ) {
 
             // Open the first variable.
-            matvar_t * mat_var = Mat_VarReadNext(mat_file);
+            matvar_t * varstream = Mat_VarReadNext(mat_file);
 
             // Loop over the variables.
-            while ( mat_var != NULL ) {
+            while ( varstream != NULL ) {
 
                 // Check if the variable is sparse and store the result.
-                if (mat_var->class_type == 5) { issparselist.push_back("true");
+                if (varstream->class_type == 5) { issparselist.push_back("true");
                 } else { issparselist.push_back("false"); }
 
                 // Check if the variable is of type double or float and store the result.
-                if (mat_var->data_type == 9) { typelist.push_back("double"); 
-                } else if (mat_var->data_type == 7) { typelist.push_back("float"); 
+                if (varstream->data_type == 9) { typelist.push_back("double"); 
+                } else if (varstream->data_type == 7) { typelist.push_back("float"); 
                 } else { typelist.push_back("unsupported"); }
 
                 // Store the variable name.
-                varlist.push_back(mat_var->name);
+                varlist.push_back(varstream->name);
                 
                 // Add one to the variable counter.
                 nvars = nvars + 1;
 
                 // Free the current variable.
-                Mat_VarFree(mat_var);
+                Mat_VarFree(varstream);
 
                 // Load the new variable.
-                mat_var = Mat_VarReadNext(mat_file);
+                varstream = Mat_VarReadNext(mat_file);
 
             }
 
@@ -89,10 +97,10 @@ class matfile_load {
         }
 
         // Open a variable in the MAT file.
-        matvar openvar ( std::string variable ) {
+        matvar_load openvar ( std::string variable ) {
             
             // Initialize matvar.
-            matvar mat_var;
+            matvar_load mat_var;
 
             // Open variable in .mat file.
             mat_var.varstream = Mat_VarRead(mat_file,variable.c_str());

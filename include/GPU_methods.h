@@ -135,11 +135,11 @@ class GPU_methods {
 
             // Create temporary data vector.
             thrust::device_vector<int> i_temp(i.size());
-
+            
             // Copy data to the new and temporary vectors.
             thrust::copy(V.begin(), V.end(), V_new.begin());
             thrust::copy(i.begin(), i.end(), i_temp.begin());
-    
+            
             // Fill j_new using COO layout.
             for ( int k = 0; k < (jp.size() - 1); k++ ) {
 

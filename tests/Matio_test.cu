@@ -11,7 +11,7 @@ int main (  ) {
     matfile_load mat_file(path,name);
 
     // Open the variable in MAT file.
-    matvar mat_var = mat_file.openvar(variable);
+    matvar_load mat_var = mat_file.openvar(variable);
     
     // Get the number of non-zero elements.
     int result = mat_var.sparsestream->nzmax;

@@ -32,5 +32,26 @@ std::cout << d_g.Values[0] << std::endl;
 std::cout << d_g.Values[1] << std::endl;
 std::cout << d_g.Values[2] << std::endl;
 std::cout << d_g.Values[3] << std::endl;
-    
+
+CPU_Sparse a_c(mat_file,"a");
+
+std::cout << "V: " << a_c.Values[0] << std::endl;
+std::cout << "V: " << a_c.Values[1] << std::endl;
+std::cout << "V: " << a_c.Values[2] << std::endl;
+std::cout << "V: " << a_c.Values[3] << std::endl;
+std::cout << "V: " << a_c.Values[4] << std::endl;
+std::cout << "V: " << a_c.Values[5] << std::endl;
+
+std::cout << "Ib: " << a_c.Ib[0] << std::endl;
+std::cout << "Ib: " << a_c.Ib[1] << std::endl;
+std::cout << "Ie: " << a_c.Ie[0] << std::endl;
+std::cout << "Ie: " << a_c.Ie[1] << std::endl;
+
+std::cout << "J: " << a_c.J[0] << std::endl;
+std::cout << "J: " << a_c.J[1] << std::endl;
+std::cout << "J: " << a_c.J[2] << std::endl;
+std::cout << "J: " << a_c.J[3] << std::endl;
+std::cout << "J: " << a_c.J[4] << std::endl;
+std::cout << "J: " << a_c.J[5] << std::endl;
+
 }
