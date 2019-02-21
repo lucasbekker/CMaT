@@ -7,6 +7,53 @@
 // Included for .mat file support.
 #include <matio.h>
 
+class matsparse_save {
+    public:
+        // Data
+        mat_sparse_t * sparsestream;
+        matvar_t * varstream;    
+
+        // Methods
+        // Constructor
+        matsparse_save ( double * V, int * i, int * j, int numnz, int n ) {
+
+            varstream = Mat_VarCreate(mat_file);
+            
+            std::cout<<"db1"<<std::endl;
+            // Fill the data of sparsestream.
+            sparsestream->nzmax = numnz;
+            std::cout<<"db2"<<std::endl;
+            /*sparsestream->ndata = numnz;
+            std::cout<<"db3"<<std::endl;
+            sparsestream->nir = numnz;
+            std::cout<<"db4"<<std::endl;
+            sparsestream->njc = (n + 1);
+            std::cout<<"db5"<<std::endl;*/
+            sparsestream->ir = (mat_int32_t *) i;
+            std::cout<<"db6"<<std::endl;
+            sparsestream->jc = (mat_int32_t *) j;
+            std::cout<<"db7"<<std::endl;
+            sparsestream->data = V; 
+            std::cout<<"db8"<<std::endl;
+
+        }
+
+        // Overloaded constructor for float
+        matsparse_save ( float * V, int * i, int * j, int numnz, int n ) {
+
+            // Fill the data of sparsestream.
+            sparsestream->nzmax = numnz;
+            sparsestream->ndata = numnz;
+            sparsestream->nir = numnz;
+            sparsestream->njc = (n + 1);
+            sparsestream->ir = (mat_int32_t *) i;
+            sparsestream->jc = (mat_int32_t *) j;
+            sparsestream->data = (void *) V;
+
+        }
+
+};
+
 // Class definition of a MAT file in which to save variables.
 class matfile_save {
     public:
