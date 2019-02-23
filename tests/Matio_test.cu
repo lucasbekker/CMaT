@@ -19,6 +19,14 @@ int main (  ) {
     int i[6] = {0,0,0,1,1,1};
     int j[7] = {0,1,2,3,4,5,6};
 
+    CPU_Dense test(2,2);
+    test.Values[0] = 1;
+    test.Values[1] = 2;
+    test.Values[2] = 3;
+    test.Values[3] = 4;
+
+    test.save(mat_file_save,"test");
+
     matsparse_save z(V,i,j,6,6);
 
     mat_file_save.save("x","double",x,10,1);
