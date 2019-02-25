@@ -1,109 +1,5 @@
 #include "../include/CMaT.h"
 
-int CPU_spdtrans_test (  ) {
-
-    // A = 1 3 0 5
-    //     2 0 0 0
-    //     0 4 0 0
-
-    // Check.
-    int pass = 1;
-
-    // Load the functions.
-    CPU_methods cpu_m;
-
-    // Declaration of vectors.
-    thrust::host_vector<double> V(5);
-    thrust::host_vector<int> i(5);
-    thrust::host_vector<int> jpb(4);
-    thrust::host_vector<int> jpe(4);
-    thrust::host_vector<double> V_new(5);
-    thrust::host_vector<int> j_new(5);
-    thrust::host_vector<int> ipb_new(3);
-    thrust::host_vector<int> ipe_new(3);
-
-    // Fill V using CSC layout.
-    V[0] = 1; V[1] = 2; V[2] = 3; V[3] = 4; V[4] = 5; 
-
-    // Fill i using CSC layout.
-    i[0] = 0; i[1] = 1; i[2] = 0; i[3] = 2; i[4] = 0; 
-
-    // Fill jpb and jpe using CSC layout.
-    jpb[0] = 0; jpb[1] = 2; jpb[2] = 4; jpb[3] = 4;
-    jpe[0] = 2; jpe[1] = 4; jpe[2] = 4; jpe[3] = 5;
-
-    // Perform the transpose operation.
-    cpu_m.spdtrans(V, i, jpb, jpe, V_new, j_new, ipb_new, ipe_new);
-
-    // Check for errors.
-    if ((V_new[0] != 1.0) || (V_new[1] != 3.0) || (V_new[2] != 5.0) ||
-        (V_new[3] != 2.0) || (V_new[4] != 4.0)) {
-        std::cout << "Errors in V." << std::endl; pass = 0; }
-    if ((j_new[0] != 0) || (j_new[1] != 1) || (j_new[2] != 3) ||
-        (j_new[3] != 0) || (j_new[4] != 1)) {
-        std::cout << "Errors in j." << std::endl; pass = 0; }
-    if ((ipb_new[0] != 0) || (ipb_new[1] != 3) || (ipb_new[2] != 4)) {
-        std::cout << "Errors in ipb." << std::endl; pass = 0; }
-    if ((ipe_new[0] != 3) || (ipe_new[1] != 4) || (ipe_new[2] != 5)) {
-        std::cout << "Errors in ipe." << std::endl; pass = 0; }
-
-    // Return the result.
-    return pass;
-
-}
-
-int CPU_spftrans_test (  ) {
-
-    // A = 1 3 0 5
-    //     2 0 0 0
-    //     0 4 0 0
-
-    // Check.
-    int pass = 1;
-
-    // Load the functions.
-    CPU_methods cpu_m;
-
-    // Declaration of vectors.
-    thrust::host_vector<float> V(5);
-    thrust::host_vector<int> i(5);
-    thrust::host_vector<int> jpb(4);
-    thrust::host_vector<int> jpe(4);
-    thrust::host_vector<float> V_new(5);
-    thrust::host_vector<int> j_new(5);
-    thrust::host_vector<int> ipb_new(3);
-    thrust::host_vector<int> ipe_new(3);
-
-    // Fill V using CSC layout.
-    V[0] = 1; V[1] = 2; V[2] = 3; V[3] = 4; V[4] = 5; 
-
-    // Fill i using CSC layout.
-    i[0] = 0; i[1] = 1; i[2] = 0; i[3] = 2; i[4] = 0; 
-
-    // Fill jpb and jpe using CSC layout.
-    jpb[0] = 0; jpb[1] = 2; jpb[2] = 4; jpb[3] = 4;
-    jpe[0] = 2; jpe[1] = 4; jpe[2] = 4; jpe[3] = 5;
-
-    // Perform the transpose operation.
-    cpu_m.spftrans(V, i, jpb, jpe, V_new, j_new, ipb_new, ipe_new);
-
-    // Check for errors.
-    if ((V_new[0] != 1.0) || (V_new[1] != 3.0) || (V_new[2] != 5.0) ||
-        (V_new[3] != 2.0) || (V_new[4] != 4.0)) {
-        std::cout << "Errors in V." << std::endl; pass = 0; }
-    if ((j_new[0] != 0) || (j_new[1] != 1) || (j_new[2] != 3) ||
-        (j_new[3] != 0) || (j_new[4] != 1)) {
-        std::cout << "Errors in j." << std::endl; pass = 0; }
-    if ((ipb_new[0] != 0) || (ipb_new[1] != 3) || (ipb_new[2] != 4)) {
-        std::cout << "Errors in ipb." << std::endl; pass = 0; }
-    if ((ipe_new[0] != 3) || (ipe_new[1] != 4) || (ipe_new[2] != 5)) {
-        std::cout << "Errors in ipe." << std::endl; pass = 0; }
-
-    // Return the result.
-    return pass;
-
-}
-
 int GPU_spdtrans_test (  ) {
 
     // A = 1 3 0 5
@@ -118,34 +14,34 @@ int GPU_spdtrans_test (  ) {
 
     // Declaration of vectors.
     thrust::device_vector<double> V(5);
-    thrust::device_vector<int> i(5);
-    thrust::device_vector<int> jp(5);
+    thrust::device_vector<int> J(5);
+    thrust::device_vector<int> Ip(4);
     thrust::device_vector<double> V_new(5);
-    thrust::device_vector<int> j_new(5);
-    thrust::device_vector<int> ip_new(4);
+    thrust::device_vector<int> J_new(5);
+    thrust::device_vector<int> Ip_new(5);
 
-    // Fill V using CSC layout.
-    V[0] = 1; V[1] = 2; V[2] = 3; V[3] = 4; V[4] = 5; 
+    // Fill V.
+    V[0] = 1; V[1] = 3; V[2] = 5; V[3] = 2; V[4] = 4; 
 
-    // Fill i using CSC layout.
-    i[0] = 0; i[1] = 1; i[2] = 0; i[3] = 2; i[4] = 0; 
+    // Fill Ip.
+    Ip[0] = 0; Ip[1] = 3; Ip[2] = 4; Ip[3] = 5;
 
-    // Fill jp using CSC layout.
-    jp[0] = 0; jp[1] = 2; jp[2] = 4; jp[3] = 4; jp[4] = 5;
+    // Fill J.
+    J[0] = 0; J[1] = 1; J[2] = 3; J[3] = 0; J[4] = 1;
     
     // Perform the transpose operation.
-    gpu_m.spdtrans(V, i, jp, V_new, j_new, ip_new);
+    gpu_m.spdtrans(V,Ip,J,V_new,Ip_new,J_new);
 
     // Check for errors.
-    if ((V_new[0] != 1.0) || (V_new[1] != 3.0) || (V_new[2] != 5.0) ||
-        (V_new[3] != 2.0) || (V_new[4] != 4.0)) {
+    if ((V_new[0] != 1.0) || (V_new[1] != 2.0) || (V_new[2] != 3.0) ||
+        (V_new[3] != 4.0) || (V_new[4] != 5.0)) {
         std::cout << "Errors in V." << std::endl; pass = 0; }
-    if ((j_new[0] != 0) || (j_new[1] != 1) || (j_new[2] != 3) ||
-        (j_new[3] != 0) || (j_new[4] != 1)) {
-        std::cout << "Errors in j." << std::endl; pass = 0; }
-    if ((ip_new[0] != 0) || (ip_new[1] != 3) ||
-        (ip_new[2] != 4) || (ip_new[3] != 5)) {
-        std::cout << "Errors in ip." << std::endl; pass = 0; }
+    if ((J_new[0] != 0) || (J_new[1] != 1) || (J_new[2] != 0) ||
+        (J_new[3] != 2) || (J_new[4] != 0)) {
+        std::cout << "Errors in J." << std::endl; pass = 0; }
+    if ((Ip_new[0] != 0) || (Ip_new[1] != 2) || (Ip_new[2] != 4) || 
+        (Ip_new[3] != 4) || (Ip_new[4] != 5)) {
+        std::cout << "Errors in Ip." << std::endl; pass = 0; }
     
     // Return the result.
     return pass;
@@ -166,35 +62,143 @@ int GPU_spftrans_test (  ) {
 
     // Declaration of vectors.
     thrust::device_vector<float> V(5);
-    thrust::device_vector<int> i(5);
-    thrust::device_vector<int> jp(5);
+    thrust::device_vector<int> J(5);
+    thrust::device_vector<int> Ip(4);
     thrust::device_vector<float> V_new(5);
-    thrust::device_vector<int> j_new(5);
-    thrust::device_vector<int> ip_new(4);
+    thrust::device_vector<int> J_new(5);
+    thrust::device_vector<int> Ip_new(5);
 
-    // Fill V using CSC layout.
-    V[0] = 1; V[1] = 2; V[2] = 3; V[3] = 4; V[4] = 5; 
+    // Fill V.
+    V[0] = 1; V[1] = 3; V[2] = 5; V[3] = 2; V[4] = 4; 
 
-    // Fill i using CSC layout.
-    i[0] = 0; i[1] = 1; i[2] = 0; i[3] = 2; i[4] = 0; 
+    // Fill Ip.
+    Ip[0] = 0; Ip[1] = 3; Ip[2] = 4; Ip[3] = 5;
 
-    // Fill jp using CSC layout.
-    jp[0] = 0; jp[1] = 2; jp[2] = 4; jp[3] = 4; jp[4] = 5;
+    // Fill J.
+    J[0] = 0; J[1] = 1; J[2] = 3; J[3] = 0; J[4] = 1;
     
     // Perform the transpose operation.
-    gpu_m.spftrans(V, i, jp, V_new, j_new, ip_new);
+    gpu_m.spftrans(V,Ip,J,V_new,Ip_new,J_new);
+    
+    // Check for errors.
+    if ((V_new[0] != 1.0) || (V_new[1] != 2.0) || (V_new[2] != 3.0) ||
+        (V_new[3] != 4.0) || (V_new[4] != 5.0)) {
+        std::cout << "Errors in V." << std::endl; pass = 0; }
+    if ((J_new[0] != 0) || (J_new[1] != 1) || (J_new[2] != 0) ||
+        (J_new[3] != 2) || (J_new[4] != 0)) {
+        std::cout << "Errors in J." << std::endl; pass = 0; }
+    if ((Ip_new[0] != 0) || (Ip_new[1] != 2) || (Ip_new[2] != 4) || 
+        (Ip_new[3] != 4) || (Ip_new[4] != 5)) {
+        std::cout << "Errors in Ip." << std::endl; pass = 0; }
+    
+    // Return the result.
+    return pass;
+
+}
+
+int CPU_spdtrans_test (  ) {
+
+    // A = 1 3 0 5
+    //     2 0 0 0
+    //     0 4 0 0
+
+    // Check.
+    int pass = 1;
+
+    // Load the functions.
+    CPU_methods cpu_m;
+
+    // Declaration of vectors.
+    thrust::host_vector<double> V(5);
+    thrust::host_vector<int> J(5);
+    thrust::host_vector<int> Ipb(3);
+    thrust::host_vector<int> Ipe(3);
+    thrust::host_vector<double> V_new(5);
+    thrust::host_vector<int> J_new(5);
+    thrust::host_vector<int> Ipb_new(4);
+    thrust::host_vector<int> Ipe_new(4);
+
+    // Fill V.
+    V[0] = 1; V[1] = 3; V[2] = 5; V[3] = 2; V[4] = 4; 
+
+    // Fill Ipb and Ipe.
+    Ipb[0] = 0; Ipb[1] = 3; Ipb[2] = 4;
+    Ipe[0] = 3; Ipe[1] = 4; Ipe[2] = 5;
+
+    // Fill J.
+    J[0] = 0; J[1] = 1; J[2] = 3; J[3] = 0; J[4] = 1;
+    
+    // Perform the transpose operation.
+    cpu_m.spdtrans(V,Ipb,Ipe,J,V_new,Ipb_new,Ipe_new,J_new);
 
     // Check for errors.
-    if ((V_new[0] != 1.0) || (V_new[1] != 3.0) || (V_new[2] != 5.0) ||
-        (V_new[3] != 2.0) || (V_new[4] != 4.0)) {
+    if ((V_new[0] != 1.0) || (V_new[1] != 2.0) || (V_new[2] != 3.0) ||
+        (V_new[3] != 4.0) || (V_new[4] != 5.0)) {
         std::cout << "Errors in V." << std::endl; pass = 0; }
-    if ((j_new[0] != 0) || (j_new[1] != 1) || (j_new[2] != 3) ||
-        (j_new[3] != 0) || (j_new[4] != 1)) {
-        std::cout << "Errors in j." << std::endl; pass = 0; }
-    if ((ip_new[0] != 0) || (ip_new[1] != 3) ||
-        (ip_new[2] != 4) || (ip_new[3] != 5)) {
-        std::cout << "Errors in ip." << std::endl; pass = 0; }
+    if ((J_new[0] != 0) || (J_new[1] != 1) || (J_new[2] != 0) ||
+        (J_new[3] != 2) || (J_new[4] != 0)) {
+        std::cout << "Errors in J." << std::endl; pass = 0; }
+    if ((Ipb_new[0] != 0) || (Ipb_new[1] != 2) || 
+        (Ipb_new[2] != 4) || (Ipb_new[3] != 4)) {
+        std::cout << "Errors in Ipb." << std::endl; pass = 0; }
+    if ((Ipe_new[0] != 2) || (Ipe_new[1] != 4) || 
+        (Ipe_new[2] != 4) || (Ipe_new[3] != 5)) {
+        std::cout << "Errors in Ipe." << std::endl; pass = 0; }
+    
+    // Return the result.
+    return pass;
 
+}
+
+int CPU_spftrans_test (  ) {
+
+    // A = 1 3 0 5
+    //     2 0 0 0
+    //     0 4 0 0
+
+    // Check.
+    int pass = 1;
+
+    // Load the functions.
+    CPU_methods cpu_m;
+
+    // Declaration of vectors.
+    thrust::host_vector<float> V(5);
+    thrust::host_vector<int> J(5);
+    thrust::host_vector<int> Ipb(3);
+    thrust::host_vector<int> Ipe(3);
+    thrust::host_vector<float> V_new(5);
+    thrust::host_vector<int> J_new(5);
+    thrust::host_vector<int> Ipb_new(4);
+    thrust::host_vector<int> Ipe_new(4);
+
+    // Fill V.
+    V[0] = 1; V[1] = 3; V[2] = 5; V[3] = 2; V[4] = 4; 
+
+    // Fill Ipb and Ipe.
+    Ipb[0] = 0; Ipb[1] = 3; Ipb[2] = 4;
+    Ipe[0] = 3; Ipe[1] = 4; Ipe[2] = 5;
+
+    // Fill J.
+    J[0] = 0; J[1] = 1; J[2] = 3; J[3] = 0; J[4] = 1;
+    
+    // Perform the transpose operation.
+    cpu_m.spftrans(V,Ipb,Ipe,J,V_new,Ipb_new,Ipe_new,J_new);
+
+    // Check for errors.
+    if ((V_new[0] != 1.0) || (V_new[1] != 2.0) || (V_new[2] != 3.0) ||
+        (V_new[3] != 4.0) || (V_new[4] != 5.0)) {
+        std::cout << "Errors in V." << std::endl; pass = 0; }
+    if ((J_new[0] != 0) || (J_new[1] != 1) || (J_new[2] != 0) ||
+        (J_new[3] != 2) || (J_new[4] != 0)) {
+        std::cout << "Errors in J." << std::endl; pass = 0; }
+    if ((Ipb_new[0] != 0) || (Ipb_new[1] != 2) || 
+        (Ipb_new[2] != 4) || (Ipb_new[3] != 4)) {
+        std::cout << "Errors in Ipb." << std::endl; pass = 0; }
+    if ((Ipe_new[0] != 2) || (Ipe_new[1] != 4) || 
+        (Ipe_new[2] != 4) || (Ipe_new[3] != 5)) {
+        std::cout << "Errors in Ipe." << std::endl; pass = 0; }
+    
     // Return the result.
     return pass;
 
