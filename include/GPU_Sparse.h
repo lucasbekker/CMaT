@@ -36,7 +36,15 @@ class GPU_Sparse: private GPU_methods {
         void madd (  ) { std::cout << "empty" << std::endl; }
 
         // Transposes the Matrix.
-        void trans (  ) { std::cout << "empty" << std::endl; }
+        GPU_Sparse trans (  ) {
+            
+            GPU_Sparse result(Size[1],Size[0],Size[2]);
+
+            spdtrans(Values,I,J,result.Values,result.I,result.J);
+
+            return result;
+
+        }
 
         // Links to GPU_methods.dscp().
         GPU_Sparse scp ( const double a ) {
@@ -189,8 +197,15 @@ class GPU_Sparse_f: private GPU_methods {
         void madd (  ) { std::cout << "empty" << std::endl; }
 
         // Transposes the Matrix.
-        void trans (  ) { std::cout << "empty" << std::endl; }
+        GPU_Sparse_f trans (  ) {
+            
+            GPU_Sparse_f result(Size[1],Size[0],Size[2]);
 
+            spftrans(Values,I,J,result.Values,result.I,result.J);
+
+            return result;
+
+        }
         // Links to GPU_methods.fscp().
         GPU_Sparse_f scp ( const float a ) {
             

@@ -37,7 +37,15 @@ class CPU_Sparse: private CPU_methods {
         void madd (  ) { std::cout << "empty" << std::endl; }
 
         // Transposes the Matrix.
-        void trans (  ) { std::cout << "empty" << std::endl; }
+        CPU_Sparse trans (  ) {
+            
+            CPU_Sparse result(Size[1],Size[0],Size[2]);
+
+            spdtrans(Values,Ib,Ie,J,result.Values,result.Ib,result.Ie,result.J);
+
+            return result;
+
+        }
 
         // Links to CPU_methods.dscp().
         CPU_Sparse scp ( const double a ) {
@@ -188,7 +196,15 @@ class CPU_Sparse_f: private CPU_methods {
         void madd (  ) { std::cout << "empty" << std::endl; }
 
         // Transposes the Matrix.
-        void trans (  ) { std::cout << "empty" << std::endl; }
+        CPU_Sparse_f trans (  ) {
+            
+            CPU_Sparse_f result(Size[1],Size[0],Size[2]);
+
+            spftrans(Values,Ib,Ie,J,result.Values,result.Ib,result.Ie,result.J);
+
+            return result;
+
+        }
 
         // Links to CPU_methods.fscp().
         CPU_Sparse_f scp ( const float a ) {
