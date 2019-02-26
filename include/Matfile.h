@@ -209,8 +209,8 @@ class matsparse_save {
 
             // Fill the data of sparsestream.
             matsparse_save_sub(i,j,numnz,n);
-            sparsestream->data = V; 
-            
+            sparsestream->data = V;
+                        
         }
 
         // Overloaded constructor for float
@@ -218,7 +218,7 @@ class matsparse_save {
 
             // Fill the data of sparsestream.
             matsparse_save_sub(i,j,numnz,n);
-            sparsestream->data = (void *) V;
+            sparsestream->data = (float *) V;
 
         }
 
