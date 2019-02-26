@@ -192,7 +192,8 @@ class matsparse_save {
         mat_sparse_t * sparsestream = &sparsestreamdata;
         
         // Methods
-        void matsparse_save_sub ( int * i, int * j, int numnz, int n ) {
+        // Constructor
+        matsparse_save ( double * V, int * i, int * j, int numnz, int n ) {
 
             // Fill the data of sparsestream.
             sparsestream->nzmax = numnz;
@@ -201,25 +202,8 @@ class matsparse_save {
             sparsestream->njc = (n + 1);
             sparsestream->ir = (mat_int32_t *) i;
             sparsestream->jc = (mat_int32_t *) j;
-
-        }
-
-        // Constructor
-        matsparse_save ( double * V, int * i, int * j, int numnz, int n ) {
-
-            // Fill the data of sparsestream.
-            matsparse_save_sub(i,j,numnz,n);
             sparsestream->data = V;
                         
-        }
-
-        // Overloaded constructor for float
-        matsparse_save ( float * V, int * i, int * j, int numnz, int n ) {
-
-            // Fill the data of sparsestream.
-            matsparse_save_sub(i,j,numnz,n);
-            sparsestream->data = (float *) V;
-
         }
 
 };
@@ -257,12 +241,9 @@ class matfile_save {
             } else if ( type == "float" ) {
                 mat_var = Mat_VarCreate(varname.c_str(),MAT_C_SINGLE,
                                         MAT_T_SINGLE,2,dims,datap,0);
-            } else if ( type == "sparsed" ) { 
+            } else if ( type == "sparse" ) { 
                 mat_var = Mat_VarCreate(varname.c_str(),MAT_C_SPARSE,
                                         MAT_T_DOUBLE,2,dims,datap,0);
-            } else if ( type == "sparsef" ) { 
-                mat_var = Mat_VarCreate(varname.c_str(),MAT_C_SPARSE,
-                                        MAT_T_SINGLE,2,dims,datap,0);
             } else { mat_var = NULL; }
 
             // Check for errors, add to variable list and save the result.                                   

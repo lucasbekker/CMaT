@@ -118,7 +118,7 @@ class GPU_Sparse: private GPU_methods {
             matsparse_save sparse_temp(V,j,i,Size[2],Size[1]);
 
             // Write to MAT file.
-            mat_file.save(varname,"sparsed",sparse_temp.sparsestream,Size[0],Size[1]);
+            mat_file.save(varname,"sparse",sparse_temp.sparsestream,Size[0],Size[1]);
 
         }
 
@@ -286,12 +286,12 @@ class GPU_Sparse_f: private GPU_methods {
             // Create temporary transposed matrix.
             GPU_Sparse_f temp = trans();
 
-            thrust::host_vector<float> V_temp = temp.Values;
+            thrust::host_vector<double> V_temp = temp.Values;
             thrust::host_vector<int> i_temp = temp.I;
             thrust::host_vector<int> j_temp = temp.J;
 
             // Create pointer.
-            float * V = thrust::raw_pointer_cast(&V_temp[0]);
+            double * V = thrust::raw_pointer_cast(&V_temp[0]);
             int * i = thrust::raw_pointer_cast(&i_temp[0]);
             int * j = thrust::raw_pointer_cast(&j_temp[0]);
 
@@ -299,7 +299,7 @@ class GPU_Sparse_f: private GPU_methods {
             matsparse_save sparse_temp(V,j,i,Size[2],Size[1]);
 
             // Write to MAT file.
-            mat_file.save(varname,"sparsef",sparse_temp.sparsestream,Size[0],Size[1]);
+            mat_file.save(varname,"sparse",sparse_temp.sparsestream,Size[0],Size[1]);
 
         }
 
