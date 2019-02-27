@@ -105,6 +105,7 @@ class GPU_Sparse: private GPU_methods {
             // Create temporary transposed matrix.
             GPU_Sparse temp = trans();
 
+            // Copy to host memory.
             thrust::host_vector<double> V_temp = temp.Values;
             thrust::host_vector<int> i_temp = temp.I;
             thrust::host_vector<int> j_temp = temp.J;

@@ -5,23 +5,24 @@ int main (  ) {
     // Open the MAT file.
     matfile_save mat_file_save("./tests/MAT_FILES/Matio_test_save.mat");
 
-    /*// Declaration of matrix.
-    GPU_Sparse testd(3,4,5);
+    // Declaration of matrix.
+    CPU_Sparse_f test(3,4,5);
     
     // Fill V.
-    testd.Values[0] = 1; testd.Values[1] = 3; testd.Values[2] = 5;
-    testd.Values[3] = 2; testd.Values[4] = 4; 
+    test.Values[0] = 1; test.Values[1] = 3; test.Values[2] = 5;
+    test.Values[3] = 2; test.Values[4] = 4; 
 
-    // Fill Ip.
-    testd.I[0] = 0; testd.I[1] = 3; testd.I[2] = 4; testd.I[3] = 5;
-    
+    // Fill Ipb and Ipe.
+    test.Ib[0] = 0; test.Ib[1] = 3; test.Ib[2] = 4;
+    test.Ie[0] = 3; test.Ie[1] = 4; test.Ie[2] = 5;
+
     // Fill J.
-    testd.J[0] = 0; testd.J[1] = 1; testd.J[2] = 3; 
-    testd.J[3] = 0; testd.J[4] = 1;
+    test.J[0] = 0; test.J[1] = 1; test.J[2] = 3; 
+    test.J[3] = 0; test.J[4] = 1;
 
-    testd.save(mat_file_save,"testd");*/
+    test.save(mat_file_save,"test");
 
-    // Declaration of matrix.
+    /*// Declaration of matrix.
     GPU_Sparse_f testf(3,4,5);
     
     // Fill V.
@@ -35,7 +36,7 @@ int main (  ) {
     testf.J[0] = 0; testf.J[1] = 1; testf.J[2] = 3; 
     testf.J[3] = 0; testf.J[4] = 1;
 
-    testf.save(mat_file_save,"testf");
+    testf.save(mat_file_save,"testf");*/
 
     return 0;
 

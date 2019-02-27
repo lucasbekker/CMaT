@@ -102,6 +102,28 @@ class CPU_Sparse: private CPU_methods {
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
 
+        // Save to MAT file.
+        void save ( matfile_save & mat_file, std::string varname ) {
+
+            // Create temporary transposed matrix.
+            CPU_Sparse temp = trans();
+
+            // Convert Ib and Ie to generic Ip.
+            temp.Ib.push_back(temp.Ie[(temp.Ie.size() - 1)]);
+
+            // Create pointer.
+            double * V = thrust::raw_pointer_cast(&temp.Values[0]);
+            int * i = thrust::raw_pointer_cast(&temp.Ib[0]);
+            int * j = thrust::raw_pointer_cast(&temp.J[0]);
+
+            // Create MatIO Sparse stream. 
+            matsparse_save sparse_temp(V,j,i,Size[2],Size[1]);
+
+            // Write to MAT file.
+            mat_file.save(varname,"sparse",sparse_temp.sparsestream,Size[0],Size[1]);
+
+        }
+
         // Constructor
         CPU_Sparse ( int m, int n, int nnz ) {
             
@@ -259,6 +281,31 @@ class CPU_Sparse_f: private CPU_methods {
 
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
+
+        // Save to MAT file.
+        void save ( matfile_save & mat_file, std::string varname ) {
+
+            // Create temporary transposed matrix.
+            CPU_Sparse_f temp = trans();
+
+            // Convert Ib and Ie to generic Ip.
+            temp.Ib.push_back(temp.Ie[(temp.Ie.size() - 1)]);
+
+            // Convert float to double.
+            thrust::host_vector<double> V_temp = temp.Values;
+
+            // Create pointer.
+            double * V = thrust::raw_pointer_cast(&V_temp[0]);
+            int * i = thrust::raw_pointer_cast(&temp.Ib[0]);
+            int * j = thrust::raw_pointer_cast(&temp.J[0]);
+
+            // Create MatIO Sparse stream. 
+            matsparse_save sparse_temp(V,j,i,Size[2],Size[1]);
+
+            // Write to MAT file.
+            mat_file.save(varname,"sparse",sparse_temp.sparsestream,Size[0],Size[1]);
+
+        }
 
         // Constructor
         CPU_Sparse_f ( int m, int n, int nnz ) {
