@@ -175,6 +175,9 @@ class CPU_Sparse: private CPU_methods {
             // Transpose the matrix and fill Values, I and J.
             spdtrans(V_temp,i_temp,jb_temp,je_temp,Values,J,Ib,Ie);
 
+            // Close the variable.
+            Mat_VarFree(mat_var.varstream);
+
         }
 
 };
@@ -328,7 +331,7 @@ class CPU_Sparse_f: private CPU_methods {
 
             // Open the variable in MAT file.
             matvar_load mat_var = mat_file.openvar(variable);
-            
+            std::cout << "debug" << std::endl;
             // Fill Size array.
             Size[0] = mat_var.varstream->dims[0];
             Size[1] = mat_var.varstream->dims[1];
@@ -339,14 +342,14 @@ class CPU_Sparse_f: private CPU_methods {
             Ib.resize(Size[0]);
             Ie.resize(Size[0]);
             J.resize(Size[2]);
-
+            std::cout << "debug" << std::endl;
             // Cast pointers to appropriate type.
-            float * data_p = (float *) mat_var.sparsestream->data;
+            double * data_p = (double *) mat_var.sparsestream->data;
             int * i_p = (int *) mat_var.sparsestream->ir;
             int * j_p = (int *) mat_var.sparsestream->jc;
 
             // Initialize temporary vectors and fill them.
-            thrust::host_vector<float> V_temp; 
+            thrust::host_vector<double> V_temp; 
             thrust::host_vector<int> i_temp;
             thrust::host_vector<int> jb_temp;
             thrust::host_vector<int> je_temp;
@@ -355,8 +358,15 @@ class CPU_Sparse_f: private CPU_methods {
             jb_temp.insert(jb_temp.begin(),j_p,(j_p + Size[1]));
             je_temp.insert(je_temp.begin(),(j_p + 1),(j_p + Size[1] + 1));
 
+            std::cout << "debug" << std::endl;
+
+            // Convert to float.
+            thrust::host_vector<float> V_temp_f = V_temp;
+
+            std::cout << "debug" << std::endl;
+
             // Transpose the matrix and fill Values, I and J.
-            spftrans(V_temp,i_temp,jb_temp,je_temp,Values,J,Ib,Ie);
+            spftrans(V_temp_f,i_temp,jb_temp,je_temp,Values,J,Ib,Ie);
 
         }
 };
