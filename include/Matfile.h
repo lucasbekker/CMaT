@@ -6,14 +6,16 @@ class matvar_load {
         mat_sparse_t * sparsestream;            // Empty if "matvar_load.issparse=false".
         std::string type;                       // Data type of the variable. (double, float or unsupported)
         bool issparse = false;                  // True if varstream contains a sparse variable.
-    
-        // Destructor
-        ~matvar_load (  ) {
+
+        void VarFree (  ) {
 
             // Free the variable.
             Mat_VarFree(varstream);
-            
+
         }
+
+        // Destructor
+        ~matvar_load (  ) { VarFree(); }
 };
 
 // Class definition of a MAT file from which to load variables.
@@ -178,6 +180,172 @@ class matfile_load {
         ~matfile_load (  ) {
 
             // Close the MAT file stream.
+            Mat_Close(mat_file);
+
+        }
+
+};
+
+// Class definition as a wrapper for mat_sparse_t.
+class matsparse_save {
+    public:
+        // Data
+        mat_sparse_t sparsestreamdata;
+        mat_sparse_t * sparsestream = &sparsestreamdata;
+        
+        // Methods
+        // Constructor
+        matsparse_save ( double * V, int * i, int * j, int numnz, int n ) {
+
+            // Fill the data of sparsestream.
+            sparsestream->nzmax = numnz;
+            sparsestream->ndata = numnz;
+            sparsestream->nir = numnz;
+            sparsestream->njc = (n + 1);
+            sparsestream->ir = (mat_int32_t *) i;
+            sparsestream->jc = (mat_int32_t *) j;
+            sparsestream->data = V;
+                        
+        }
+
+};
+
+// Class definition of a MAT file in which to save variables.
+class matfile_save {
+    public:
+        // Data
+        // Path data.
+        std::string path;                       // Path to MAT file to load.
+        std::string name;                       // Name of MAT file to load.
+        std::string full_name;                  // path + name of MAT file to load.
+
+        std::list<std::string> varlist;         // List containing the variable names in MAT file to save.
+        mat_t * mat_file;                       // MatIO stream of MAT file to save.
+        int status;                             // Status of MatIO stream to save.
+
+        // Methods
+        // Write data to a MAT file.
+        void save ( std::string varname, std::string type, void * datap, int m, int n ) {
+
+            // Check the variable name.
+            varcheck(varname);
+            
+            // Store dimension data in the required format.
+            size_t dims[2]; dims[0] = (size_t) m; dims[1] = (size_t) n;
+
+            // Declare mat_var.
+            matvar_t * mat_var;
+
+            // Create the MAT file variable.
+            if ( type == "double" ) {
+                mat_var = Mat_VarCreate(varname.c_str(),MAT_C_DOUBLE,
+                                        MAT_T_DOUBLE,2,dims,datap,0);
+            } else if ( type == "float" ) {
+                mat_var = Mat_VarCreate(varname.c_str(),MAT_C_SINGLE,
+                                        MAT_T_SINGLE,2,dims,datap,0);
+            } else if ( type == "sparse" ) { 
+                mat_var = Mat_VarCreate(varname.c_str(),MAT_C_SPARSE,
+                                        MAT_T_DOUBLE,2,dims,datap,0);
+            } else { mat_var = NULL; }
+
+            // Check for errors, add to variable list and save the result.                                   
+            if ( mat_var == NULL ) {
+
+                // Error message.
+                std::cout << "Error creating variable \"" << varname << "\"" 
+                          << std::endl;
+
+                // Change status.
+                status = 0;
+
+            } else if ( status == 1 ) {
+
+                // Add name of variable to varlist.
+                varlist.push_back(varname);
+
+                // Write the variable to the MAT file.
+                Mat_VarWrite(mat_file,mat_var,MAT_COMPRESSION_NONE);
+
+                // Free the variable.
+                Mat_VarFree(mat_var);
+
+            }
+
+        }
+
+        // Check if the variable exists in the MAT file to save.
+        void varcheck ( std::string varname ) {
+            
+            // Declare the iterators.           
+            std::list<std::string>::iterator it = varlist.begin();
+
+            // Loop over the variable list.
+            while ( it != varlist.end() ) {
+
+                // Check if varname is in varlist.
+                if ( *it == varname ) { 
+                    
+                    // Set status to zero and print error message.
+                    std::cout << "Variable name: " << varname 
+                              << " already exists in MAT file." << std::endl;
+
+                    status = 0;
+
+                }
+
+                // Advance the iterator.
+                ++it;
+
+            }
+
+        }
+
+        // Manual closing of MAT file.
+        void close (  ) {
+
+            // Close the MAT file.
+            Mat_Close(mat_file);
+
+        }
+
+        // Constructor.
+        matfile_save ( std::string NAME ) {
+
+            // Store filename.
+            name = NAME;
+            path = "WORK_DIR/";
+            full_name = path + name;
+
+            // Create MAT file and check status.
+            mat_file = Mat_CreateVer(name.c_str(),NULL,MAT_FT_DEFAULT);
+            if ( NULL == mat_file ) {
+                std::cout << "Error creating MAT file \"" << name << "\"" << std::endl;
+                status = 0;
+            } else { status = 1; }
+
+        }
+
+        // Overloaded constructor for path specification.
+        matfile_save ( std::string PATH, std::string NAME ) {
+
+            // Store filename.
+            name = NAME;
+            path = PATH;
+            full_name = path + "/" + name;
+
+            // Create MAT file and check status.
+            mat_file = Mat_CreateVer(full_name.c_str(),NULL,MAT_FT_DEFAULT);
+            if ( NULL == mat_file ) {
+                std::cout << "Error creating MAT file \"" << name << "\"" << std::endl;
+                status = 0;
+            } else { status = 1; }
+
+        }
+
+        // Destructor
+        ~matfile_save (  ) {
+
+            // Close the MAT file.
             Mat_Close(mat_file);
 
         }

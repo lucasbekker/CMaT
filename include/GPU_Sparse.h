@@ -36,7 +36,15 @@ class GPU_Sparse: private GPU_methods {
         void madd (  ) { std::cout << "empty" << std::endl; }
 
         // Transposes the Matrix.
-        void trans (  ) { std::cout << "empty" << std::endl; }
+        GPU_Sparse trans (  ) {
+            
+            GPU_Sparse result(Size[1],Size[0],Size[2]);
+
+            spdtrans(Values,I,J,result.Values,result.I,result.J);
+
+            return result;
+
+        }
 
         // Links to GPU_methods.dscp().
         GPU_Sparse scp ( const double a ) {
@@ -91,6 +99,30 @@ class GPU_Sparse: private GPU_methods {
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
 
+        // Save to MAT file.
+        void save ( matfile_save & mat_file, std::string varname ) {
+
+            // Create temporary transposed matrix.
+            GPU_Sparse temp = trans();
+
+            // Copy to host memory.
+            thrust::host_vector<double> V_temp = temp.Values;
+            thrust::host_vector<int> i_temp = temp.I;
+            thrust::host_vector<int> j_temp = temp.J;
+
+            // Create pointer.
+            double * V = thrust::raw_pointer_cast(&V_temp[0]);
+            int * i = thrust::raw_pointer_cast(&i_temp[0]);
+            int * j = thrust::raw_pointer_cast(&j_temp[0]);
+
+            // Create MatIO Sparse stream. 
+            matsparse_save sparse_temp(V,j,i,Size[2],Size[1]);
+
+            // Write to MAT file.
+            mat_file.save(varname,"sparse",sparse_temp.sparsestream,Size[0],Size[1]);
+
+        }
+
         // Constructor
         GPU_Sparse ( int m, int n, int nnz ) {
             
@@ -113,7 +145,7 @@ class GPU_Sparse: private GPU_methods {
 
         // Overloaded constructor for MAT file load.
         GPU_Sparse ( matfile_load & mat_file, std::string variable ) {
-
+            
             // Open the variable in MAT file.
             matvar_load mat_var = mat_file.openvar(variable);
             
@@ -138,15 +170,15 @@ class GPU_Sparse: private GPU_methods {
             int * j_p = (int *) mat_var.sparsestream->jc;
 
             // Initialize temporary vectors and fill them.
-            thrust::device_vector<double> V_temp; 
+            thrust::device_vector<double> V_temp;
             thrust::device_vector<int> i_temp;
             thrust::device_vector<int> j_temp;
             V_temp.insert(V_temp.begin(),data_p,(data_p + Size[2]));
             i_temp.insert(i_temp.begin(),i_p,(i_p + Size[2]));
             j_temp.insert(j_temp.begin(),j_p,(j_p + Size[1] + 1));
-            
+
             // Transpose the matrix and fill Values, I and J.
-            spdtrans(V_temp,i_temp,j_temp,Values,J,I);
+            spdtrans(V_temp,j_temp,i_temp,Values,I,J);
 
         }
 };
@@ -189,8 +221,15 @@ class GPU_Sparse_f: private GPU_methods {
         void madd (  ) { std::cout << "empty" << std::endl; }
 
         // Transposes the Matrix.
-        void trans (  ) { std::cout << "empty" << std::endl; }
+        GPU_Sparse_f trans (  ) {
+            
+            GPU_Sparse_f result(Size[1],Size[0],Size[2]);
 
+            spftrans(Values,I,J,result.Values,result.I,result.J);
+
+            return result;
+
+        }
         // Links to GPU_methods.fscp().
         GPU_Sparse_f scp ( const float a ) {
             
@@ -243,6 +282,28 @@ class GPU_Sparse_f: private GPU_methods {
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
 
+        void save ( matfile_save & mat_file, std::string varname ) {
+
+            // Create temporary transposed matrix.
+            GPU_Sparse_f temp = trans();
+
+            thrust::host_vector<double> V_temp = temp.Values;
+            thrust::host_vector<int> i_temp = temp.I;
+            thrust::host_vector<int> j_temp = temp.J;
+
+            // Create pointer.
+            double * V = thrust::raw_pointer_cast(&V_temp[0]);
+            int * i = thrust::raw_pointer_cast(&i_temp[0]);
+            int * j = thrust::raw_pointer_cast(&j_temp[0]);
+
+            // Create MatIO Sparse stream. 
+            matsparse_save sparse_temp(V,j,i,Size[2],Size[1]);
+
+            // Write to MAT file.
+            mat_file.save(varname,"sparse",sparse_temp.sparsestream,Size[0],Size[1]);
+
+        }
+
         // Constructor
         GPU_Sparse_f ( int m, int n, int nnz ) {
             
@@ -285,20 +346,24 @@ class GPU_Sparse_f: private GPU_methods {
             _handles->csstatus = cusparseSetMatIndexBase(descr,CUSPARSE_INDEX_BASE_ZERO);
 
             // Cast pointers to appropriate type.
-            float * data_p = (float *) mat_var.sparsestream->data;
+            double * data_p = (double *) mat_var.sparsestream->data;
             int * i_p = (int *) mat_var.sparsestream->ir;
             int * j_p = (int *) mat_var.sparsestream->jc;
 
             // Initialize temporary vectors and fill them.
-            thrust::device_vector<float> V_temp; 
+            thrust::host_vector<double> V_temp; 
             thrust::device_vector<int> i_temp;
             thrust::device_vector<int> j_temp;
             V_temp.insert(V_temp.begin(),data_p,(data_p + Size[2]));
             i_temp.insert(i_temp.begin(),i_p,(i_p + Size[2]));
             j_temp.insert(j_temp.begin(),j_p,(j_p + Size[1] + 1));
+
+            // Convert to float.
+            thrust::host_vector<float> V_temp_ff = V_temp;
+            thrust::device_vector<float> V_temp_f = V_temp_ff;
             
             // Transpose the matrix and fill Values, I and J.
-            spftrans(V_temp,i_temp,j_temp,Values,J,I);
+            spftrans(V_temp_f,j_temp,i_temp,Values,I,J);
 
         }
 };

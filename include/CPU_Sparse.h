@@ -37,7 +37,15 @@ class CPU_Sparse: private CPU_methods {
         void madd (  ) { std::cout << "empty" << std::endl; }
 
         // Transposes the Matrix.
-        void trans (  ) { std::cout << "empty" << std::endl; }
+        CPU_Sparse trans (  ) {
+            
+            CPU_Sparse result(Size[1],Size[0],Size[2]);
+
+            spdtrans(Values,Ib,Ie,J,result.Values,result.Ib,result.Ie,result.J);
+
+            return result;
+
+        }
 
         // Links to CPU_methods.dscp().
         CPU_Sparse scp ( const double a ) {
@@ -94,6 +102,28 @@ class CPU_Sparse: private CPU_methods {
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
 
+        // Save to MAT file.
+        void save ( matfile_save & mat_file, std::string varname ) {
+
+            // Create temporary transposed matrix.
+            CPU_Sparse temp = trans();
+
+            // Convert Ib and Ie to generic Ip.
+            temp.Ib.push_back(temp.Ie[(temp.Ie.size() - 1)]);
+
+            // Create pointer.
+            double * V = thrust::raw_pointer_cast(&temp.Values[0]);
+            int * i = thrust::raw_pointer_cast(&temp.Ib[0]);
+            int * j = thrust::raw_pointer_cast(&temp.J[0]);
+
+            // Create MatIO Sparse stream. 
+            matsparse_save sparse_temp(V,j,i,Size[2],Size[1]);
+
+            // Write to MAT file.
+            mat_file.save(varname,"sparse",sparse_temp.sparsestream,Size[0],Size[1]);
+
+        }
+
         // Constructor
         CPU_Sparse ( int m, int n, int nnz ) {
             
@@ -143,7 +173,7 @@ class CPU_Sparse: private CPU_methods {
             je_temp.insert(je_temp.begin(),(j_p + 1),(j_p + Size[1] + 1));
 
             // Transpose the matrix and fill Values, I and J.
-            spdtrans(V_temp,i_temp,jb_temp,je_temp,Values,J,Ib,Ie);
+            spdtrans(V_temp,jb_temp,je_temp,i_temp,Values,Ib,Ie,J);
 
         }
 
@@ -188,7 +218,15 @@ class CPU_Sparse_f: private CPU_methods {
         void madd (  ) { std::cout << "empty" << std::endl; }
 
         // Transposes the Matrix.
-        void trans (  ) { std::cout << "empty" << std::endl; }
+        CPU_Sparse_f trans (  ) {
+            
+            CPU_Sparse_f result(Size[1],Size[0],Size[2]);
+
+            spftrans(Values,Ib,Ie,J,result.Values,result.Ib,result.Ie,result.J);
+
+            return result;
+
+        }
 
         // Links to CPU_methods.fscp().
         CPU_Sparse_f scp ( const float a ) {
@@ -244,6 +282,31 @@ class CPU_Sparse_f: private CPU_methods {
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
 
+        // Save to MAT file.
+        void save ( matfile_save & mat_file, std::string varname ) {
+
+            // Create temporary transposed matrix.
+            CPU_Sparse_f temp = trans();
+
+            // Convert Ib and Ie to generic Ip.
+            temp.Ib.push_back(temp.Ie[(temp.Ie.size() - 1)]);
+
+            // Convert float to double.
+            thrust::host_vector<double> V_temp = temp.Values;
+
+            // Create pointer.
+            double * V = thrust::raw_pointer_cast(&V_temp[0]);
+            int * i = thrust::raw_pointer_cast(&temp.Ib[0]);
+            int * j = thrust::raw_pointer_cast(&temp.J[0]);
+
+            // Create MatIO Sparse stream. 
+            matsparse_save sparse_temp(V,j,i,Size[2],Size[1]);
+
+            // Write to MAT file.
+            mat_file.save(varname,"sparse",sparse_temp.sparsestream,Size[0],Size[1]);
+
+        }
+
         // Constructor
         CPU_Sparse_f ( int m, int n, int nnz ) {
             
@@ -276,14 +339,14 @@ class CPU_Sparse_f: private CPU_methods {
             Ib.resize(Size[0]);
             Ie.resize(Size[0]);
             J.resize(Size[2]);
-
+            
             // Cast pointers to appropriate type.
-            float * data_p = (float *) mat_var.sparsestream->data;
+            double * data_p = (double *) mat_var.sparsestream->data;
             int * i_p = (int *) mat_var.sparsestream->ir;
             int * j_p = (int *) mat_var.sparsestream->jc;
 
             // Initialize temporary vectors and fill them.
-            thrust::host_vector<float> V_temp; 
+            thrust::host_vector<double> V_temp; 
             thrust::host_vector<int> i_temp;
             thrust::host_vector<int> jb_temp;
             thrust::host_vector<int> je_temp;
@@ -292,8 +355,11 @@ class CPU_Sparse_f: private CPU_methods {
             jb_temp.insert(jb_temp.begin(),j_p,(j_p + Size[1]));
             je_temp.insert(je_temp.begin(),(j_p + 1),(j_p + Size[1] + 1));
 
+            // Convert to float.
+            thrust::host_vector<float> V_temp_f = V_temp;
+
             // Transpose the matrix and fill Values, I and J.
-            spftrans(V_temp,i_temp,jb_temp,je_temp,Values,J,Ib,Ie);
+            spftrans(V_temp_f,jb_temp,je_temp,i_temp,Values,Ib,Ie,J);
 
         }
 };

@@ -3,10 +3,14 @@
 #include <assert.h>
 #include <string>
 #include <list>
+#include <chrono>
 
 // Included for .mat file support.
 #include <matio.h>
-#include "Matfile_load.h"
+#include "Matfile.h"
+
+// Included for timer support.
+#include "Timer.h"
 
 // Include the MKL header files.
 #include "mkl.h"

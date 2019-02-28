@@ -107,23 +107,23 @@ class CPU_methods {
         void spdgemm (  ) { std::cout << "empty" << std::endl; }
 
         // Sparse double matrix transpose. (Thrust)
-        void spdtrans ( const thrust::host_vector<double> & V, const thrust::host_vector<int> & i, 
-                        const thrust::host_vector<int> & jpb, const thrust::host_vector<int> & jpe,
-                        thrust::host_vector<double> & V_new, thrust::host_vector<int> & j_new,
-                        thrust::host_vector<int> & ipb_new, thrust::host_vector<int> & ipe_new ) {
+        void spdtrans ( const thrust::host_vector<double> & V, const thrust::host_vector<int> & Ipb, 
+                        const thrust::host_vector<int> & Ipe, const thrust::host_vector<int> & J,
+                        thrust::host_vector<double> & V_new, thrust::host_vector<int> & Ipb_new,
+                        thrust::host_vector<int> & Ipe_new, thrust::host_vector<int> & J_new ) {
 
             // Create temporary data vector.
-            thrust::host_vector<int> i_temp(i.size());
+            thrust::host_vector<int> J_temp(J.size());
 
             // Copy data to the new and temporary vectors.
             thrust::copy(V.begin(), V.end(), V_new.begin());
-            thrust::copy(i.begin(), i.end(), i_temp.begin());
+            thrust::copy(J.begin(), J.end(), J_temp.begin());
     
-            // Fill j_new using COO layout.
-            for ( int k = 0; k < jpb.size(); k++ ) {
-
-                thrust::fill_n((j_new.begin() + jpb[k]), (jpe[k] - jpb[k]), k); 
-
+            // Fill J_new using COO layout.
+            for ( int k = 0; k < Ipb.size(); k++ ) {
+                
+                thrust::fill_n((J_new.begin() + Ipb[k]), (Ipe[k] - Ipb[k]), k); 
+                
             }
 
             // Typedefs for zip iterator.
@@ -133,45 +133,45 @@ class CPU_methods {
             typedef thrust::zip_iterator<TupleIt> ZipIt;
 
             // Create the zip iterator
-            ZipIt zip_iterator(thrust::make_tuple(V_new.begin(), j_new.begin()));
+            ZipIt zip_iterator(thrust::make_tuple(V_new.begin(), J_new.begin()));
 
-            // Reorder V, i and j such that V and j conform to the CSR layout.
-            thrust::stable_sort_by_key(i_temp.begin(), i_temp.end(), zip_iterator);
+            // Reorder V_new, J_new and J_temp.
+            thrust::stable_sort_by_key(J_temp.begin(), J_temp.end(), zip_iterator);
 
-            // Fill the first value of ipb_new.
-            ipb_new[0] = 0;
+            // Fill the first value of Ipb_new.
+            Ipb_new[0] = 0;
 
-            // Fill ipb_new using the CSR layout.
-            for ( int k = 0; k < (ipb_new.size() - 1); k++ ) {
+            // Fill the remainder of Ip_new.
+            for ( int k = 0; k < (Ipb_new.size() - 1); k++ ) {
         
-                ipb_new[k + 1] = ipb_new[k] + thrust::count(i.begin(), i.end(), k);
+                Ipb_new[k + 1] = Ipb_new[k] + thrust::count(J.begin(), J.end(), k);
 
             }
 
-            // Fill ipe_new using the CSR layout.
-            thrust::copy(ipb_new.begin() + 1, ipb_new.end(), ipe_new.begin());
-            ipe_new[(ipe_new.size() - 1)] = jpe[(jpe.size() - 1)];
+            // Fill Ipe_new.
+            thrust::copy(Ipb_new.begin() + 1, Ipb_new.end(), Ipe_new.begin());
+            Ipe_new[(Ipe_new.size() - 1)] = J.size();
 
         }
 
         // Sparse float matrix transpose. (Thrust)
-        void spftrans ( const thrust::host_vector<float> & V, const thrust::host_vector<int> & i, 
-                        const thrust::host_vector<int> & jpb, const thrust::host_vector<int> & jpe,
-                        thrust::host_vector<float> & V_new, thrust::host_vector<int> & j_new,
-                        thrust::host_vector<int> & ipb_new, thrust::host_vector<int> & ipe_new ) {
+        void spftrans ( const thrust::host_vector<float> & V, const thrust::host_vector<int> & Ipb, 
+                        const thrust::host_vector<int> & Ipe, const thrust::host_vector<int> & J,
+                        thrust::host_vector<float> & V_new, thrust::host_vector<int> & Ipb_new,
+                        thrust::host_vector<int> & Ipe_new, thrust::host_vector<int> & J_new ) {
 
             // Create temporary data vector.
-            thrust::host_vector<int> i_temp(i.size());
+            thrust::host_vector<int> J_temp(J.size());
 
             // Copy data to the new and temporary vectors.
             thrust::copy(V.begin(), V.end(), V_new.begin());
-            thrust::copy(i.begin(), i.end(), i_temp.begin());
+            thrust::copy(J.begin(), J.end(), J_temp.begin());
     
-            // Fill j_new using COO layout.
-            for ( int k = 0; k < jpb.size(); k++ ) {
-
-                thrust::fill_n((j_new.begin() + jpb[k]), (jpe[k] - jpb[k]), k); 
-
+            // Fill J_new using COO layout.
+            for ( int k = 0; k < Ipb.size(); k++ ) {
+                
+                thrust::fill_n((J_new.begin() + Ipb[k]), (Ipe[k] - Ipb[k]), k); 
+                
             }
 
             // Typedefs for zip iterator.
@@ -181,24 +181,24 @@ class CPU_methods {
             typedef thrust::zip_iterator<TupleIt> ZipIt;
 
             // Create the zip iterator
-            ZipIt zip_iterator(thrust::make_tuple(V_new.begin(), j_new.begin()));
+            ZipIt zip_iterator(thrust::make_tuple(V_new.begin(), J_new.begin()));
 
-            // Reorder V, i and j such that V and j conform to the CSR layout.
-            thrust::stable_sort_by_key(i_temp.begin(), i_temp.end(), zip_iterator);
+            // Reorder V_new, J_new and J_temp.
+            thrust::stable_sort_by_key(J_temp.begin(), J_temp.end(), zip_iterator);
 
-            // Fill the first value of ipb_new.
-            ipb_new[0] = 0;
+            // Fill the first value of Ipb_new.
+            Ipb_new[0] = 0;
 
-            // Fill ipb_new using the CSR layout.
-            for ( int k = 0; k < (ipb_new.size() - 1); k++ ) {
+            // Fill the remainder of Ip_new.
+            for ( int k = 0; k < (Ipb_new.size() - 1); k++ ) {
         
-                ipb_new[k + 1] = ipb_new[k] + thrust::count(i.begin(), i.end(), k);
+                Ipb_new[k + 1] = Ipb_new[k] + thrust::count(J.begin(), J.end(), k);
 
             }
 
-            // Fill ipe_new using the CSR layout.
-            thrust::copy(ipb_new.begin() + 1, ipb_new.end(), ipe_new.begin());
-            ipe_new[(ipe_new.size() - 1)] = jpe[(jpe.size() - 1)];
+            // Fill Ipe_new.
+            thrust::copy(Ipb_new.begin() + 1, Ipb_new.end(), Ipe_new.begin());
+            Ipe_new[(Ipe_new.size() - 1)] = J.size();
 
         }
 

@@ -97,6 +97,20 @@ class GPU_Dense: private GPU_methods {
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
 
+        // Save to MAT file.
+        void save ( matfile_save & mat_file, std::string varname ) {
+            
+            // Copy to host memory.
+            thrust::host_vector<double> temp_V = Values;
+
+            // Create pointer.
+            double * datap = thrust::raw_pointer_cast(&temp_V[0]);
+
+            // Write to MAT file.
+            mat_file.save(varname,"double",datap,Size[0],Size[1]);
+
+        }
+
         // Constructor
         GPU_Dense ( int m, int n ) {
             
@@ -263,6 +277,20 @@ class GPU_Dense_f: private GPU_methods {
 
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
+
+        // Save to MAT file.
+        void save ( matfile_save & mat_file, std::string varname ) {
+            
+            // Copy to host memory.
+            thrust::host_vector<float> temp_V = Values;
+
+            // Create pointer.
+            float * datap = thrust::raw_pointer_cast(&temp_V[0]);
+
+            // Write to MAT file.
+            mat_file.save(varname,"float",datap,Size[0],Size[1]);
+
+        }
 
         // Constructor
         GPU_Dense_f ( int m, int n ) {
