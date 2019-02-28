@@ -53,19 +53,18 @@ int CPU_Sparse_load_test ( matfile_load & mat_file ) {
 
     // Check.
     int pass = 1;
-    std::cout << "debug" << std::endl;
+
     // Load the variables.
     CPU_Sparse test1(mat_file,"Sparse");
-    std::cout << "debug" << std::endl;
     CPU_Sparse_f test2(mat_file,"Sparse");
 
     // Check for errors.
-    if ((test1.Values[0] != 1) || (test1.Values[1] != 3) ||
-        (test1.Values[2] != 2) || (test1.Values[3] != 4)) {
+    if ((test1.Values[0] != 1) || (test1.Values[1] != 2) ||
+        (test1.Values[2] != 3) || (test1.Values[3] != 4)) {
             std::cout << "Errors in CPU_Sparse load" << std::endl;
             pass = 0; }
-    if ((test2.Values[0] != 1) || (test2.Values[1] != 3) ||
-        (test2.Values[2] != 2) || (test2.Values[3] != 4)) {
+    if ((test2.Values[0] != 1) || (test2.Values[1] != 2) ||
+        (test2.Values[2] != 3) || (test2.Values[3] != 4)) {
             std::cout << "Errors in CPU_Sparse_f load" << std::endl;
             pass = 0; }
 
@@ -79,7 +78,23 @@ int GPU_Sparse_load_test ( matfile_load & mat_file ) {
     // Check.
     int pass = 1;
 
+    // Load the variables.
+    GPU_Sparse test1(mat_file,"Sparse");
+    GPU_Sparse_f test2(mat_file,"Sparse");
 
+    // Check for errors.
+    if ((test1.Values[0] != 1) || (test1.Values[1] != 2) ||
+        (test1.Values[2] != 3) || (test1.Values[3] != 4)) {
+            std::cout << "Errors in GPU_Sparse load" << std::endl;
+            pass = 0; }
+    if ((test2.Values[0] != 1) || (test2.Values[1] != 2) ||
+        (test2.Values[2] != 3) || (test2.Values[3] != 4)) {
+            std::cout << "Errors in GPU_Sparse_f load" << std::endl;
+            std::cout << test2.Values[0] << std::endl;
+            std::cout << test2.Values[1] << std::endl;
+            std::cout << test2.Values[2] << std::endl;
+            std::cout << test2.Values[3] << std::endl;
+            pass = 0; }
 
     return pass;
     

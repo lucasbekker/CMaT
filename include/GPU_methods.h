@@ -143,10 +143,10 @@ class GPU_methods {
             // Fill J_new using COO layout.
             for ( int k = 0; k < (Ip.size() - 1); k++ ) {
 
-                thrust::fill_n((J_new.begin() + Ip[k]), (Ip[k + 1] - Ip[k]), k); 
+                thrust::fill_n((J_new.begin() + Ip[k]), (Ip[k + 1] - Ip[k]), k);
 
             }
-
+            
             // Typedefs for zip iterator.
             typedef thrust::device_vector<double>::iterator DoubleIt;
             typedef thrust::device_vector<int>::iterator IntIt;
@@ -271,7 +271,6 @@ class GPU_methods {
 
             // Call the transformation.
             thrust::transform(x->begin(),x->end(),y.begin(),fadd_functor(a));
-
 
             // Return the result.
             return y;

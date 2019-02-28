@@ -6,14 +6,16 @@ class matvar_load {
         mat_sparse_t * sparsestream;            // Empty if "matvar_load.issparse=false".
         std::string type;                       // Data type of the variable. (double, float or unsupported)
         bool issparse = false;                  // True if varstream contains a sparse variable.
-    
-        // Destructor
-        ~matvar_load (  ) {
+
+        void VarFree (  ) {
 
             // Free the variable.
             Mat_VarFree(varstream);
-            
+
         }
+
+        // Destructor
+        ~matvar_load (  ) { VarFree(); }
 };
 
 // Class definition of a MAT file from which to load variables.
