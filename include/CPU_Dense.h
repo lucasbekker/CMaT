@@ -27,7 +27,27 @@ class CPU_Dense: private CPU_methods {
         void madd (  ) { std::cout << "empty" << std::endl; }
 
         // Transposes the Matrix or Vector.
-        void trans (  ) { std::cout << "empty" << std::endl; }
+        CPU_Dense trans (  ) {
+
+            // Initialize the resulting matrix.
+            CPU_Dense A(Size[1],Size[0]);
+
+            // Fill te resulting matrix with a copy of the data.
+            thrust::copy(Values.begin(),Values.end(),A.Values.begin());
+
+            // Create a temporary index array.
+            thrust::host_vector<int> index(Values.size());
+
+            // Fill the temporary array with the index information.
+            thrust::tabulate(index.begin(),index.end(),modulus_functor(Size[0]));
+            
+            // Rearrange the values in the resulting matrix.
+            thrust::stable_sort_by_key(index.begin(),index.end(),A.Values.begin());
+
+            // Return the result.
+            return A;
+
+        }
 
         // Links to CPU_methods.dscp().
         CPU_Dense scp ( const double a ) {
@@ -205,7 +225,27 @@ class CPU_Dense_f: private CPU_methods {
         void madd (  ) { std::cout << "empty" << std::endl; }
 
         // Transposes the Matrix or Vector.
-        void trans (  ) { std::cout << "empty" << std::endl; }
+        CPU_Dense_f trans (  ) {
+
+            // Initialize the resulting matrix.
+            CPU_Dense_f A(Size[1],Size[0]);
+
+            // Fill te resulting matrix with a copy of the data.
+            thrust::copy(Values.begin(),Values.end(),A.Values.begin());
+
+            // Create a temporary index array.
+            thrust::host_vector<int> index(Values.size());
+
+            // Fill the temporary array with the index information.
+            thrust::tabulate(index.begin(),index.end(),modulus_functor(Size[0]));
+            
+            // Rearrange the values in the resulting matrix.
+            thrust::stable_sort_by_key(index.begin(),index.end(),A.Values.begin());
+
+            // Return the result.
+            return A;
+
+        }
 
         // Links to CPU_methods.fscp().
         CPU_Dense_f scp ( const float a ) {
