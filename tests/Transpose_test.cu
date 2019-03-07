@@ -180,12 +180,148 @@ int GPU_Sparse_f_trans_test (  ) {
 
 }
 
+int CPU_Dense_trans_test (  ) {
+
+    // A = 1 3 0 5
+    //     2 0 0 0
+    //     0 4 0 0
+
+    // Check.
+    int pass = 1;
+
+    // Declaration of matrix.
+    CPU_Dense test(3,4);
+
+    // Fill test.
+    test.Values[0] = 1; test.Values[1] = 2; test.Values[2] = 0;
+    test.Values[3] = 3; test.Values[4] = 0; test.Values[5] = 4;
+    test.Values[6] = 0; test.Values[7] = 0; test.Values[8] = 0;
+    test.Values[9] = 5; test.Values[10] = 0; test.Values[11] = 0; 
+
+    // Perform the transpose operation.
+    CPU_Dense result = test.trans();
+
+    // Check for errors.
+    if ((result.Values[0] != 1) || (result.Values[1] != 3) || (result.Values[2] != 0) ||
+        (result.Values[3] != 5) || (result.Values[4] != 2) || (result.Values[5] != 0) ||
+        (result.Values[6] != 0) || (result.Values[7] != 0) || (result.Values[8] != 0) ||
+        (result.Values[9] != 4) || (result.Values[10] != 0) || (result.Values[11] != 0)) {
+        pass = 0; }
+    
+    // Return the result.
+    return pass;
+
+}
+
+int CPU_Dense_f_trans_test (  ) {
+
+    // A = 1 3 0 5
+    //     2 0 0 0
+    //     0 4 0 0
+
+    // Check.
+    int pass = 1;
+
+    // Declaration of matrix.
+    CPU_Dense_f test(3,4);
+
+    // Fill test.
+    test.Values[0] = 1; test.Values[1] = 2; test.Values[2] = 0;
+    test.Values[3] = 3; test.Values[4] = 0; test.Values[5] = 4;
+    test.Values[6] = 0; test.Values[7] = 0; test.Values[8] = 0;
+    test.Values[9] = 5; test.Values[10] = 0; test.Values[11] = 0; 
+
+    // Perform the transpose operation.
+    CPU_Dense_f result = test.trans();
+
+    // Check for errors.
+    if ((result.Values[0] != 1) || (result.Values[1] != 3) || (result.Values[2] != 0) ||
+        (result.Values[3] != 5) || (result.Values[4] != 2) || (result.Values[5] != 0) ||
+        (result.Values[6] != 0) || (result.Values[7] != 0) || (result.Values[8] != 0) ||
+        (result.Values[9] != 4) || (result.Values[10] != 0) || (result.Values[11] != 0)) {
+        pass = 0; }
+    
+    // Return the result.
+    return pass;
+
+}
+
+int GPU_Dense_trans_test (  ) {
+
+    // A = 1 3 0 5
+    //     2 0 0 0
+    //     0 4 0 0
+
+    // Check.
+    int pass = 1;
+
+    // Declaration of matrix.
+    GPU_Dense test(3,4);
+
+    // Fill test.
+    test.Values[0] = 1; test.Values[1] = 2; test.Values[2] = 0;
+    test.Values[3] = 3; test.Values[4] = 0; test.Values[5] = 4;
+    test.Values[6] = 0; test.Values[7] = 0; test.Values[8] = 0;
+    test.Values[9] = 5; test.Values[10] = 0; test.Values[11] = 0; 
+
+    // Perform the transpose operation.
+    GPU_Dense result = test.trans();
+
+    // Check for errors.
+    if ((result.Values[0] != 1) || (result.Values[1] != 3) || (result.Values[2] != 0) ||
+        (result.Values[3] != 5) || (result.Values[4] != 2) || (result.Values[5] != 0) ||
+        (result.Values[6] != 0) || (result.Values[7] != 0) || (result.Values[8] != 0) ||
+        (result.Values[9] != 4) || (result.Values[10] != 0) || (result.Values[11] != 0)) {
+        pass = 0; }
+    
+    // Return the result.
+    return pass;
+
+}
+
+int GPU_Dense_f_trans_test (  ) {
+
+    // A = 1 3 0 5
+    //     2 0 0 0
+    //     0 4 0 0
+
+    // Check.
+    int pass = 1;
+
+    // Declaration of matrix.
+    GPU_Dense_f test(3,4);
+
+    // Fill test.
+    test.Values[0] = 1; test.Values[1] = 2; test.Values[2] = 0;
+    test.Values[3] = 3; test.Values[4] = 0; test.Values[5] = 4;
+    test.Values[6] = 0; test.Values[7] = 0; test.Values[8] = 0;
+    test.Values[9] = 5; test.Values[10] = 0; test.Values[11] = 0; 
+
+    // Perform the transpose operation.
+    GPU_Dense_f result = test.trans();
+
+    // Check for errors.
+    if ((result.Values[0] != 1) || (result.Values[1] != 3) || (result.Values[2] != 0) ||
+        (result.Values[3] != 5) || (result.Values[4] != 2) || (result.Values[5] != 0) ||
+        (result.Values[6] != 0) || (result.Values[7] != 0) || (result.Values[8] != 0) ||
+        (result.Values[9] != 4) || (result.Values[10] != 0) || (result.Values[11] != 0)) {
+        pass = 0; }
+    
+    // Return the result.
+    return pass;
+
+}
+
 int main (  ) {
 
     int pass1 = CPU_Sparse_trans_test();
     int pass2 = CPU_Sparse_f_trans_test();
     int pass3 = GPU_Sparse_trans_test();
     int pass4 = GPU_Sparse_f_trans_test();
+    int pass5 = CPU_Dense_trans_test();
+    int pass6 = CPU_Dense_f_trans_test();
+    int pass7 = GPU_Dense_trans_test();
+    int pass8 = GPU_Dense_f_trans_test();
     
     int pass_global = 1;
 
@@ -193,6 +329,10 @@ int main (  ) {
     if (pass2 == 0) { pass_global = 0; std::cout << "Error in: PU_Sparse_f_trans_test" << std::endl; }
     if (pass3 == 0) { pass_global = 0; std::cout << "Error in: GPU_Sparse_trans_test" << std::endl; }
     if (pass4 == 0) { pass_global = 0; std::cout << "Error in: GPU_Sparse_f_trans_test" << std::endl; }
+    if (pass5 == 0) { pass_global = 0; std::cout << "Error in: CPU_Dense_trans_test" << std::endl; }
+    if (pass6 == 0) { pass_global = 0; std::cout << "Error in: CPU_Dense_f_trans_test" << std::endl; }
+    if (pass7 == 0) { pass_global = 0; std::cout << "Error in: GPU_Dense_trans_test" << std::endl; }
+    if (pass8 == 0) { pass_global = 0; std::cout << "Error in: GPU_Dense_f_trans_test" << std::endl; }
     
     if (pass_global == 1) { std::cout << "PASSED" << std::endl; } else { std::cout << "FAILED" << std::endl; }
 
