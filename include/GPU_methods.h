@@ -128,7 +128,35 @@ class GPU_methods {
         // Sparse double matrix matrix product. (cuSPARSE)
         void spdgemm (  ) { std::cout << "empty" << std::endl; }
 
-        // Sparse double matrix transpose. (Thrust)
+        // Sparse double matrix transpose. (cuSPARSE)
+        void spdtrans ( const thrust::device_vector<double> & V, const thrust::device_vector<int> & Ip, 
+                        const thrust::device_vector<int> & J, thrust::device_vector<double> & V_new,
+                        thrust::device_vector<int> & Ip_new, thrust::device_vector<int> & J_new, int m, int n ) {
+            
+            // Create pointers.
+            const double * V_p = thrust::raw_pointer_cast(&V[0]);
+            const int * Ip_p = thrust::raw_pointer_cast(&Ip[0]);
+            const int * J_p = thrust::raw_pointer_cast(&J[0]);
+            double * V_new_p = thrust::raw_pointer_cast(&V_new[0]);
+            int * Ip_new_p = thrust::raw_pointer_cast(&Ip_new[0]);
+            int * J_new_p = thrust::raw_pointer_cast(&J_new[0]);
+
+            // cuSPARSE function, documentation:
+            // https://docs.nvidia.com/cuda/cusparse/index.html#cusparse-lt-t-gt-csr2csc
+            // 
+            // Converts between CSR and CSC layout.
+            _handles->csstatus = cusparseDcsr2csc( _handles->cshandle, n, m, V.size(), V_p, Ip_p, J_p, 
+                                                   V_new_p, J_new_p, Ip_new_p, CUSPARSE_ACTION_NUMERIC,
+                                                   CUSPARSE_INDEX_BASE_ZERO );
+
+            // check the status.
+            if (_handles->csstatus != CUSPARSE_STATUS_SUCCESS) {
+                std::cout << "cuSPARSE status is not ok. " << std::endl;
+            }
+
+        }
+
+        /*// Sparse double matrix transpose. (Thrust)
         void spdtrans ( const thrust::device_vector<double> & V, const thrust::device_vector<int> & Ip, 
                         const thrust::device_vector<int> & J, thrust::device_vector<double> & V_new,
                         thrust::device_vector<int> & Ip_new, thrust::device_vector<int> & J_new ) {
@@ -169,7 +197,7 @@ class GPU_methods {
 
             }
 
-        }
+        }*/
 
         // Sparse float matrix transpose. (Thrust)
         void spftrans ( const thrust::device_vector<float> & V, const thrust::device_vector<int> & Ip, 

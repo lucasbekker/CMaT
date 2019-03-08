@@ -185,7 +185,7 @@ class CPU_Sparse: private CPU_methods {
             thrust::host_vector<double> V_temp; 
             thrust::host_vector<int> i_temp;
             thrust::host_vector<int> jb_temp;
-            thrust::host_vector<int> je_temp;
+            thrust::host_vector<int> je_temp; 
             V_temp.insert(V_temp.begin(),data_p,(data_p + Size[2]));
             i_temp.insert(i_temp.begin(),i_p,(i_p + Size[2]));
             jb_temp.insert(jb_temp.begin(),j_p,(j_p + Size[1]));

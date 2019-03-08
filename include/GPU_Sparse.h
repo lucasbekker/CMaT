@@ -40,7 +40,7 @@ class GPU_Sparse: private GPU_methods {
             
             GPU_Sparse result(Size[1],Size[0],Size[2]);
 
-            spdtrans(Values,I,J,result.Values,result.I,result.J);
+            spdtrans(Values,I,J,result.Values,result.I,result.J,Size[0],Size[1]);
 
             return result;
 
@@ -202,7 +202,7 @@ class GPU_Sparse: private GPU_methods {
             j_temp.insert(j_temp.begin(),j_p,(j_p + Size[1] + 1));
 
             // Transpose the matrix and fill Values, I and J.
-            spdtrans(V_temp,j_temp,i_temp,Values,I,J);
+            spdtrans(V_temp,j_temp,i_temp,Values,I,J,Size[0],Size[1]);
 
         }
 };
