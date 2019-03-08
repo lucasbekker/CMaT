@@ -24,7 +24,7 @@ class GPU_Dense: private GPU_methods {
         }
 
         // Adds two matrices.
-        GPU_Dense madd ( GPU_Dense B ) {
+        GPU_Dense add ( GPU_Dense B ) {
 
             // Initialize the resulting matrix.
             GPU_Dense A(Size[0],Size[1]);
@@ -132,6 +132,27 @@ class GPU_Dense: private GPU_methods {
 
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
+
+        // Print to stdout.
+        void print (  ) {
+
+            // Transpose the matrix to achieve row major layout.
+            GPU_Dense A = trans();
+
+            // Transport to host memory.
+            thrust::host_vector<double> B = A.Values;
+
+            // Set the print specifications.
+            std::cout.precision(6);
+            std::cout << std::scientific;
+
+            // Loop over the elements to print.
+            for (int k = 0; k < Size[2]; k++) {
+                if ((k % Size[1]) == 0) { std::cout << "\n"; }
+                std::cout << "\t" << B[k];
+            } std::cout << "\n\n"; 
+
+        }
 
         // Save to MAT file.
         void save ( matfile_save & mat_file, std::string varname ) {
@@ -241,7 +262,7 @@ class GPU_Dense_f: private GPU_methods {
         }
 
         // Adds two matrices.
-        GPU_Dense_f madd ( GPU_Dense_f B ) {
+        GPU_Dense_f add ( GPU_Dense_f B ) {
 
             // Initialize the resulting matrix.
             GPU_Dense_f A(Size[0],Size[1]);
@@ -349,6 +370,27 @@ class GPU_Dense_f: private GPU_methods {
 
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
+
+        // Print to stdout.
+        void print (  ) {
+
+            // Transpose the matrix to achieve row major layout.
+            GPU_Dense_f A = trans();
+
+            // Transport to host memory.
+            thrust::host_vector<float> B = A.Values;
+
+            // Set the print specifications.
+            std::cout.precision(6);
+            std::cout << std::scientific;
+
+            // Loop over the elements to print.
+            for (int k = 0; k < Size[2]; k++) {
+                if ((k % Size[1]) == 0) { std::cout << "\n"; }
+                std::cout << "\t" << B[k];
+            } std::cout << "\n\n"; 
+
+        }
 
         // Save to MAT file.
         void save ( matfile_save & mat_file, std::string varname ) {

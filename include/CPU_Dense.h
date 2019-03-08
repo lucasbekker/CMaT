@@ -24,7 +24,7 @@ class CPU_Dense: private CPU_methods {
         }
 
         // Adds two matrices.
-        CPU_Dense madd ( CPU_Dense B ) {
+        CPU_Dense add ( CPU_Dense B ) {
 
             // Initialize the resulting matrix.
             CPU_Dense A(Size[0],Size[1]);
@@ -133,6 +133,24 @@ class CPU_Dense: private CPU_methods {
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
 
+        // Print to stdout.
+        void print (  ) {
+
+            // Transpose the matrix to achieve row major layout.
+            CPU_Dense A = trans();
+
+            // Set the print specifications.
+            std::cout.precision(6);
+            std::cout << std::scientific;
+
+            // Loop over the elements to print.
+            for (int k = 0; k < Size[2]; k++) {
+                if ((k % Size[1]) == 0) { std::cout << "\n"; }
+                std::cout << "\t" << A.Values[k];
+            } std::cout << "\n\n"; 
+
+        }
+
         // Save to MAT file.
         void save ( matfile_save & mat_file, std::string varname ) {
             
@@ -238,7 +256,7 @@ class CPU_Dense_f: private CPU_methods {
         }
 
         // Adds two matrices.
-        CPU_Dense_f madd ( CPU_Dense_f B ) {
+        CPU_Dense_f add ( CPU_Dense_f B ) {
 
             // Initialize the resulting matrix.
             CPU_Dense_f A(Size[0],Size[1]);
@@ -346,6 +364,24 @@ class CPU_Dense_f: private CPU_methods {
 
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
+
+        // Print to stdout.
+        void print (  ) {
+
+            // Transpose the matrix to achieve row major layout.
+            CPU_Dense_f A = trans();
+
+            // Set the print specifications.
+            std::cout.precision(6);
+            std::cout << std::scientific;
+
+            // Loop over the elements to print.
+            for (int k = 0; k < Size[2]; k++) {
+                if ((k % Size[1]) == 0) { std::cout << "\n"; }
+                std::cout << "\t" << A.Values[k];
+            } std::cout << "\n\n"; 
+
+        }
 
         // Save to MAT file.
         void save ( matfile_save & mat_file, std::string varname ) {

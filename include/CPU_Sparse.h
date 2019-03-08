@@ -102,6 +102,25 @@ class CPU_Sparse: private CPU_methods {
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
 
+        // Print the matrix.
+        void print (  ) {
+
+            // Set the print specifications.
+            std::cout.precision(6);
+            std::cout << std::scientific;
+
+            // Print first line.
+            std::cout << "\n\tValues\t\t" << "(i,j)" << std::endl; 
+
+            // Print.
+            int l = 0;
+            for (int k = 0; k < Size[2]; k++) {
+                if (k == Ie[l]) { l++; }
+                std::cout << "\n\t" << Values[k] << "\t(" << l << "," << J[k] << ")";
+            } std::cout << "\n\n";
+
+        }
+
         // Save to MAT file.
         void save ( matfile_save & mat_file, std::string varname ) {
 
@@ -281,6 +300,25 @@ class CPU_Sparse_f: private CPU_methods {
 
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
+
+        // Print the matrix.
+        void print (  ) {
+
+            // Set the print specifications.
+            std::cout.precision(6);
+            std::cout << std::scientific;
+
+            // Print first line.
+            std::cout << "\n\tValues\t\t" << "(i,j)" << std::endl; 
+
+            // Print.
+            int l = 0;
+            for (int k = 0; k < Size[2]; k++) {
+                if (k == Ie[l]) { l++; }
+                std::cout << "\n\t" << Values[k] << "\t(" << l << "," << J[k] << ")";
+            } std::cout << "\n\n";
+
+        }
 
         // Save to MAT file.
         void save ( matfile_save & mat_file, std::string varname ) {

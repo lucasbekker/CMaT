@@ -99,6 +99,30 @@ class GPU_Sparse: private GPU_methods {
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
 
+        // Print the matrix.
+        void print (  ) {
+
+            // Transport to host memory.
+            thrust::host_vector<double> V_temp = Values;
+            thrust::host_vector<int> J_temp = J;
+            thrust::host_vector<int> I_temp = I;
+
+            // Set the print specifications.
+            std::cout.precision(6);
+            std::cout << std::scientific;
+
+            // Print first line.
+            std::cout << "\n\tValues\t\t" << "(i,j)" << std::endl; 
+
+            // Print.
+            int l = 0;
+            for (int k = 0; k < Size[2]; k++) {
+                if (k == I_temp[l+1]) { l++; }
+                std::cout << "\n\t" << V_temp[k] << "\t(" << l << "," << J_temp[k] << ")";
+            } std::cout << "\n\n";
+
+        }
+
         // Save to MAT file.
         void save ( matfile_save & mat_file, std::string varname ) {
 
@@ -281,6 +305,30 @@ class GPU_Sparse_f: private GPU_methods {
 
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
+
+        // Print the matrix.
+        void print (  ) {
+
+            // Transport to host memory.
+            thrust::host_vector<float> V_temp = Values;
+            thrust::host_vector<int> J_temp = J;
+            thrust::host_vector<int> I_temp = I;
+
+            // Set the print specifications.
+            std::cout.precision(6);
+            std::cout << std::scientific;
+
+            // Print first line.
+            std::cout << "\n\tValues\t\t" << "(i,j)" << std::endl; 
+
+            // Print.
+            int l = 0;
+            for (int k = 0; k < Size[2]; k++) {
+                if (k == I_temp[l+1]) { l++; }
+                std::cout << "\n\t" << V_temp[k] << "\t(" << l << "," << J_temp[k] << ")";
+            } std::cout << "\n\n";
+
+        }
 
         void save ( matfile_save & mat_file, std::string varname ) {
 
