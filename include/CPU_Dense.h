@@ -23,8 +23,24 @@ class CPU_Dense: private CPU_methods {
 
         }
 
-        // Links to CPU_methods.dadd().
-        void madd (  ) { std::cout << "empty" << std::endl; }
+        // Adds two matrices.
+        CPU_Dense madd ( CPU_Dense B ) {
+
+            // Initialize the resulting matrix.
+            CPU_Dense A(Size[0],Size[1]);
+
+            // Check the dimensions.
+            if ((Size[0] == B.Size[0]) && (Size[1] == B.Size[1])) {
+
+                thrust::transform(Values.begin(),Values.end(),B.Values.begin(),
+                                  A.Values.begin(),thrust::plus<double>());
+
+            } else { std::cout << "Dimension mismatch" << std::endl; }
+
+            // Return the result.
+            return A;
+
+        }
 
         // Transposes the Matrix or Vector.
         CPU_Dense trans (  ) {
@@ -221,8 +237,24 @@ class CPU_Dense_f: private CPU_methods {
 
         }
 
-        // Links to CPU_methods.fadd().
-        void madd (  ) { std::cout << "empty" << std::endl; }
+        // Adds two matrices.
+        CPU_Dense_f madd ( CPU_Dense_f B ) {
+
+            // Initialize the resulting matrix.
+            CPU_Dense_f A(Size[0],Size[1]);
+
+            // Check the dimensions.
+            if ((Size[0] == B.Size[0]) && (Size[1] == B.Size[1])) {
+
+                thrust::transform(Values.begin(),Values.end(),B.Values.begin(),
+                                  A.Values.begin(),thrust::plus<float>());
+
+            } else { std::cout << "Dimension mismatch" << std::endl; }
+
+            // Return the result.
+            return A;
+
+        }
 
         // Transposes the Matrix or Vector.
         CPU_Dense_f trans (  ) {

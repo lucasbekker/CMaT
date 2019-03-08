@@ -23,8 +23,24 @@ class GPU_Dense: private GPU_methods {
 
         }
 
-        // Links to GPU_methods.dadd().
-        void madd (  ) { std::cout << "empty" << std::endl; }
+        // Adds two matrices.
+        GPU_Dense madd ( GPU_Dense B ) {
+
+            // Initialize the resulting matrix.
+            GPU_Dense A(Size[0],Size[1]);
+
+            // Check the dimensions.
+            if ((Size[0] == B.Size[0]) && (Size[1] == B.Size[1])) {
+
+                thrust::transform(Values.begin(),Values.end(),B.Values.begin(),
+                                  A.Values.begin(),thrust::plus<double>());
+
+            } else { std::cout << "Dimension mismatch" << std::endl; }
+
+            // Return the result.
+            return A;
+
+        }
 
         // Transposes the Matrix or Vector.
         GPU_Dense trans (  ) {
@@ -224,8 +240,24 @@ class GPU_Dense_f: private GPU_methods {
 
         }
 
-        // Links to GPU_methods.fadd().
-        void madd (  ) { std::cout << "empty" << std::endl; }
+        // Adds two matrices.
+        GPU_Dense_f madd ( GPU_Dense_f B ) {
+
+            // Initialize the resulting matrix.
+            GPU_Dense_f A(Size[0],Size[1]);
+
+            // Check the dimensions.
+            if ((Size[0] == B.Size[0]) && (Size[1] == B.Size[1])) {
+
+                thrust::transform(Values.begin(),Values.end(),B.Values.begin(),
+                                  A.Values.begin(),thrust::plus<double>());
+
+            } else { std::cout << "Dimension mismatch" << std::endl; }
+
+            // Return the result.
+            return A;
+
+        }
 
         // Transposes the Matrix or Vector.
         GPU_Dense_f trans (  ) {
