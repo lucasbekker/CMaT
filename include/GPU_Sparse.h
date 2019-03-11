@@ -117,7 +117,7 @@ class GPU_Sparse: private GPU_methods {
             // Print.
             int l = 0;
             for (int k = 0; k < Size[2]; k++) {
-                if (k == I_temp[l+1]) { l++; }
+                while (k == I_temp[l+1]) { l++; }
                 std::cout << "\n\t" << V_temp[k] << "\t(" << l << "," << J_temp[k] << ")";
             } std::cout << "\n\n";
 
@@ -324,7 +324,7 @@ class GPU_Sparse_f: private GPU_methods {
             // Print.
             int l = 0;
             for (int k = 0; k < Size[2]; k++) {
-                if (k == I_temp[l+1]) { l++; }
+                while (k == I_temp[l+1]) { l++; }
                 std::cout << "\n\t" << V_temp[k] << "\t(" << l << "," << J_temp[k] << ")";
             } std::cout << "\n\n";
 

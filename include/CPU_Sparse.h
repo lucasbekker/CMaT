@@ -41,7 +41,7 @@ class CPU_Sparse: private CPU_methods {
             
             CPU_Sparse result(Size[1],Size[0],Size[2]);
 
-            spdtrans(Values,Ib,Ie,J,result.Values,result.Ib,result.Ie,result.J);
+            spdtrans(Values,Ib,Ie,J,result.Values,result.Ib,result.Ie,result.J,Size[0],Size[1]);
 
             return result;
 
@@ -115,7 +115,7 @@ class CPU_Sparse: private CPU_methods {
             // Print.
             int l = 0;
             for (int k = 0; k < Size[2]; k++) {
-                if (k == Ie[l]) { l++; }
+                while (k == Ie[l]) { l++; }
                 std::cout << "\n\t" << Values[k] << "\t(" << l << "," << J[k] << ")";
             } std::cout << "\n\n";
 
@@ -192,7 +192,7 @@ class CPU_Sparse: private CPU_methods {
             je_temp.insert(je_temp.begin(),(j_p + 1),(j_p + Size[1] + 1));
 
             // Transpose the matrix and fill Values, I and J.
-            spdtrans(V_temp,jb_temp,je_temp,i_temp,Values,Ib,Ie,J);
+            spdtrans(V_temp,jb_temp,je_temp,i_temp,Values,Ib,Ie,J,Size[0],Size[1]);
 
         }
 
@@ -241,7 +241,7 @@ class CPU_Sparse_f: private CPU_methods {
             
             CPU_Sparse_f result(Size[1],Size[0],Size[2]);
 
-            spftrans(Values,Ib,Ie,J,result.Values,result.Ib,result.Ie,result.J);
+            spftrans(Values,Ib,Ie,J,result.Values,result.Ib,result.Ie,result.J,Size[0],Size[1]);
 
             return result;
 
@@ -314,7 +314,7 @@ class CPU_Sparse_f: private CPU_methods {
             // Print.
             int l = 0;
             for (int k = 0; k < Size[2]; k++) {
-                if (k == Ie[l]) { l++; }
+                while (k == Ie[l]) { l++; }
                 std::cout << "\n\t" << Values[k] << "\t(" << l << "," << J[k] << ")";
             } std::cout << "\n\n";
 
@@ -397,7 +397,7 @@ class CPU_Sparse_f: private CPU_methods {
             thrust::host_vector<float> V_temp_f = V_temp;
 
             // Transpose the matrix and fill Values, I and J.
-            spftrans(V_temp_f,jb_temp,je_temp,i_temp,Values,Ib,Ie,J);
+            spftrans(V_temp_f,jb_temp,je_temp,i_temp,Values,Ib,Ie,J,Size[0],Size[1]);
 
         }
 };

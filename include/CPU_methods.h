@@ -106,99 +106,127 @@ class CPU_methods {
         // Sparse double matrix matrix product. (MKL)
         void spdgemm (  ) { std::cout << "empty" << std::endl; }
 
-        // Sparse double matrix transpose. (Thrust)
-        void spdtrans ( const thrust::host_vector<double> & V, const thrust::host_vector<int> & Ipb, 
-                        const thrust::host_vector<int> & Ipe, const thrust::host_vector<int> & J,
+        // Sparse double matrix transpose. (MKL)
+        void spdtrans ( thrust::host_vector<double> & V, thrust::host_vector<int> & Ipb, 
+                        thrust::host_vector<int> & Ipe, thrust::host_vector<int> & J,
                         thrust::host_vector<double> & V_new, thrust::host_vector<int> & Ipb_new,
-                        thrust::host_vector<int> & Ipe_new, thrust::host_vector<int> & J_new ) {
+                        thrust::host_vector<int> & Ipe_new, thrust::host_vector<int> & J_new, int m, int n ) {
+            
+            // Initiate status, index and MKL-sparse-matrix type with pointer.
+            sparse_status_t status;
+            sparse_matrix_t A_data;
+            sparse_matrix_t * A_p = &A_data;
+            sparse_index_base_t index = SPARSE_INDEX_BASE_ZERO;
+            
+            // Create pointers.            
+            double * V_p = thrust::raw_pointer_cast(&V[0]);
+            int * Ipb_p = thrust::raw_pointer_cast(&Ipb[0]);
+            int * Ipe_p = thrust::raw_pointer_cast(&Ipe[0]);
+            int * J_p = thrust::raw_pointer_cast(&J[0]);
+                        
+            // MKL function, documentation:
+            // https://software.intel.com/en-us/mkl-developer-reference-c-mkl-sparse-create-csr
+            //
+            // Create a CSR layout sparse matrix.
+            status = mkl_sparse_d_create_csr(A_p, index, m, n, Ipb_p, Ipe_p, J_p, V_p);
 
-            // Create temporary data vector.
-            thrust::host_vector<int> J_temp(J.size());
+            // Initialize MKL-sparse-matrix and pointer. 
+            sparse_matrix_t B_data;
+            sparse_matrix_t * B_p = &B_data;
 
-            // Copy data to the new and temporary vectors.
-            thrust::copy(V.begin(), V.end(), V_new.begin());
-            thrust::copy(J.begin(), J.end(), J_temp.begin());
-    
-            // Fill J_new using COO layout.
-            for ( int k = 0; k < Ipb.size(); k++ ) {
-                
-                thrust::fill_n((J_new.begin() + Ipb[k]), (Ipe[k] - Ipb[k]), k); 
-                
-            }
+            // MKL function, documentation:
+            // https://software.intel.com/en-us/mkl-developer-reference-c-mkl-sparse-convert-csr
+            //
+            // Create a new MKL-sparse-matrix with transposed data.
+            status = mkl_sparse_convert_csr(A_data, SPARSE_OPERATION_TRANSPOSE, B_p);
 
-            // Typedefs for zip iterator.
-            typedef thrust::host_vector<double>::iterator DoubleIt;
-            typedef thrust::host_vector<int>::iterator IntIt;
-            typedef thrust::tuple<DoubleIt,IntIt> TupleIt;
-            typedef thrust::zip_iterator<TupleIt> ZipIt;
+            // Create pointers.
+            double * V_new_p; double ** V_new_pp = &V_new_p;
+            int * Ipb_new_p; int ** Ipb_new_pp = &Ipb_new_p;
+            int * Ipe_new_p; int ** Ipe_new_pp = &Ipe_new_p;
+            int * J_new_p; int ** J_new_pp = &J_new_p;
 
-            // Create the zip iterator
-            ZipIt zip_iterator(thrust::make_tuple(V_new.begin(), J_new.begin()));
+            // MKL function, documentation:
+            // https://software.intel.com/en-us/mkl-developer-reference-c-mkl-sparse-export-csr
+            //
+            // Export pointers to the transposed matrix.
+            status = mkl_sparse_d_export_csr(B_data, &index, &n, &m, Ipb_new_pp, Ipe_new_pp, J_new_pp, V_new_pp);
 
-            // Reorder V_new, J_new and J_temp.
-            thrust::stable_sort_by_key(J_temp.begin(), J_temp.end(), zip_iterator);
+            // Copy the data to the thrust vectors.
+            V_new.resize(0); Ipb_new.resize(0); Ipe_new.resize(0); J_new.resize(0);
+            V_new.insert(V_new.begin(), V_new_p, (V_new_p + V.size()));
+            Ipb_new.insert(Ipb_new.begin(), Ipb_new_p, (Ipb_new_p + m));
+            Ipe_new.insert(Ipe_new.begin(), Ipe_new_p, (Ipe_new_p + m));
+            J_new.insert(J_new.begin(), J_new_p, (J_new_p + J.size()));
 
-            // Fill the first value of Ipb_new.
-            Ipb_new[0] = 0;
+            // Free memory.
+            status = mkl_sparse_destroy(A_data);
+            status = mkl_sparse_destroy(B_data);
 
-            // Fill the remainder of Ip_new.
-            for ( int k = 0; k < (Ipb_new.size() - 1); k++ ) {
-        
-                Ipb_new[k + 1] = Ipb_new[k] + thrust::count(J.begin(), J.end(), k);
-
-            }
-
-            // Fill Ipe_new.
-            thrust::copy(Ipb_new.begin() + 1, Ipb_new.end(), Ipe_new.begin());
-            Ipe_new[(Ipe_new.size() - 1)] = J.size();
+            // Check status.
+            if (status != SPARSE_STATUS_SUCCESS) { std::cout << "MKL sparse status not OK!" << std::endl; }
 
         }
 
-        // Sparse float matrix transpose. (Thrust)
-        void spftrans ( const thrust::host_vector<float> & V, const thrust::host_vector<int> & Ipb, 
-                        const thrust::host_vector<int> & Ipe, const thrust::host_vector<int> & J,
+        // Sparse float matrix transpose. (MKL)
+        void spftrans ( thrust::host_vector<float> & V, thrust::host_vector<int> & Ipb, 
+                        thrust::host_vector<int> & Ipe, thrust::host_vector<int> & J,
                         thrust::host_vector<float> & V_new, thrust::host_vector<int> & Ipb_new,
-                        thrust::host_vector<int> & Ipe_new, thrust::host_vector<int> & J_new ) {
+                        thrust::host_vector<int> & Ipe_new, thrust::host_vector<int> & J_new, int m, int n ) {
+            
+            // Initiate status, index and MKL-sparse-matrix type with pointer.
+            sparse_status_t status;
+            sparse_matrix_t A_data;
+            sparse_matrix_t * A_p = &A_data;
+            sparse_index_base_t index = SPARSE_INDEX_BASE_ZERO;
+            
+            // Create pointers.            
+            float * V_p = thrust::raw_pointer_cast(&V[0]);
+            int * Ipb_p = thrust::raw_pointer_cast(&Ipb[0]);
+            int * Ipe_p = thrust::raw_pointer_cast(&Ipe[0]);
+            int * J_p = thrust::raw_pointer_cast(&J[0]);
+                        
+            // MKL function, documentation:
+            // https://software.intel.com/en-us/mkl-developer-reference-c-mkl-sparse-create-csr
+            //
+            // Create a CSR layout sparse matrix.
+            status = mkl_sparse_s_create_csr(A_p, index, m, n, Ipb_p, Ipe_p, J_p, V_p);
 
-            // Create temporary data vector.
-            thrust::host_vector<int> J_temp(J.size());
+            // Initialize MKL-sparse-matrix and pointer. 
+            sparse_matrix_t B_data;
+            sparse_matrix_t * B_p = &B_data;
 
-            // Copy data to the new and temporary vectors.
-            thrust::copy(V.begin(), V.end(), V_new.begin());
-            thrust::copy(J.begin(), J.end(), J_temp.begin());
-    
-            // Fill J_new using COO layout.
-            for ( int k = 0; k < Ipb.size(); k++ ) {
-                
-                thrust::fill_n((J_new.begin() + Ipb[k]), (Ipe[k] - Ipb[k]), k); 
-                
-            }
+            // MKL function, documentation:
+            // https://software.intel.com/en-us/mkl-developer-reference-c-mkl-sparse-convert-csr
+            //
+            // Create a new MKL-sparse-matrix with transposed data.
+            status = mkl_sparse_convert_csr(A_data, SPARSE_OPERATION_TRANSPOSE, B_p);
 
-            // Typedefs for zip iterator.
-            typedef thrust::host_vector<float>::iterator FloatIt;
-            typedef thrust::host_vector<int>::iterator IntIt;
-            typedef thrust::tuple<FloatIt,IntIt> TupleIt;
-            typedef thrust::zip_iterator<TupleIt> ZipIt;
+            // Create pointers.
+            float * V_new_p; float ** V_new_pp = &V_new_p;
+            int * Ipb_new_p; int ** Ipb_new_pp = &Ipb_new_p;
+            int * Ipe_new_p; int ** Ipe_new_pp = &Ipe_new_p;
+            int * J_new_p; int ** J_new_pp = &J_new_p;
 
-            // Create the zip iterator
-            ZipIt zip_iterator(thrust::make_tuple(V_new.begin(), J_new.begin()));
+            // MKL function, documentation:
+            // https://software.intel.com/en-us/mkl-developer-reference-c-mkl-sparse-export-csr
+            //
+            // Export pointers to the transposed matrix.
+            status = mkl_sparse_s_export_csr(B_data, &index, &n, &m, Ipb_new_pp, Ipe_new_pp, J_new_pp, V_new_pp);
 
-            // Reorder V_new, J_new and J_temp.
-            thrust::stable_sort_by_key(J_temp.begin(), J_temp.end(), zip_iterator);
+            // Copy the data to the thrust vectors.
+            V_new.resize(0); Ipb_new.resize(0); Ipe_new.resize(0); J_new.resize(0);
+            V_new.insert(V_new.begin(), V_new_p, (V_new_p + V.size()));
+            Ipb_new.insert(Ipb_new.begin(), Ipb_new_p, (Ipb_new_p + m));
+            Ipe_new.insert(Ipe_new.begin(), Ipe_new_p, (Ipe_new_p + m));
+            J_new.insert(J_new.begin(), J_new_p, (J_new_p + J.size()));
 
-            // Fill the first value of Ipb_new.
-            Ipb_new[0] = 0;
+            // Free memory.
+            status = mkl_sparse_destroy(A_data);
+            status = mkl_sparse_destroy(B_data);
 
-            // Fill the remainder of Ip_new.
-            for ( int k = 0; k < (Ipb_new.size() - 1); k++ ) {
-        
-                Ipb_new[k + 1] = Ipb_new[k] + thrust::count(J.begin(), J.end(), k);
-
-            }
-
-            // Fill Ipe_new.
-            thrust::copy(Ipb_new.begin() + 1, Ipb_new.end(), Ipe_new.begin());
-            Ipe_new[(Ipe_new.size() - 1)] = J.size();
+            // Check status.
+            if (status != SPARSE_STATUS_SUCCESS) { std::cout << "MKL sparse status not OK!" << std::endl; }
 
         }
 
