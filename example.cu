@@ -3,18 +3,20 @@
 int main (  ) {
 
     matfile_load matfile("matlab.mat");
-    tic();
-    GPU_Sparse A(matfile,"A");
-    toc();
-tic();
-    GPU_Dense b(matfile,"b");toc();
-
-    GPU_Dense ans = A.mv(b);
-
     
-    //ans.print();
+    CPU_Sparse A(matfile,"A");
+    CPU_Dense b(matfile,"b");
+    GPU_Sparse AA(matfile,"A");
+    GPU_Dense bb(matfile,"B");
+
+    tic();
+    CPU_Dense c = A.mv(b);
+    toc();
+    
+    tic();
+    GPU_Dense cc = AA.mv(bb);
+    toc();
 
     return 0;
-
 
 }
