@@ -33,6 +33,7 @@ Scalar_addition_test
 Transpose_test
 Matio_test
 Clone_test
+Convert_test
 "
 
 # Build and run.
