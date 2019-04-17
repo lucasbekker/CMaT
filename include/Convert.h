@@ -37,4 +37,3 @@ CPU_Dense_f convert ( GPU_Dense_f x ) {
     return y;
 
 }
-
