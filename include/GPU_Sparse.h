@@ -94,7 +94,17 @@ class GPU_Sparse: private GPU_methods {
         void mm (  ) { std::cout << "empty" << std::endl; }
 
         // Make a clone.
-        void clone (  ) { std::cout << "empty" << std::endl; }
+        GPU_Sparse clone (  ) {
+
+            GPU_Sparse c(Size[0],Size[1],Size[2]);
+
+            c.Values = Values;
+            c.I = I;
+            c.J = J;
+
+            return c;
+
+        }
 
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
@@ -301,7 +311,17 @@ class GPU_Sparse_f: private GPU_methods {
         void mm (  ) { std::cout << "empty" << std::endl; }
 
         // Make a clone.
-        void clone (  ) { std::cout << "empty" << std::endl; }
+        GPU_Sparse_f clone (  ) {
+
+            GPU_Sparse_f c(Size[0],Size[1],Size[2]);
+
+            c.Values = Values;
+            c.I = I;
+            c.J = J;
+
+            return c;
+
+        }
 
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }

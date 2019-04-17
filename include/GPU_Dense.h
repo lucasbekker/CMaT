@@ -128,7 +128,15 @@ class GPU_Dense: private GPU_methods {
         void mm (  ) { std::cout << "empty" << std::endl; }
 
         // Make a clone.
-        void clone (  ) { std::cout << "empty" << std::endl; }
+        GPU_Dense clone (  ) { 
+
+            GPU_Dense c(Size[0],Size[1],isVector);
+
+            c.Values = Values;
+
+            return c;
+
+        }
 
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
@@ -366,7 +374,15 @@ class GPU_Dense_f: private GPU_methods {
         void mm (  ) { std::cout << "empty" << std::endl; }
 
         // Make a clone.
-        void clone (  ) { std::cout << "empty" << std::endl; }
+        GPU_Dense_f clone (  ) { 
+
+            GPU_Dense_f c(Size[0],Size[1],isVector);
+
+            c.Values = Values;
+
+            return c;
+
+        }
 
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }

@@ -97,7 +97,18 @@ class CPU_Sparse: private CPU_methods {
         void mm (  ) { std::cout << "empty" << std::endl; }
 
         // Make a clone.
-        void clone (  ) { std::cout << "empty" << std::endl; }
+        CPU_Sparse clone (  ) {
+
+            CPU_Sparse c(Size[0],Size[1],Size[2]);
+
+            c.Values = Values;
+            c.Ib = Ib;
+            c.Ie = Ie;
+            c.J = J;
+
+            return c;
+
+        }
 
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }
@@ -296,7 +307,18 @@ class CPU_Sparse_f: private CPU_methods {
         void mm (  ) { std::cout << "empty" << std::endl; }
 
         // Make a clone.
-        void clone (  ) { std::cout << "empty" << std::endl; }
+        CPU_Sparse_f clone (  ) {
+
+            CPU_Sparse_f c(Size[0],Size[1],Size[2]);
+
+            c.Values = Values;
+            c.Ib = Ib;
+            c.Ie = Ie;
+            c.J = J;
+
+            return c;
+
+        }
 
         // Convert the backend type
         void conv (  ) { std::cout << "empty" << std::endl; }

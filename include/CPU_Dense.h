@@ -128,10 +128,15 @@ class CPU_Dense: private CPU_methods {
         void mm (  ) { std::cout << "empty" << std::endl; }
 
         // Make a clone.
-        void clone (  ) { std::cout << "empty" << std::endl; }
+        CPU_Dense clone (  ) { 
 
-        // Convert the backend type
-        void conv (  ) { std::cout << "empty" << std::endl; }
+            CPU_Dense c(Size[0],Size[1],isVector);
+
+            c.Values = Values;
+
+            return c;
+
+        }
 
         // Print to stdout.
         void print (  ) {
@@ -360,10 +365,15 @@ class CPU_Dense_f: private CPU_methods {
         void mm (  ) { std::cout << "empty" << std::endl; }
 
         // Make a clone.
-        void clone (  ) { std::cout << "empty" << std::endl; }
+        CPU_Dense_f clone (  ) { 
 
-        // Convert the backend type
-        void conv (  ) { std::cout << "empty" << std::endl; }
+            CPU_Dense_f c(Size[0],Size[1],isVector);
+
+            c.Values = Values;
+
+            return c;
+
+        }
 
         // Print to stdout.
         void print (  ) {
