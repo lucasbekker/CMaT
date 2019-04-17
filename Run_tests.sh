@@ -32,6 +32,7 @@ Scalar_product_test
 Scalar_addition_test
 Transpose_test
 Matio_test
+Clone_test
 "
 
 # Build and run.
