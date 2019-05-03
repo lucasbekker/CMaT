@@ -30,6 +30,9 @@
 #include "cublas_v2.h"
 #include "cusparse_v2.h"
 
+// Include the AMGX header files.
+#include <amgx/amgx_c.h>
+
 // Include the CMaT project header files.
 #include "Handles.h"
 #include "Thrust_functors.h"
