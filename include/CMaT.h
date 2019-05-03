@@ -43,3 +43,4 @@
 #include "CPU_Sparse.h"
 #include "GPU_Sparse.h"
 #include "Convert.h"
+#include "Amgx.h"
