@@ -14,32 +14,48 @@ void GMRES (  ) {
                                fgmres:monitor_residual=1";
 
     // Initialize AMGX.
-    SOLVER_AmgX AMGX(config_spec,mode,4,10); 
-    
+    SOLVER_AmgX AMGX(config_spec,mode,4,10);
+
+    // Initialize A, b and x.
+    GPU_Sparse A(4,4,10);
+    GPU_Dense  b(1,4);
+    GPU_Dense  x(1,4);
+
     // Fill A with data.
-    double data[] = {2,1,1,2,1,1,2,1,1,2};
-    int col_ind[] = {0,1,0,1,2,1,2,3,2,3};
-    int row_ptr[] = {0,2,5,8,10};
-    AMGX_matrix_upload_all(AMGX.A, 4, 10, 1, 1, row_ptr, col_ind, data, 0);
-
+    A.Values[0] = 2; A.Values[1] = 1; A.Values[2] = 1;
+    A.Values[3] = 2; A.Values[4] = 1; A.Values[5] = 1;
+    A.Values[6] = 2; A.Values[7] = 1; A.Values[8] = 1;
+    A.Values[9] = 2;
+    A.J[0] = 0; A.J[1] = 1; A.J[2] = 0; A.J[3] = 1; A.J[4] = 2;
+    A.J[5] = 1; A.J[6] = 2; A.J[7] = 3; A.J[8] = 2; A.J[9] = 3;
+    A.I[0] = 0; A.I[1] = 2; A.I[2] = 5; A.I[3] = 8; A.I[4] = 10;
+    
     // Fill b with data.
-    double b_data[] = {1,1,1,1};
-    AMGX_vector_upload(AMGX.b,4,1,b_data);
+    b.Values[0] = 1; b.Values[1] = 1; b.Values[2] = 1;
+    b.Values[3] = 1;
 
-    // Fill x with b as initial guess.
-    AMGX_vector_upload(AMGX.x,4,1,b_data);
+    // Fill x with data.
+    x.Values[0] = 1; x.Values[1] = 1; x.Values[2] = 1;
+    x.Values[3] = 1;
 
+    // Initialize solver data and fill with addresses.
+    SOLVER_data Axb;
+    Axb.A_g = &A;
+    Axb.b_g = &b;
+    Axb.x_g = &x;
+
+    // Upload the data.
+    AMGX.upload(Axb);
+
+    // Solve.
     AMGX.solve();
 
-    // Gather the solution.
-    double solution[4];
-    AMGX_vector_download(AMGX.x,solution);
+    // Download the result.
+    AMGX.download(Axb);
 
-    // Print the solution.
-    std::cout << solution[0] << std::endl;
-    std::cout << solution[1] << std::endl;
-    std::cout << solution[2] << std::endl;
-    std::cout << solution[3] << std::endl;
+    // Print the result.    
+    CPU_Dense result = convert(x);
+    result.print();
 
 }
 

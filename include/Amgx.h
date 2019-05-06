@@ -51,7 +51,7 @@ class SOLVER_AmgX {
     }
 
     // Gather the result.
-    void download ( SOLVER_data Axb ) {
+    void download ( SOLVER_data & Axb ) {
 
         // Initialize pointer.
         void * x_pointer = NULL;
@@ -73,7 +73,7 @@ class SOLVER_AmgX {
     }
 
     // Retrieve the input data.
-    void upload ( SOLVER_data Axb ) {
+    void upload ( SOLVER_data & Axb ) {
 
         // Initialize pointers.
         int * A_row_ptr  = NULL;
@@ -125,6 +125,24 @@ class SOLVER_AmgX {
         AMGX_vector_upload(x, n, 1, x_pointer);
 
     }
+
+    // Clean the AMGX related objects.
+    void destroy (  ) {
+
+        // Destroy AMGX objects.
+        AMGX_solver_destroy(solver);
+        AMGX_matrix_destroy(A);
+        AMGX_vector_destroy(b);
+        AMGX_vector_destroy(x);
+        AMGX_resources_destroy(resources);
+        AMGX_config_destroy(config);
+
+        // Finalize AMGX library.
+        AMGX_reset_signal_handler();
+        AMGX_finalize_plugins();
+        AMGX_finalize();
+
+    }
     
     // Constructor.
     SOLVER_AmgX ( std::string input_config, AMGX_Mode input_mode, int m, int numnz ) {
@@ -155,18 +173,7 @@ class SOLVER_AmgX {
     // Destructor.
     ~SOLVER_AmgX (  ) {
 
-        // Destroy AMGX objects.
-        AMGX_solver_destroy(solver);
-        AMGX_matrix_destroy(A);
-        AMGX_vector_destroy(b);
-        AMGX_vector_destroy(x);
-        AMGX_resources_destroy(resources);
-        AMGX_config_destroy(config);
-
-        // Finalize AMGX library.
-        AMGX_reset_signal_handler();
-        AMGX_finalize_plugins();
-        AMGX_finalize();
+        destroy();
 
     }
 };
