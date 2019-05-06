@@ -19,6 +19,10 @@ struct SOLVER_data {
     CPU_Dense *   x_c;
     CPU_Dense_f * x_cf;
 
+    // Size parameters.
+    int n;
+    int nnz;
+
 };
 
 class SOLVER_AmgX {
@@ -145,11 +149,11 @@ class SOLVER_AmgX {
     }
     
     // Constructor.
-    SOLVER_AmgX ( std::string input_config, AMGX_Mode input_mode, int m, int numnz ) {
+    SOLVER_AmgX ( std::string input_config, AMGX_Mode input_mode, SOLVER_data & Axb ) {
 
         // Store the input.
-        n = m;
-        nnz = numnz;
+        n = Axb.n;
+        nnz = Axb.nnz;
         mode = input_mode;
         config_spec = input_config;
 
@@ -167,6 +171,15 @@ class SOLVER_AmgX {
         AMGX_matrix_create(&A, resources, mode);
         AMGX_vector_create(&b, resources, mode);
         AMGX_vector_create(&x, resources, mode);
+
+        // Upload the data.
+        upload(Axb);
+
+        // Solve Ax=b.
+        solve();
+
+        // Store the results.
+        download(Axb);
 
     }
 

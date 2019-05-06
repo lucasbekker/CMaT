@@ -13,9 +13,6 @@ void GMRES (  ) {
                                fgmres:print_solve_stats=1, \
                                fgmres:monitor_residual=1";
 
-    // Initialize AMGX.
-    SOLVER_AmgX AMGX(config_spec,mode,4,10);
-
     // Initialize A, b and x.
     GPU_Sparse A(4,4,10);
     GPU_Dense  b(1,4);
@@ -43,15 +40,11 @@ void GMRES (  ) {
     Axb.A_g = &A;
     Axb.b_g = &b;
     Axb.x_g = &x;
+    Axb.n = 4;
+    Axb.nnz = 10;
 
-    // Upload the data.
-    AMGX.upload(Axb);
-
-    // Solve.
-    AMGX.solve();
-
-    // Download the result.
-    AMGX.download(Axb);
+    // Start the solving procedure.
+    SOLVER_AmgX AMGX(config_spec,mode,Axb);
 
     // Print the result.    
     CPU_Dense result = convert(x);
