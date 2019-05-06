@@ -14,7 +14,7 @@ void GMRES (  ) {
                                fgmres:monitor_residual=1";
 
     // Initialize AMGX.
-    AmgX AMGX(config_spec,mode); 
+    SOLVER_AmgX AMGX(config_spec,mode,4,10); 
     
     // Fill A with data.
     double data[] = {2,1,1,2,1,1,2,1,1,2};
