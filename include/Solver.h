@@ -85,7 +85,10 @@ class SOLVER_AmgX {
         void * A_data    = NULL;
         void * b_pointer = NULL;
         void * x_pointer = NULL;
-        
+
+        // Initialize temporary I vector.
+        thrust::host_vector<int> I_temp;
+                
         // Generate correct addresses.
         if ( mode == AMGX_mode_dDDI ) {
             x_pointer = (void *) thrust::raw_pointer_cast(&(Axb.x_g->Values[0]));
@@ -104,25 +107,23 @@ class SOLVER_AmgX {
             b_pointer = (void *) thrust::raw_pointer_cast(&(Axb.b_c->Values[0]));
             A_data    = (void *) thrust::raw_pointer_cast(&(Axb.A_c->Values[0]));
             A_col_ind = thrust::raw_pointer_cast(&(Axb.A_c->J[0]));
-            thrust::host_vector<int> I_temp; 
             int * Ib_begin = thrust::raw_pointer_cast(&(Axb.A_c->Ib[0]));
             int * Ie_end   = thrust::raw_pointer_cast(&(Axb.A_c->Ie[(n - 1)]));
             I_temp.insert(I_temp.begin(),Ib_begin,(Ib_begin + n));
-            I_temp.insert(I_temp.begin(),Ie_end,(Ie_end + 1));
+            I_temp.insert(I_temp.end(),Ie_end,(Ie_end + 1));
             A_row_ptr = thrust::raw_pointer_cast(&I_temp[0]);
         } else {
             x_pointer = (void *) thrust::raw_pointer_cast(&(Axb.x_cf->Values[0]));
             b_pointer = (void *) thrust::raw_pointer_cast(&(Axb.b_cf->Values[0]));
             A_data    = (void *) thrust::raw_pointer_cast(&(Axb.A_cf->Values[0]));
             A_col_ind = thrust::raw_pointer_cast(&(Axb.A_cf->J[0]));
-            thrust::host_vector<int> I_temp; 
             int * Ib_begin = thrust::raw_pointer_cast(&(Axb.A_cf->Ib[0]));
             int * Ie_end   = thrust::raw_pointer_cast(&(Axb.A_cf->Ie[(n - 1)]));
             I_temp.insert(I_temp.begin(),Ib_begin,(Ib_begin + n));
-            I_temp.insert(I_temp.begin(),Ie_end,(Ie_end + 1));
+            I_temp.insert(I_temp.end(),Ie_end,(Ie_end + 1));
             A_row_ptr = thrust::raw_pointer_cast(&I_temp[0]);
         }
-
+        
         // Upload A, b and x to AMGX.
         AMGX_matrix_upload_all(A, n, nnz, 1, 1, A_row_ptr, A_col_ind, A_data, 0);
         AMGX_vector_upload(b, n, 1, b_pointer);
