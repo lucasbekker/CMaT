@@ -137,8 +137,9 @@ int main (  ) {
     GMRES_GPU_test(A_g, b_g, x_g);
 
     // Print the result.    
-    CPU_Dense result_g = convert(x_g);
-    result_g.print();
+    // x_g.print(); BUG
+    CPU_Dense result = convert(x_g);
+    result.print();
 
     // GPU float
     // =====================================================================
@@ -171,8 +172,7 @@ int main (  ) {
     GMRES_GPU_f_test(A_gf, b_gf, x_gf);
 
     // Print the result.    
-    CPU_Dense_f result_gf = convert(x_gf);
-    result_gf.print();
+    x_gf.print();
 
     // CPU double
     // =====================================================================
@@ -206,8 +206,7 @@ int main (  ) {
     GMRES_CPU_test(A_c, b_c, x_c);
 
     // Print the result.    
-    CPU_Dense result_c = x_c.clone();
-    result_c.print();
+    x_c.print();
 
     // CPU float
     // =====================================================================
@@ -241,8 +240,7 @@ int main (  ) {
     GMRES_CPU_f_test(A_cf, b_cf, x_cf);
 
     // Print the result.    
-    CPU_Dense_f result_cf = x_cf.clone();
-    result_cf.print();
+    x_cf.print();
 
     return 0;
 

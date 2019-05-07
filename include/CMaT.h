@@ -1,3 +1,5 @@
+#pragma once
+
 // STD libs.
 #include <iostream>
 #include <assert.h>

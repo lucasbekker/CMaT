@@ -262,7 +262,7 @@ int GPU_Dense_trans_test (  ) {
     test.Values[0] = 1; test.Values[1] = 2; test.Values[2] = 0;
     test.Values[3] = 3; test.Values[4] = 0; test.Values[5] = 4;
     test.Values[6] = 0; test.Values[7] = 0; test.Values[8] = 0;
-    test.Values[9] = 5; test.Values[10] = 0; test.Values[11] = 0; 
+    test.Values[9] = 5; test.Values[10] = 0; test.Values[11] = 0;
 
     // Perform the transpose operation.
     GPU_Dense result = test.trans();
