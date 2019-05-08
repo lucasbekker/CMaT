@@ -1,58 +1,36 @@
 #include "../include/CMaT.h"
 
-void GMRES_GPU_test ( GPU_Sparse & A, GPU_Dense & b, GPU_Dense & x ) {
+int CPU_AMGX_test ( std::string config_spec ) {
 
-    // Initialize solver data and fill with addresses.
-    SOLVER_data Axb;
-    Axb.A_g = &A;
-    Axb.b_g = &b;
-    Axb.x_g = &x;
-    Axb.n = A.Size[0];
-    Axb.nnz = A.Size[2];
+    // Check.
+    int pass = 1;
+    double tol = 0.0001;
 
-    // Specify AMGX configuration.
-    AMGX_Mode mode = AMGX_mode_dDDI;
-    std::string config_spec = "config_version=2, \
-                               solver(fgmres)=FGMRES, \
-                               fgmres:tolerance=0.01, \
-                               fgmres:max_iters=40, \
-                               fgmres:gmres_n_restart=10, \
-                               fgmres:preconditioner=NOSOLVER, \
-                               fgmres:print_solve_stats=1, \
-                               fgmres:monitor_residual=1";
+    // Initialize problem data.
+    CPU_Sparse A(4,4,10);
+    CPU_Dense  b(1,4);
+    CPU_Dense  x_0(1,4);
 
-    // Start the solving procedure.
-    SOLVER_AmgX AMGX(config_spec, mode, Axb);
+    // Fill A with data.
+    A.Values[0] = 2; A.Values[1] = 1; A.Values[2] = 1;
+    A.Values[3] = 2; A.Values[4] = 1; A.Values[5] = 1;
+    A.Values[6] = 2; A.Values[7] = 1; A.Values[8] = 1;
+    A.Values[9] = 2;
+    A.J[0] = 0; A.J[1] = 1; A.J[2] = 0; A.J[3] = 1; A.J[4] = 2;
+    A.J[5] = 1; A.J[6] = 2; A.J[7] = 3; A.J[8] = 2; A.J[9] = 3;
+    A.Ib[0] = 0; A.Ib[1] = 2; A.Ib[2] = 5; A.Ib[3] = 8;
+    A.Ie[0] = 2; A.Ie[1] = 5; A.Ie[2] = 8; A.Ie[3] = 10;
+    
+    // Fill b with data.
+    b.Values[0] = 1; b.Values[1] = 1; b.Values[2] = 1;
+    b.Values[3] = 1;
 
-}
+    // Fill x with data. (initial guess)
+    x_0.Values[0] = 1; x_0.Values[1] = 1; x_0.Values[2] = 1;
+    x_0.Values[3] = 1;
 
-void GMRES_GPU_f_test ( GPU_Sparse_f & A, GPU_Dense_f & b, GPU_Dense_f & x ) {
-
-    // Initialize solver data and fill with addresses.
-    SOLVER_data Axb;
-    Axb.A_gf = &A;
-    Axb.b_gf = &b;
-    Axb.x_gf = &x;
-    Axb.n = A.Size[0];
-    Axb.nnz = A.Size[2];
-
-    // Specify AMGX configuration.
-    AMGX_Mode mode = AMGX_mode_dFFI;
-    std::string config_spec = "config_version=2, \
-                               solver(fgmres)=FGMRES, \
-                               fgmres:tolerance=0.01, \
-                               fgmres:max_iters=40, \
-                               fgmres:gmres_n_restart=10, \
-                               fgmres:preconditioner=NOSOLVER, \
-                               fgmres:print_solve_stats=1, \
-                               fgmres:monitor_residual=1";
-
-    // Start the solving procedure.
-    SOLVER_AmgX AMGX(config_spec, mode, Axb);
-
-}
-
-void GMRES_CPU_test ( CPU_Sparse & A, CPU_Dense & b, CPU_Dense & x ) {
+    // Copy x_0 to x;
+    CPU_Dense x = x_0.clone();
 
     // Initialize solver data and fill with addresses.
     SOLVER_data Axb;
@@ -64,21 +42,53 @@ void GMRES_CPU_test ( CPU_Sparse & A, CPU_Dense & b, CPU_Dense & x ) {
 
     // Specify AMGX configuration.
     AMGX_Mode mode = AMGX_mode_hDDI;
-    std::string config_spec = "config_version=2, \
-                               solver(fgmres)=FGMRES, \
-                               fgmres:tolerance=0.01, \
-                               fgmres:max_iters=40, \
-                               fgmres:gmres_n_restart=10, \
-                               fgmres:preconditioner=NOSOLVER, \
-                               fgmres:print_solve_stats=1, \
-                               fgmres:monitor_residual=1";
-
+    
     // Start the solving procedure.
     SOLVER_AmgX AMGX(config_spec, mode, Axb);
 
+    // Check for errors.
+    if ( abs(x.Values[0] - 0.4) > tol ||
+         abs(x.Values[1] - 0.2) > tol ||
+         abs(x.Values[2] - 0.2) > tol ||
+         abs(x.Values[3] - 0.4) > tol ) {
+         pass = 0; }
+
+    // Return the result.
+    return pass;
+
 }
 
-void GMRES_CPU_f_test ( CPU_Sparse_f & A, CPU_Dense_f & b, CPU_Dense_f & x ) {
+int CPU_f_AMGX_test ( std::string config_spec ) {
+
+    // Check.
+    int pass = 1;
+    float tol = 0.0001;
+
+    // Initialize problem data.
+    CPU_Sparse_f A(4,4,10);
+    CPU_Dense_f  b(1,4);
+    CPU_Dense_f  x_0(1,4);
+
+    // Fill A with data.
+    A.Values[0] = 2; A.Values[1] = 1; A.Values[2] = 1;
+    A.Values[3] = 2; A.Values[4] = 1; A.Values[5] = 1;
+    A.Values[6] = 2; A.Values[7] = 1; A.Values[8] = 1;
+    A.Values[9] = 2;
+    A.J[0] = 0; A.J[1] = 1; A.J[2] = 0; A.J[3] = 1; A.J[4] = 2;
+    A.J[5] = 1; A.J[6] = 2; A.J[7] = 3; A.J[8] = 2; A.J[9] = 3;
+    A.Ib[0] = 0; A.Ib[1] = 2; A.Ib[2] = 5; A.Ib[3] = 8;
+    A.Ie[0] = 2; A.Ie[1] = 5; A.Ie[2] = 8; A.Ie[3] = 10;
+    
+    // Fill b with data.
+    b.Values[0] = 1; b.Values[1] = 1; b.Values[2] = 1;
+    b.Values[3] = 1;
+
+    // Fill x with data. (initial guess)
+    x_0.Values[0] = 1; x_0.Values[1] = 1; x_0.Values[2] = 1;
+    x_0.Values[3] = 1;
+
+    // Copy x_0 to x;
+    CPU_Dense_f x = x_0.clone();
 
     // Initialize solver data and fill with addresses.
     SOLVER_data Axb;
@@ -90,157 +100,158 @@ void GMRES_CPU_f_test ( CPU_Sparse_f & A, CPU_Dense_f & b, CPU_Dense_f & x ) {
 
     // Specify AMGX configuration.
     AMGX_Mode mode = AMGX_mode_hFFI;
-    std::string config_spec = "config_version=2, \
-                               solver(fgmres)=FGMRES, \
-                               fgmres:tolerance=0.01, \
-                               fgmres:max_iters=40, \
-                               fgmres:gmres_n_restart=10, \
-                               fgmres:preconditioner=NOSOLVER, \
-                               fgmres:print_solve_stats=1, \
-                               fgmres:monitor_residual=1";
-
+    
     // Start the solving procedure.
     SOLVER_AmgX AMGX(config_spec, mode, Axb);
+
+    // Check for errors.
+    if ( abs(x.Values[0] - 0.4) > tol ||
+         abs(x.Values[1] - 0.2) > tol ||
+         abs(x.Values[2] - 0.2) > tol ||
+         abs(x.Values[3] - 0.4) > tol ) {
+         pass = 0; }
+
+    // Return the result.
+    return pass;
+
+}
+
+int GPU_AMGX_test ( std::string config_spec ) {
+
+    // Check.
+    int pass = 1;
+    double tol = 0.0001;
+
+    // Initialize problem data.
+    GPU_Sparse A(4,4,10);
+    GPU_Dense  b(1,4);
+    GPU_Dense  x_0(1,4);
+
+    // Fill A with data.
+    A.Values[0] = 2; A.Values[1] = 1; A.Values[2] = 1;
+    A.Values[3] = 2; A.Values[4] = 1; A.Values[5] = 1;
+    A.Values[6] = 2; A.Values[7] = 1; A.Values[8] = 1;
+    A.Values[9] = 2;
+    A.J[0] = 0; A.J[1] = 1; A.J[2] = 0; A.J[3] = 1; A.J[4] = 2;
+    A.J[5] = 1; A.J[6] = 2; A.J[7] = 3; A.J[8] = 2; A.J[9] = 3;
+    A.I[0] = 0; A.I[1] = 2; A.I[2] = 5; A.I[3] = 8; A.I[4] = 10;
+        
+    // Fill b with data.
+    b.Values[0] = 1; b.Values[1] = 1; b.Values[2] = 1;
+    b.Values[3] = 1;
+
+    // Fill x with data. (initial guess)
+    x_0.Values[0] = 1; x_0.Values[1] = 1; x_0.Values[2] = 1;
+    x_0.Values[3] = 1;
+
+    // Copy x_0 to x;
+    GPU_Dense x = x_0.clone();
+
+    // Initialize solver data and fill with addresses.
+    SOLVER_data Axb;
+    Axb.A_g = &A;
+    Axb.b_g = &b;
+    Axb.x_g = &x;
+    Axb.n = A.Size[0];
+    Axb.nnz = A.Size[2];
+
+    // Specify AMGX configuration.
+    AMGX_Mode mode = AMGX_mode_dDDI;
+    
+    // Start the solving procedure.
+    SOLVER_AmgX AMGX(config_spec, mode, Axb);
+
+    // Check for errors.
+    if ( abs(x.Values[0] - 0.4) > tol ||
+         abs(x.Values[1] - 0.2) > tol ||
+         abs(x.Values[2] - 0.2) > tol ||
+         abs(x.Values[3] - 0.4) > tol ) {
+         pass = 0; }
+
+    // Return the result.
+    return pass;
+
+}
+
+int GPU_f_AMGX_test ( std::string config_spec ) {
+
+    // Check.
+    int pass = 1;
+    float tol = 0.0001;
+
+    // Initialize problem data.
+    GPU_Sparse_f A(4,4,10);
+    GPU_Dense_f  b(1,4);
+    GPU_Dense_f  x_0(1,4);
+
+    // Fill A with data.
+    A.Values[0] = 2; A.Values[1] = 1; A.Values[2] = 1;
+    A.Values[3] = 2; A.Values[4] = 1; A.Values[5] = 1;
+    A.Values[6] = 2; A.Values[7] = 1; A.Values[8] = 1;
+    A.Values[9] = 2;
+    A.J[0] = 0; A.J[1] = 1; A.J[2] = 0; A.J[3] = 1; A.J[4] = 2;
+    A.J[5] = 1; A.J[6] = 2; A.J[7] = 3; A.J[8] = 2; A.J[9] = 3;
+    A.I[0] = 0; A.I[1] = 2; A.I[2] = 5; A.I[3] = 8; A.I[4] = 10;
+    
+    // Fill b with data.
+    b.Values[0] = 1; b.Values[1] = 1; b.Values[2] = 1;
+    b.Values[3] = 1;
+
+    // Fill x with data. (initial guess)
+    x_0.Values[0] = 1; x_0.Values[1] = 1; x_0.Values[2] = 1;
+    x_0.Values[3] = 1;
+
+    // Copy x_0 to x;
+    GPU_Dense_f x = x_0.clone();
+
+    // Initialize solver data and fill with addresses.
+    SOLVER_data Axb;
+    Axb.A_gf = &A;
+    Axb.b_gf = &b;
+    Axb.x_gf = &x;
+    Axb.n = A.Size[0];
+    Axb.nnz = A.Size[2];
+
+    // Specify AMGX configuration.
+    AMGX_Mode mode = AMGX_mode_dFFI;
+    
+    // Start the solving procedure.
+    SOLVER_AmgX AMGX(config_spec, mode, Axb);
+
+    // Check for errors.
+    if ( abs(x.Values[0] - 0.4) > tol ||
+         abs(x.Values[1] - 0.2) > tol ||
+         abs(x.Values[2] - 0.2) > tol ||
+         abs(x.Values[3] - 0.4) > tol ) {
+         pass = 0; }
+
+    // Return the result.
+    return pass;
 
 }
 
 int main (  ) {
 
-    // GPU double
-    // =====================================================================
-    // Initialize A, b and x.
-    GPU_Sparse A_g(4,4,10);
-    GPU_Dense  b_g(1,4);
-    GPU_Dense  x_0g(1,4);
+    std::string config_spec = "config_version=2, \
+                               solver(fgmres)=FGMRES, \
+                               fgmres:tolerance=0.01, \
+                               fgmres:max_iters=40, \
+                               fgmres:gmres_n_restart=10, \
+                               fgmres:preconditioner=NOSOLVER";
 
-    // Fill A with data.
-    A_g.Values[0] = 2; A_g.Values[1] = 1; A_g.Values[2] = 1;
-    A_g.Values[3] = 2; A_g.Values[4] = 1; A_g.Values[5] = 1;
-    A_g.Values[6] = 2; A_g.Values[7] = 1; A_g.Values[8] = 1;
-    A_g.Values[9] = 2;
-    A_g.J[0] = 0; A_g.J[1] = 1; A_g.J[2] = 0; A_g.J[3] = 1; A_g.J[4] = 2;
-    A_g.J[5] = 1; A_g.J[6] = 2; A_g.J[7] = 3; A_g.J[8] = 2; A_g.J[9] = 3;
-    A_g.I[0] = 0; A_g.I[1] = 2; A_g.I[2] = 5; A_g.I[3] = 8; A_g.I[4] = 10;
+    int pass1 = CPU_AMGX_test(config_spec);
+    int pass2 = CPU_f_AMGX_test(config_spec);
+    int pass3 = GPU_AMGX_test(config_spec);
+    int pass4 = GPU_f_AMGX_test(config_spec);
     
-    // Fill b with data.
-    b_g.Values[0] = 1; b_g.Values[1] = 1; b_g.Values[2] = 1;
-    b_g.Values[3] = 1;
+    int pass_global = 1;
 
-    // Fill x with data. (initial guess)
-    x_0g.Values[0] = 1; x_0g.Values[1] = 1; x_0g.Values[2] = 1;
-    x_0g.Values[3] = 1;
-
-    // Copy x_0 to x;
-    GPU_Dense x_g = x_0g.clone();
-
-    // Solve Ax=b.
-    GMRES_GPU_test(A_g, b_g, x_g);
-
-    // Print the result.    
-    // x_g.print(); BUG
-    CPU_Dense result = convert(x_g);
-    result.print();
-
-    // GPU float
-    // =====================================================================
-    // Initialize A, b and x.
-    GPU_Sparse_f A_gf(4,4,10);
-    GPU_Dense_f  b_gf(1,4);
-    GPU_Dense_f  x_0gf(1,4);
-
-    // Fill A with data.
-    A_gf.Values[0] = 2; A_gf.Values[1] = 1; A_gf.Values[2] = 1;
-    A_gf.Values[3] = 2; A_gf.Values[4] = 1; A_gf.Values[5] = 1;
-    A_gf.Values[6] = 2; A_gf.Values[7] = 1; A_gf.Values[8] = 1;
-    A_gf.Values[9] = 2;
-    A_gf.J[0] = 0; A_gf.J[1] = 1; A_gf.J[2] = 0; A_gf.J[3] = 1; A_gf.J[4] = 2;
-    A_gf.J[5] = 1; A_gf.J[6] = 2; A_gf.J[7] = 3; A_gf.J[8] = 2; A_gf.J[9] = 3;
-    A_gf.I[0] = 0; A_gf.I[1] = 2; A_gf.I[2] = 5; A_gf.I[3] = 8; A_gf.I[4] = 10;
-    
-    // Fill b with data.
-    b_gf.Values[0] = 1; b_gf.Values[1] = 1; b_gf.Values[2] = 1;
-    b_gf.Values[3] = 1;
-
-    // Fill x with data. (initial guess)
-    x_0gf.Values[0] = 1; x_0gf.Values[1] = 1; x_0gf.Values[2] = 1;
-    x_0gf.Values[3] = 1;
-
-    // Copy x_0 to x;
-    GPU_Dense_f x_gf = x_0gf.clone();
-
-    // Solve Ax=b.
-    GMRES_GPU_f_test(A_gf, b_gf, x_gf);
-
-    // Print the result.    
-    x_gf.print();
-
-    // CPU double
-    // =====================================================================
-    // Initialize A, b and x.
-    CPU_Sparse A_c(4,4,10);
-    CPU_Dense  b_c(1,4);
-    CPU_Dense  x_0c(1,4);
-
-    // Fill A with data.
-    A_c.Values[0] = 2; A_c.Values[1] = 1; A_c.Values[2] = 1;
-    A_c.Values[3] = 2; A_c.Values[4] = 1; A_c.Values[5] = 1;
-    A_c.Values[6] = 2; A_c.Values[7] = 1; A_c.Values[8] = 1;
-    A_c.Values[9] = 2;
-    A_c.J[0] = 0; A_c.J[1] = 1; A_c.J[2] = 0; A_c.J[3] = 1; A_c.J[4] = 2;
-    A_c.J[5] = 1; A_c.J[6] = 2; A_c.J[7] = 3; A_c.J[8] = 2; A_c.J[9] = 3;
-    A_c.Ib[0] = 0; A_c.Ib[1] = 2; A_c.Ib[2] = 5; A_c.Ib[3] = 8;
-    A_c.Ie[0] = 2; A_c.Ie[1] = 5; A_c.Ie[2] = 8; A_c.Ie[3] = 10;
-    
-    // Fill b with data.
-    b_c.Values[0] = 1; b_c.Values[1] = 1; b_c.Values[2] = 1;
-    b_c.Values[3] = 1;
-
-    // Fill x with data. (initial guess)
-    x_0c.Values[0] = 1; x_0c.Values[1] = 1; x_0c.Values[2] = 1;
-    x_0c.Values[3] = 1;
-
-    // Copy x_0 to x;
-    CPU_Dense x_c = x_0c.clone();
-
-    // Solve Ax=b.
-    GMRES_CPU_test(A_c, b_c, x_c);
-
-    // Print the result.    
-    x_c.print();
-
-    // CPU float
-    // =====================================================================
-    // Initialize A, b and x.
-    CPU_Sparse_f A_cf(4,4,10);
-    CPU_Dense_f  b_cf(1,4);
-    CPU_Dense_f  x_0cf(1,4);
-
-    // Fill A with data.
-    A_cf.Values[0] = 2; A_cf.Values[1] = 1; A_cf.Values[2] = 1;
-    A_cf.Values[3] = 2; A_cf.Values[4] = 1; A_cf.Values[5] = 1;
-    A_cf.Values[6] = 2; A_cf.Values[7] = 1; A_cf.Values[8] = 1;
-    A_cf.Values[9] = 2;
-    A_cf.J[0] = 0; A_cf.J[1] = 1; A_cf.J[2] = 0; A_cf.J[3] = 1; A_cf.J[4] = 2;
-    A_cf.J[5] = 1; A_cf.J[6] = 2; A_cf.J[7] = 3; A_cf.J[8] = 2; A_cf.J[9] = 3;
-    A_cf.Ib[0] = 0; A_cf.Ib[1] = 2; A_cf.Ib[2] = 5; A_cf.Ib[3] = 8;
-    A_cf.Ie[0] = 2; A_cf.Ie[1] = 5; A_cf.Ie[2] = 8; A_cf.Ie[3] = 10;
-    
-    // Fill b with data.
-    b_cf.Values[0] = 1; b_cf.Values[1] = 1; b_cf.Values[2] = 1;
-    b_cf.Values[3] = 1;
-
-    // Fill x with data. (initial guess)
-    x_0cf.Values[0] = 1; x_0cf.Values[1] = 1; x_0cf.Values[2] = 1;
-    x_0cf.Values[3] = 1;
-
-    // Copy x_0 to x;
-    CPU_Dense_f x_cf = x_0cf.clone();
-
-    // Solve Ax=b.
-    GMRES_CPU_f_test(A_cf, b_cf, x_cf);
-
-    // Print the result.    
-    x_cf.print();
+    if (pass1 == 0) { pass_global = 0; std::cout << "Error in: CPU_AMGX_test" << std::endl; }
+    if (pass2 == 0) { pass_global = 0; std::cout << "Error in: CPU_f_AMGX_test" << std::endl; }
+    if (pass3 == 0) { pass_global = 0; std::cout << "Error in: GPU_AMGX_test" << std::endl; }
+    if (pass4 == 0) { pass_global = 0; std::cout << "Error in: GPU_f_AMGX_test" << std::endl; }
+        
+    if (pass_global == 1) { std::cout << "PASSED" << std::endl; } else { std::cout << "FAILED" << std::endl; }
 
     return 0;
 

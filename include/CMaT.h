@@ -6,6 +6,7 @@
 #include <string>
 #include <list>
 #include <chrono>
+#include <cmath>
 
 // Included for .mat file support.
 #include <matio.h>
