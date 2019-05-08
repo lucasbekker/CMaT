@@ -1,3 +1,5 @@
+#pragma once
+
 // Functor for fscp.
 struct fscp_functor {
     

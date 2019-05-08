@@ -1,3 +1,5 @@
+#pragma once
+
 class CPU_Sparse: private CPU_methods {
     public:
         // Based on MKL CSR four array zero based indexing.

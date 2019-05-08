@@ -1,3 +1,5 @@
+#pragma once
+
 class GPU_Dense: private GPU_methods {
     public:
         // Data

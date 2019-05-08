@@ -1,3 +1,5 @@
+#pragma once
+
 class CPU_methods {
     public:        
         // Dense float matrix vector product. (MKL)

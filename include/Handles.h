@@ -1,3 +1,5 @@
+#pragma once
+
 // Class containing the handles and status of the cuBLAS and cuSPARSE libraries.
 
 class HANDLES {

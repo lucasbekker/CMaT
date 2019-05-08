@@ -1,3 +1,5 @@
+#pragma once
+
 // Convert CPU double dense to GPU double dense.
 GPU_Dense convert ( CPU_Dense x ) {
 

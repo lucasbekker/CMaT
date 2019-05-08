@@ -1,3 +1,5 @@
+#pragma once
+
 class CPU_Dense: private CPU_methods {
     public:
         // Data

@@ -1,3 +1,5 @@
+#pragma once
+
 class GPU_Sparse: private GPU_methods {
     public:
         // Based on cuSPARSE CSR three array zero based indexing.

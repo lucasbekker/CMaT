@@ -1,3 +1,5 @@
+#pragma once
+
 // Class definition of a variable in a MAT file to load.
 class matvar_load {
     public:

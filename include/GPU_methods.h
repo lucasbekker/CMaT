@@ -1,3 +1,5 @@
+#pragma once
+
 class GPU_methods {
     public:
         // Dense float matrix vector product. (cuBLAS)

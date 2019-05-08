@@ -1,3 +1,4 @@
+#pragma once
 
 struct SOLVER_data {
     
@@ -191,3 +192,99 @@ class SOLVER_AmgX {
 
     }
 };
+
+CPU_Dense Solve ( CPU_Sparse & A, CPU_Dense & b, std::string config_spec ) {
+
+    // Initialize output vector and fill with initial guess.
+    CPU_Dense x = b.clone();
+
+    // Initialize solver data and fill with addresses.
+    SOLVER_data Axb;
+    Axb.A_c = &A;
+    Axb.b_c = &b;
+    Axb.x_c = &x;
+    Axb.n = A.Size[0];
+    Axb.nnz = A.Size[2];
+
+    // Specify AMGX configuration.
+    AMGX_Mode mode = AMGX_mode_hDDI;
+
+    // Start the solving procedure.
+    SOLVER_AmgX AMGX(config_spec, mode, Axb);
+
+    // Return the output vector.
+    return x;
+
+}
+
+CPU_Dense_f Solve ( CPU_Sparse_f & A, CPU_Dense_f & b, std::string config_spec ) {
+
+    // Initialize output vector and fill with initial guess.
+    CPU_Dense_f x = b.clone();
+
+    // Initialize solver data and fill with addresses.
+    SOLVER_data Axb;
+    Axb.A_cf = &A;
+    Axb.b_cf = &b;
+    Axb.x_cf = &x;
+    Axb.n = A.Size[0];
+    Axb.nnz = A.Size[2];
+
+    // Specify AMGX configuration.
+    AMGX_Mode mode = AMGX_mode_hFFI;
+
+    // Start the solving procedure.
+    SOLVER_AmgX AMGX(config_spec, mode, Axb);
+
+    // Return the output vector.
+    return x;
+
+}
+
+GPU_Dense Solve ( GPU_Sparse & A, GPU_Dense & b, std::string config_spec ) {
+
+    // Initialize output vector and fill with initial guess.
+    GPU_Dense x = b.clone();
+
+    // Initialize solver data and fill with addresses.
+    SOLVER_data Axb;
+    Axb.A_g = &A;
+    Axb.b_g = &b;
+    Axb.x_g = &x;
+    Axb.n = A.Size[0];
+    Axb.nnz = A.Size[2];
+
+    // Specify AMGX configuration.
+    AMGX_Mode mode = AMGX_mode_dDDI;
+
+    // Start the solving procedure.
+    SOLVER_AmgX AMGX(config_spec, mode, Axb);
+
+    // Return the output vector.
+    return x;
+
+}
+
+GPU_Dense_f Solve ( GPU_Sparse_f & A, GPU_Dense_f & b, std::string config_spec ) {
+
+    // Initialize output vector and fill with initial guess.
+    GPU_Dense_f x = b.clone();
+
+    // Initialize solver data and fill with addresses.
+    SOLVER_data Axb;
+    Axb.A_gf = &A;
+    Axb.b_gf = &b;
+    Axb.x_gf = &x;
+    Axb.n = A.Size[0];
+    Axb.nnz = A.Size[2];
+
+    // Specify AMGX configuration.
+    AMGX_Mode mode = AMGX_mode_dFFI;
+
+    // Start the solving procedure.
+    SOLVER_AmgX AMGX(config_spec, mode, Axb);
+
+    // Return the output vector.
+    return x;
+
+}

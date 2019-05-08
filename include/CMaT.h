@@ -8,6 +8,9 @@
 #include <chrono>
 #include <cmath>
 
+// Debug.
+#define DEBUG std::cout<<"debug"<<std::endl;
+
 // Included for .mat file support.
 #include <matio.h>
 #include "Matfile.h"
