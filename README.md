@@ -31,8 +31,8 @@ Thrust exposes a lot of other useful functionality that can be employed by numer
 
 ### Dependencies
 
-This project depends on Thrust, cuSPARSE, cuBLAS and MKL. These can be obtained by installing the CUDA toolkit and MKL.
+This project depends on CUDA, Thrust, AmgX, cuSPARSE, cuBLAS, cuSOLVER, MKL and MAGMA.
 
-cuSPARSE, cuBLAS and MKL provide the required BLAS implementations. Thrust provides memory management and other mathematical functionality.
+cuSPARSE, cuBLAS and MKL provide the required BLAS implementations. Thrust provides memory management and other mathematical functionality. AmgX, cuSOLVER, MKL and MAGMA are used for the solvers
 
-Everything must be compiled using the NVCC compiler provided by NVIDIA. This is a (hard) requirement of Thrust. The target platform is Linux and the target host compiler (of NVCC) is GCC.
+Everything must be compiled using the NVCC compiler provided by NVIDIA. The target platform is Linux and the target host compiler (of NVCC) is GCC.
