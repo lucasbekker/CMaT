@@ -13,6 +13,9 @@ class GPU_Sparse: private GPU_methods {
         cusparseMatDescr_t descr = NULL;       // Matrix description.
         
         // Methods
+        // Solve Ax=b using AMGX.
+        GPU_Dense solve ( GPU_Dense & b, std::string config_spec );
+
         // Links to GPU_methods.dadd().
         GPU_Sparse add ( const double a ) {
             
@@ -232,6 +235,9 @@ class GPU_Sparse_f: private GPU_methods {
         cusparseMatDescr_t descr = NULL;      // Matrix description.
 
         // Methods
+        // Solve Ax=b using AMGX.
+        GPU_Dense_f solve ( GPU_Dense_f & b, std::string config_spec );
+
         // Links to GPU_methods.fadd().
         GPU_Sparse_f add ( const float a ) {
             

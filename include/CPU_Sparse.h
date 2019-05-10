@@ -13,6 +13,9 @@ class CPU_Sparse: private CPU_methods {
         thrust::host_vector<int> J;          // Host vector of length Size[2] storing type int.
 
         // Methods
+        // Solve Ax=b using AMGX.
+        CPU_Dense solve ( CPU_Dense & b, std::string config_spec );
+
         // Links to CPU_methods.dadd().
         CPU_Sparse add ( const double a ) {
             
@@ -224,6 +227,9 @@ class CPU_Sparse_f: private CPU_methods {
         thrust::host_vector<int> J;          // Host vector of length Size[2] storing type int.
 
         // Methods
+        // Solve Ax=b using AMGX.
+        CPU_Dense_f solve ( CPU_Dense_f & b, std::string config_spec );
+
         // Links to CPU_methods.fadd().
         CPU_Sparse_f add ( const float a ) {
             

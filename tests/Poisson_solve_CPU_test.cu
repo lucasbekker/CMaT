@@ -21,7 +21,7 @@ int main (  ) {
 
     // Solve Ax=b.
     tic();
-    CPU_Dense x = Solve(A,b,config_spec);
+    CPU_Dense x = A.solve(b,config_spec);
     toc();
 
     // Subtract the r from x.

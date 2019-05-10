@@ -21,7 +21,7 @@ void CPU_AMGX_test ( std::string config_spec ) {
     b.Values[3] = 1;
 
     // Start the solving procedure.
-    CPU_Dense x = Solve(A,b,config_spec);
+    CPU_Dense x = A.solve(b,config_spec);
 
     // Print the result.    
     x.print();
@@ -49,7 +49,7 @@ void CPU_f_AMGX_test ( std::string config_spec ) {
     b.Values[3] = 1;
 
     // Start the solving procedure.
-    CPU_Dense_f x = Solve(A,b,config_spec);
+    CPU_Dense_f x = A.solve(b,config_spec);
 
     // Print the result.    
     x.print();
@@ -76,7 +76,7 @@ void GPU_AMGX_test ( std::string config_spec ) {
     b.Values[3] = 1;
 
     // Start the solving procedure.
-    GPU_Dense x = Solve(A,b,config_spec);
+    GPU_Dense x = A.solve(b,config_spec);
 
     // Print the result.
     CPU_Dense xx = convert(x);      // WORKAROUND FOR BUG !!!
@@ -104,7 +104,7 @@ void GPU_f_AMGX_test ( std::string config_spec ) {
     b.Values[3] = 1;
 
     // Start the solving procedure.
-    GPU_Dense_f x = Solve(A,b,config_spec);
+    GPU_Dense_f x = A.solve(b,config_spec);
 
     // Print the result.    
     x.print();

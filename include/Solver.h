@@ -193,18 +193,18 @@ class SOLVER_AmgX {
     }
 };
 
-CPU_Dense Solve ( CPU_Sparse & A, CPU_Dense & b, std::string config_spec ) {
+CPU_Dense CPU_Sparse::solve ( CPU_Dense & b, std::string config_spec ) {
 
     // Initialize output vector and fill with initial guess.
     CPU_Dense x = b.clone();
 
     // Initialize solver data and fill with addresses.
     SOLVER_data Axb;
-    Axb.A_c = &A;
+    Axb.A_c = this;
     Axb.b_c = &b;
     Axb.x_c = &x;
-    Axb.n = A.Size[0];
-    Axb.nnz = A.Size[2];
+    Axb.n = Size[0];
+    Axb.nnz = Size[2];
 
     // Specify AMGX configuration.
     AMGX_Mode mode = AMGX_mode_hDDI;
@@ -217,18 +217,18 @@ CPU_Dense Solve ( CPU_Sparse & A, CPU_Dense & b, std::string config_spec ) {
 
 }
 
-CPU_Dense_f Solve ( CPU_Sparse_f & A, CPU_Dense_f & b, std::string config_spec ) {
+CPU_Dense_f CPU_Sparse_f::solve ( CPU_Dense_f & b, std::string config_spec ) {
 
     // Initialize output vector and fill with initial guess.
     CPU_Dense_f x = b.clone();
 
     // Initialize solver data and fill with addresses.
     SOLVER_data Axb;
-    Axb.A_cf = &A;
+    Axb.A_cf = this;
     Axb.b_cf = &b;
     Axb.x_cf = &x;
-    Axb.n = A.Size[0];
-    Axb.nnz = A.Size[2];
+    Axb.n = Size[0];
+    Axb.nnz = Size[2];
 
     // Specify AMGX configuration.
     AMGX_Mode mode = AMGX_mode_hFFI;
@@ -241,18 +241,18 @@ CPU_Dense_f Solve ( CPU_Sparse_f & A, CPU_Dense_f & b, std::string config_spec )
 
 }
 
-GPU_Dense Solve ( GPU_Sparse & A, GPU_Dense & b, std::string config_spec ) {
+GPU_Dense GPU_Sparse::solve ( GPU_Dense & b, std::string config_spec ) {
 
     // Initialize output vector and fill with initial guess.
     GPU_Dense x = b.clone();
 
     // Initialize solver data and fill with addresses.
     SOLVER_data Axb;
-    Axb.A_g = &A;
+    Axb.A_g = this;
     Axb.b_g = &b;
     Axb.x_g = &x;
-    Axb.n = A.Size[0];
-    Axb.nnz = A.Size[2];
+    Axb.n = Size[0];
+    Axb.nnz = Size[2];
 
     // Specify AMGX configuration.
     AMGX_Mode mode = AMGX_mode_dDDI;
@@ -265,18 +265,18 @@ GPU_Dense Solve ( GPU_Sparse & A, GPU_Dense & b, std::string config_spec ) {
 
 }
 
-GPU_Dense_f Solve ( GPU_Sparse_f & A, GPU_Dense_f & b, std::string config_spec ) {
+GPU_Dense_f GPU_Sparse_f::solve ( GPU_Dense_f & b, std::string config_spec ) {
 
     // Initialize output vector and fill with initial guess.
     GPU_Dense_f x = b.clone();
 
     // Initialize solver data and fill with addresses.
     SOLVER_data Axb;
-    Axb.A_gf = &A;
+    Axb.A_gf = this;
     Axb.b_gf = &b;
     Axb.x_gf = &x;
-    Axb.n = A.Size[0];
-    Axb.nnz = A.Size[2];
+    Axb.n = Size[0];
+    Axb.nnz = Size[2];
 
     // Specify AMGX configuration.
     AMGX_Mode mode = AMGX_mode_dFFI;
