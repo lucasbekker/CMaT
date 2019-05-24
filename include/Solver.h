@@ -165,7 +165,7 @@ class SOLVER_AmgX {
         AMGX_install_signal_handler();
 
         // Create AMGX configuration, resources and solver.
-        AMGX_config_create(&config, config_spec.c_str());
+        AMGX_config_create_from_file(&config, config_spec.c_str());
         AMGX_resources_create_simple(&resources, config);
         AMGX_solver_create(&solver, resources, mode, config);
 

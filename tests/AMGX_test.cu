@@ -114,13 +114,7 @@ void GPU_f_AMGX_test ( std::string config_spec ) {
 int main (  ) {
 
     // Specify AMGX configuration.
-    std::string config_spec = "config_version=2, \
-                               solver(fgmres)=FGMRES, \
-                               fgmres:tolerance=0.01, \
-                               fgmres:max_iters=40, \
-                               fgmres:gmres_n_restart=10, \
-                               fgmres:preconditioner=NOSOLVER, \
-                               fgmres:monitor_residual=1";
+    std::string config_spec = "./config/GMRES.json";
 
     CPU_AMGX_test(config_spec);
     CPU_f_AMGX_test(config_spec);

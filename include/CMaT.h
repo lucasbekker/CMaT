@@ -37,7 +37,7 @@
 #include "cusparse_v2.h"
 
 // Include the AMGX header files.
-#include <amgx/amgx_c.h>
+#include <amgx_c.h>
 
 // Include the CMaT project header files.
 #include "Handles.h"

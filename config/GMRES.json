@@ -1,0 +1,11 @@
+{
+    "config_version": 2,
+    "solver": {
+        "solver": "FGMRES",
+        "tolerance": 0.00000001,
+        "max_iters": 2000,
+        "gmres_n_restart": 40,
+        "preconditioner": "NOSOLVER",
+        "monitor_residual": 1
+    }
+}
