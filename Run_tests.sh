@@ -38,6 +38,7 @@ Transpose_test
 Matio_test
 Clone_test
 Convert_test
+AMGX_test
 "
 
 # Build and run.
