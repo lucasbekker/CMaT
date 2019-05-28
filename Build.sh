@@ -13,7 +13,7 @@ CUDA_NATIVE="--ptxas-options -O3 --gpu-architecture=sm_35"
 THRUST_DEFINE="-DTHRUST_HOST_SYSTEM=THRUST_HOST_SYSTEM_TBB -DTHRUST_DEVICE_SYSTEM=THRUST_DEVICE_SYSTEM_CUDA"
 GPP_LINKER="-lmatio -lmpi"
 GPP_NATIVE="--compiler-options -march=native,-O3,-std=c++11,-m64"
-WARNINGS="-Wno-deprecated-gpu-targets -Wno-deprecated-declarations"
+WARNINGS="-w"
 
 # Combine compiler flags.
 FLAGS0="$CUDA_NATIVE $GPP_NATIVE $THRUST_DEFINE"

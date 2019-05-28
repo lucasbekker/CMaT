@@ -1,0 +1,25 @@
+{
+    "config_version": 2,
+    "determinism_flag": 1,
+    "solver": {
+        "preconditioner": {
+            "solver": "AMG",
+            "algorithm": "AGGREGATION",
+            "selector": "SIZE_8",
+            "cycle": "V",
+            "max_iters": 1,
+            "max_levels": 10,
+            "smoother": "BLOCK_JACOBI",
+            "relaxation_factor": 0.75,
+            "presweeps": 1,
+            "postsweeps": 2,
+            "coarsest_sweeps": 1
+        },
+        "solver": "FGMRES",
+        "max_iters": 300,
+        "monitor_residual": 1,
+        "tolerance": 0.00000001,
+        "print_solve_stats": 1,
+        "convergence": "RELATIVE_MAX"
+    }
+}
