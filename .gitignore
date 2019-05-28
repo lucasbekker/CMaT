@@ -1,6 +1,11 @@
 # test binaries
 tests/bin/
 
+# example binaries etc
+examples/Solve_Ax_b
+examples/MAT_FILES/results/
+examples/log/
+
 # VS code settings
 .vscode/
 
