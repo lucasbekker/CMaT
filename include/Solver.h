@@ -1,5 +1,7 @@
 #pragma once
 
+extern int num_iter = 0;
+
 struct SOLVER_data {
     
     // Matrix A.
@@ -179,6 +181,10 @@ class SOLVER_AmgX {
 
         // Solve Ax=b.
         solve();
+
+        // Get the number of iterations
+        AMGX_solver_get_iterations_number(solver,&num_iter);
+        num_iter--;
 
         // Store the results.
         download(Axb);

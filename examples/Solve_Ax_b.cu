@@ -95,18 +95,19 @@ std::string in_arg_check ( int argc, char* argv[] ) {
 
 }
 
-// Store timings and norm of residual in a matlab vector.
+// Store timings, num_iter and norm of residual in a matlab vector.
 void create_mat ( double t1, double t2, double t3,
                   double r_norm, std::string filename ) {
 
     // Initialize the result vector.
-    CPU_Dense result(4,1);
+    CPU_Dense result(5,1);
 
     // Fill the result vector.
     result.Values[0] = t1;
     result.Values[1] = t2;
     result.Values[2] = t3;
     result.Values[3] = r_norm;
+    result.Values[4] = (double) num_iter;
 
     // Create './MAT_FILES/results' directory.
     system("if [ ! -d \"MAT_FILES\" ]; then mkdir MAT_FILES; fi");
@@ -168,6 +169,7 @@ int main ( int argc, char* argv[] ) {
 
         // Print the result.
         log << std::endl << "2-norm of the residual is: " << r_norm << std::endl;
+        log << "Number of iterations: " << num_iter << std::endl;
 
     }
         
@@ -196,6 +198,7 @@ int main ( int argc, char* argv[] ) {
 
         // Print the result.
         log << std::endl << "2-norm of the residual is: " << r_norm << std::endl;
+        log << "Number of iterations: " << num_iter << std::endl;
 
     }
 
