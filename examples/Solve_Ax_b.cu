@@ -21,6 +21,13 @@ std::string get_output_file_name ( std::string name ) {
     std::string min  = std::to_string(ltm->tm_min);
     std::string sec  = std::to_string(ltm->tm_sec);
 
+    // Check string length.
+    if ( month.size() == 1 ) { month = "0" + month; }
+    if ( day.size() == 1 )   { day = "0" + day; }
+    if ( hour.size() == 1 )  { hour = "0" + hour; }
+    if ( min.size() == 1 )   { min = "0" + min; }
+    if ( sec.size() == 1 )   { sec = "0" + sec; }
+
     // year-month-day_hour:min:sec
     std::string time_str =  year+"-"+month+"-"+day+"_"+hour+":"+min+":"+sec;
     
