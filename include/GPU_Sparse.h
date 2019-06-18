@@ -15,7 +15,8 @@ class GPU_Sparse: private GPU_methods {
         // Methods
         // Solve Ax=b using AMGX.
         GPU_Dense solve ( GPU_Dense & b, std::string config_spec );
-
+        GPU_Dense solve ( GPU_Dense & b, GPU_Dense & x0, std::string config_spec );
+        
         // Links to GPU_methods.dadd().
         GPU_Sparse add ( const double a ) {
             

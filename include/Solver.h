@@ -271,6 +271,30 @@ GPU_Dense GPU_Sparse::solve ( GPU_Dense & b, std::string config_spec ) {
 
 }
 
+GPU_Dense GPU_Sparse::solve ( GPU_Dense & b, GPU_Dense & x0, std::string config_spec ) {
+
+    // Initialize output vector and fill with initial guess.
+    GPU_Dense x = x0.clone();
+
+    // Initialize solver data and fill with addresses.
+    SOLVER_data Axb;
+    Axb.A_g = this;
+    Axb.b_g = &b;
+    Axb.x_g = &x;
+    Axb.n = Size[0];
+    Axb.nnz = Size[2];
+
+    // Specify AMGX configuration.
+    AMGX_Mode mode = AMGX_mode_dDDI;
+
+    // Start the solving procedure.
+    SOLVER_AmgX AMGX(config_spec, mode, Axb);
+
+    // Return the output vector.
+    return x;
+
+}
+
 GPU_Dense_f GPU_Sparse_f::solve ( GPU_Dense_f & b, std::string config_spec ) {
 
     // Initialize output vector and fill with initial guess.

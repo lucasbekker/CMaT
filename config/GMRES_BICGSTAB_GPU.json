@@ -1,0 +1,17 @@
+{
+    "config_version": 2,
+    "determinism_flag": 1,
+    "solver": {
+        "preconditioner": {
+            "solver": "BICGSTAB",
+            "max_iters": 100,
+            "tolerance": 0.001
+        },
+        "solver": "FGMRES",
+        "tolerance": 0.00001,
+        "max_iters": 3000,
+        "gmres_n_restart": 100,
+        "monitor_residual": 1,
+        "print_solve_stats": 1
+    }
+}
